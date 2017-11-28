@@ -1,4 +1,4 @@
-open class Vector constructor(open vararg val dimensions: Double) {
+open class Vector constructor(open vararg val dimensions: Double) : Number() {
     fun extended(targetDimensionality: Int): Vector {
         val dimensionsToAdd = Math.max(targetDimensionality - dimensionality, 0)
         return Vector(*dimensions, *DoubleArray(dimensionsToAdd))
@@ -7,7 +7,7 @@ open class Vector constructor(open vararg val dimensions: Double) {
     val to3D get() = Vector3D(this)
     private val dimensionality get() = dimensions.size
 
-    fun applyElementwise(other: Vector, operation: (Double, Double) -> Double): Vector {
+    private fun applyElementwise(other: Vector, operation: (Double, Double) -> Double): Vector {
         val extendedOther = other.extended(dimensionality)
         val extendedThis = extended(other.dimensionality)
 
@@ -19,7 +19,7 @@ open class Vector constructor(open vararg val dimensions: Double) {
         )
     }
 
-    fun applyElementwise(other: Double, operation: (Double, Double) -> Double): Vector {
+    private fun applyElementwise(other: Double, operation: (Double, Double) -> Double): Vector {
         return Vector(
                 *this
                         .dimensions
@@ -28,72 +28,45 @@ open class Vector constructor(open vararg val dimensions: Double) {
         )
     }
 
-    // Element-wise operations between vectors.
+    // Element-wise operations between vectors. (no element-wise multiplication)
     operator fun plus(other: Vector) = applyElementwise(other, Double::plus)
+
     operator fun minus(other: Vector) = applyElementwise(other, Double::minus)
-    operator fun times(other: Vector) = applyElementwise(other, Double::times)
     operator fun div(other: Vector) = applyElementwise(other, Double::div)
 
     // Apply an operation to every element and a constant scalar.
     operator fun plus(other: Double) = applyElementwise(other, Double::plus)
+
     operator fun minus(other: Double) = applyElementwise(other, Double::minus)
     operator fun times(other: Double) = applyElementwise(other, Double::times)
     operator fun div(other: Double) = applyElementwise(other, Double::div)
 
-    operator fun get(index: Int): Double {
-        return dimensions[index]
-    }
+    // Dot products.
+    operator fun times(other: Vector) = applyElementwise(other, Double::times).dimensions.reduce(Double::plus)
+
+    operator fun get(index: Int): Double = dimensions[index]
 
     companion object {
-        fun unit(dimensionality: Int): Vector {
-            val emptyDimensions = DoubleArray(dimensionality)
-            return Vector(*emptyDimensions, 1.0)
-        }
+        fun unit(dimensionality: Int) = Vector(*DoubleArray(dimensionality), 1.0)
 
-        val i get() = unit(0).extended(3)
-        val j get() = unit(1).extended(3)
-        val k get() = unit(2).extended(3)
+        val i get() = unit(0).extended(3).to3D
+        val j get() = unit(1).extended(3).to3D
+        val k get() = unit(2).extended(3).to3D
     }
 
-    override fun toString(): String {
-        return "<${dimensions.joinToString(separator = ", ")}>"
-    }
+    override fun toString(): String = "<${dimensions.joinToString(separator = ", ")}>"
+
+    val magnitude get() = Math.sqrt(this * this)
+
+    // Number conformance
+    override fun toByte() = magnitude.toByte()
+
+    override fun toChar() = magnitude.toChar()
+    override fun toDouble() = magnitude
+    override fun toFloat() = magnitude.toFloat()
+    override fun toInt() = magnitude.toInt()
+    override fun toLong() = magnitude.toLong()
+    override fun toShort() = magnitude.toShort()
 }
 
-interface Crossable<T> {
-    infix fun cross(other: T): T
-}
-
-class Vector3D(vector: Vector) : Vector(*vector.dimensions), Crossable<Vector3D> {
-    init {
-        if (vector.dimensions.size != 3) {
-            throw Error("Incorrect dimensionality.")
-        }
-    }
-
-    override infix fun cross(other: Vector3D): Vector3D {
-        return Vector(
-                this[1] * other[2] - this[2] * other[1],
-                -(this[0] * other[2] - this[2] * other[0]),
-                this[0] * other[1] - this[1] * other[0]
-        ).to3D
-    }
-}
-
-open class VectorValuedFunction<in Parameter> constructor(open val function: (Parameter) -> Vector) : (Parameter) -> Vector {
-    override fun invoke(parameter: Parameter): Vector {
-        return function(parameter)
-    }
-}
-
-fun VectorValuedFunction<Double>.differentiate(parameter: Double, delta: Double): Vector {
-    return (this(parameter + delta) - this(parameter)) / (parameter - delta)
-}
-
-class VectorField constructor(override val function: (Vector) -> Vector) : VectorValuedFunction<Vector>(function)
-
-//fun VectorValuedFunction<VectorField>.gradient(parameter: Pair<Double, Double>, delta: Double): Vector {
-//    val constantXFunction = VectorValuedFunction<Double>({ (y) -> this(parameter.first, )
-//
-//    return (this(parameter + delta) - this(parameter)) / (parameter - delta)
-//}
+val Number.v get() = Vector(this.toDouble())
