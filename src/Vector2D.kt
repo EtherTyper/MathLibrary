@@ -1,0 +1,1 @@
+class Vector2D(vector: Vector) : Vector(*vector.dimensions, mandatoryArity = 2)

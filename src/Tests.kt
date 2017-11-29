@@ -22,8 +22,7 @@ fun main(args: Array<String>) {
             )
     )
 
-    println({ i: Double -> Math.pow(i, 2.0) * 5}.differentiate(0.0001)(3.0))
-    println({ i: Vector -> })
+    println({ i: Double -> Math.pow(i, 2.0) * 5}.differentiate(0.0001, 3.0))
 
     println(
             ({ vector: Vector -> Math.pow(vector[0], 2.0) * vector[1]}).gradient(

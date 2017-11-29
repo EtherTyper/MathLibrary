@@ -1,15 +1,21 @@
-open class Vector constructor(open vararg val dimensions: Double) : Number() {
-    fun extended(targetDimensionality: Int): Vector {
-        val dimensionsToAdd = Math.max(targetDimensionality - dimensionality, 0)
+open class Vector constructor(vararg val dimensions: Double, mandatoryArity: Int? = null) : Number() {
+    init {
+        if (mandatoryArity != null && dimensions.size != mandatoryArity) {
+            throw ArityError(mandatoryArity, dimensions.size)
+        }
+    }
+
+    fun extended(targetArity: Int): Vector {
+        val dimensionsToAdd = Math.max(targetArity - arity, 0)
         return Vector(*dimensions, *DoubleArray(dimensionsToAdd))
     }
 
     val to3D get() = Vector3D(this)
-    private val dimensionality get() = dimensions.size
+    private val arity get() = dimensions.size
 
     private fun applyElementwise(other: Vector, operation: (Double, Double) -> Double): Vector {
-        val extendedOther = other.extended(dimensionality)
-        val extendedThis = extended(other.dimensionality)
+        val extendedOther = other.extended(arity)
+        val extendedThis = extended(other.arity)
 
         return Vector(
                 *extendedOther
@@ -68,5 +74,7 @@ open class Vector constructor(open vararg val dimensions: Double) : Number() {
     override fun toLong() = magnitude.toLong()
     override fun toShort() = magnitude.toShort()
 }
+
+class ArityError(expected: Int, actual: Int): Error("Expected vector of arity $expected but got $actual.")
 
 val Number.v get() = Vector(this.toDouble())
