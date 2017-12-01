@@ -11,7 +11,7 @@ open class Vector constructor(vararg val dimensions: Double, mandatoryArity: Int
     }
 
     val to3D get() = Vector3D(this)
-    private val arity get() = dimensions.size
+    val arity get() = dimensions.size
 
     private fun applyElementwise(other: Vector, operation: (Double, Double) -> Double): Vector {
         val extendedOther = other.extended(arity)
@@ -66,7 +66,6 @@ open class Vector constructor(vararg val dimensions: Double, mandatoryArity: Int
 
     // Number conformance
     override fun toByte() = magnitude.toByte()
-
     override fun toChar() = magnitude.toChar()
     override fun toDouble() = magnitude
     override fun toFloat() = magnitude.toFloat()

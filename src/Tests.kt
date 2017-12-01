@@ -1,4 +1,6 @@
 fun main(args: Array<String>) {
+    println("Constants")
+    println()
     println("i\u0302: ${Vector.i}")
     println("j\u0302: ${Vector.j}")
     println("k\u0302: ${Vector.k}")
@@ -17,7 +19,7 @@ fun main(args: Array<String>) {
     println(Vector(1.0, 1.0).magnitude)
 
     println(
-            ({ vector: Vector -> vector.to3D cross Vector.i })(
+            { vector: Vector -> vector.to3D cross Vector.i }(
                     Vector(2.0, 3.0, 4.0)
             )
     )
@@ -25,7 +27,7 @@ fun main(args: Array<String>) {
     println({ i: Double -> Math.pow(i, 2.0) * 5}.differentiate(0.0001, 3.0))
 
     println(
-            ({ vector: Vector -> Math.pow(vector[0], 2.0) * vector[1]}).gradient(
+            { vector: Vector -> Math.pow(vector[0], 2.0) * vector[1]}.gradient(
                     Vector(3.0, 2.0),
                     0.0001
             )

@@ -1,3 +1,5 @@
+import java.util.*
+
 // Single-variable functions.
 fun DoubleFunction.differentiate(parameter: Double, delta: Double): Double {
     return (this(parameter + delta) - this(parameter)) / delta
@@ -8,18 +10,21 @@ fun VectorValuedFunction.differentiate(parameter: Double, delta: Double): Vector
     return (this(parameter + delta) - this(parameter)) / delta
 }
 
-// Scalar fields.
-fun ScalarField.gradient(parameter: Vector, delta: Double, arity: Int = 2): Vector {
-    val constantYFunction = { x: Double -> this(Vector(x, parameter[1])) }
-    val constantXFunction = { y: Double -> this(Vector(parameter[0], y)) }
+fun ScalarField.directionalFunction(direction: Int, parameter: Vector): DoubleFunction {
+    return { value: Double ->
+        val newDimensions = Arrays.copyOf(parameter.dimensions, parameter.arity)
+        newDimensions[direction] = value
 
-    return Vector(
-            constantYFunction.differentiate(parameter[0], delta),
-            constantXFunction.differentiate(parameter[1], delta)
-    )
+        this(Vector(*newDimensions))
+    }
 }
 
-// Vector fields.
-fun VectorField.conservative(initialBound: Vector, finalBound: Vector) {
-
+// Scalar fields.
+fun ScalarField.gradient(parameter: Vector, delta: Double): Vector {
+    return Vector(
+            *(0.until(parameter.arity)).map { dimension ->
+                directionalFunction(dimension, parameter)
+                        .differentiate(parameter[dimension], delta)
+            }.toDoubleArray()
+    )
 }
