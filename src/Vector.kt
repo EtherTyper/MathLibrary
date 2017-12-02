@@ -74,6 +74,4 @@ open class Vector constructor(vararg val dimensions: Double, mandatoryArity: Int
     override fun toShort() = magnitude.toShort()
 }
 
-class ArityError(expected: Int, actual: Int): Error("Expected vector of arity $expected but got $actual.")
-
 val Number.v get() = Vector(this.toDouble())
