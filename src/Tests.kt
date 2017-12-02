@@ -32,4 +32,6 @@ fun main(args: Array<String>) {
                     0.0001
             )
     )
+
+    println((Derivative * { i: Double -> i + 0.2 })(1.0))
 }
