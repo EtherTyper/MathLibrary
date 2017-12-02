@@ -1,3 +1,5 @@
+import kotlin.math.sqrt
+
 open class Vector constructor(vararg val dimensions: Double, mandatoryArity: Int? = null) : Number() {
     init {
         if (mandatoryArity != null && dimensions.size != mandatoryArity) {
@@ -62,7 +64,7 @@ open class Vector constructor(vararg val dimensions: Double, mandatoryArity: Int
 
     override fun toString(): String = "<${dimensions.joinToString(separator = ", ")}>"
 
-    val magnitude get() = Math.sqrt(this * this)
+    val magnitude get() = sqrt(this * this)
 
     // Number conformance
     override fun toByte() = magnitude.toByte()
