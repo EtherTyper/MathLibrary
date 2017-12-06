@@ -34,4 +34,9 @@ fun main(args: Array<String>) {
     )
 
     println((Derivative * { i: Double -> i + 0.2 })(1.0))
+
+    println("MATRIX")
+    println(SquareMatrix(arrayOf(arrayOf(1.0, 3.0), arrayOf(1.0, 4.0))).determinant)
+
+    println(SquareMatrix(arrayOf(arrayOf(0.0, 1.0, 2.0), arrayOf(3.0, 4.0, 5.0), arrayOf(6.0, 7.0, 8.0))).determinant)
 }

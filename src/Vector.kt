@@ -1,6 +1,6 @@
 import kotlin.math.sqrt
 
-open class Vector constructor(vararg val dimensions: Double, mandatoryArity: Int? = null) : Number() {
+open class Vector constructor(vararg val dimensions: Double, mandatoryArity: Int? = null) : Number(), Multipliable<Vector, Double> {
     init {
         if (mandatoryArity != null && dimensions.size != mandatoryArity) {
             throw ArityError(mandatoryArity, dimensions.size)
@@ -50,7 +50,7 @@ open class Vector constructor(vararg val dimensions: Double, mandatoryArity: Int
     operator fun div(other: Double) = applyElementwise(other, Double::div)
 
     // Dot products.
-    operator fun times(other: Vector) = applyElementwise(other, Double::times).dimensions.reduce(Double::plus)
+    override operator fun times(other: Vector) = applyElementwise(other, Double::times).dimensions.reduce(Double::plus)
 
     operator fun get(index: Int): Double = dimensions[index]
 
@@ -68,6 +68,7 @@ open class Vector constructor(vararg val dimensions: Double, mandatoryArity: Int
 
     // Number conformance
     override fun toByte() = magnitude.toByte()
+
     override fun toChar() = magnitude.toChar()
     override fun toDouble() = magnitude
     override fun toFloat() = magnitude.toFloat()
