@@ -1,25 +1,25 @@
 import kotlin.math.sqrt
 
-open class Vector constructor(vararg val dimensions: Double, mandatoryArity: Int? = null) : Number(), Multipliable<Vector, Double> {
+open class DoubleVector constructor(vararg val dimensions: Double, mandatoryArity: Int? = null) : Number() {
     init {
         if (mandatoryArity != null && dimensions.size != mandatoryArity) {
             throw ArityError(mandatoryArity, dimensions.size)
         }
     }
 
-    fun extended(targetArity: Int): Vector {
+    fun extended(targetArity: Int): DoubleVector {
         val dimensionsToAdd = Math.max(targetArity - arity, 0)
-        return Vector(*dimensions, *DoubleArray(dimensionsToAdd))
+        return DoubleVector(*dimensions, *DoubleArray(dimensionsToAdd))
     }
 
     val to3D get() = Vector3D(this)
     val arity get() = dimensions.size
 
-    private fun applyElementwise(other: Vector, operation: (Double, Double) -> Double): Vector {
+    private fun applyElementwise(other: DoubleVector, operation: (Double, Double) -> Double): DoubleVector {
         val extendedOther = other.extended(arity)
         val extendedThis = extended(other.arity)
 
-        return Vector(
+        return DoubleVector(
                 *extendedOther
                         .dimensions
                         .mapIndexed({ i, dimension -> operation(extendedThis[i], dimension) })
@@ -27,8 +27,8 @@ open class Vector constructor(vararg val dimensions: Double, mandatoryArity: Int
         )
     }
 
-    private fun applyElementwise(other: Double, operation: (Double, Double) -> Double): Vector {
-        return Vector(
+    private fun applyElementwise(other: Double, operation: (Double, Double) -> Double): DoubleVector {
+        return DoubleVector(
                 *this
                         .dimensions
                         .map({ dimension -> operation(dimension, other) })
@@ -37,10 +37,10 @@ open class Vector constructor(vararg val dimensions: Double, mandatoryArity: Int
     }
 
     // Element-wise operations between vectors. (no element-wise multiplication)
-    operator fun plus(other: Vector) = applyElementwise(other, Double::plus)
+    operator fun plus(other: DoubleVector) = applyElementwise(other, Double::plus)
 
-    operator fun minus(other: Vector) = applyElementwise(other, Double::minus)
-    operator fun div(other: Vector) = applyElementwise(other, Double::div)
+    operator fun minus(other: DoubleVector) = applyElementwise(other, Double::minus)
+    operator fun div(other: DoubleVector) = applyElementwise(other, Double::div)
 
     // Apply an operation to every element and a constant scalar.
     operator fun plus(other: Double) = applyElementwise(other, Double::plus)
@@ -50,12 +50,12 @@ open class Vector constructor(vararg val dimensions: Double, mandatoryArity: Int
     operator fun div(other: Double) = applyElementwise(other, Double::div)
 
     // Dot products.
-    override operator fun times(other: Vector) = applyElementwise(other, Double::times).dimensions.reduce(Double::plus)
+    operator fun times(other: DoubleVector) = applyElementwise(other, Double::times).dimensions.reduce(Double::plus)
 
     operator fun get(index: Int): Double = dimensions[index]
 
     companion object {
-        fun unit(dimensionality: Int) = Vector(*DoubleArray(dimensionality), 1.0)
+        fun unit(dimensionality: Int) = DoubleVector(*DoubleArray(dimensionality), 1.0)
 
         val i get() = unit(0).extended(3).to3D
         val j get() = unit(1).extended(3).to3D
@@ -77,4 +77,4 @@ open class Vector constructor(vararg val dimensions: Double, mandatoryArity: Int
     override fun toShort() = magnitude.toShort()
 }
 
-val Number.v get() = Vector(this.toDouble())
+val Number.v get() = DoubleVector(this.toDouble())

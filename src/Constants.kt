@@ -1,0 +1,1 @@
+val defaultDelta = 0.0005
