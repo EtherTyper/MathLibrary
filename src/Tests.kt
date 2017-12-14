@@ -1,6 +1,3 @@
-import com.sun.org.apache.xpath.internal.operations.Mult
-import kotlin.reflect.full.isSubclassOf
-
 fun section(name: String, block: (() -> Unit)) {
     print("\u001B[1;31m\n$name\n\n\u001B[0m")
     block()
@@ -65,10 +62,15 @@ fun main(args: Array<String>) {
     val twoByTwo = SquareMatrix(arrayOf(arrayOf(1.0, 3.0), arrayOf(1.0, 4.0)))
     val threeByThree = SquareMatrix(arrayOf(arrayOf(0.0, 1.0, 2.0), arrayOf(3.0, 4.0, 5.0), arrayOf(6.0, 7.0, 8.0)))
 
+    section("Type-Agnostic Multiplication") {
+        println("<1, 2, 3> * 2.5 = ${Multiply(DoubleVector(1.0, 2.0, 3.0), 2.5)}")
+
+        val derivativeOfVectorField = Multiply(DirectionalDerivative.d_dy, rotatingVectorField) as VectorField
+        println("δ/δy (\u0305v × i\u0302)|(2, 3, 4) = ${derivativeOfVectorField(DoubleVector.`0`)}")
+    }
+
     section("Matrices") {
         println("$twoByTwo = ${twoByTwo.determinant}")
         println("$threeByThree = ${threeByThree.determinant}")
     }
-
-    println(MultiplicationOperations.applyOperation(DoubleVector.i.to3D, 2.0))
 }
