@@ -1,3 +1,5 @@
+package core
+
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 
@@ -9,21 +11,19 @@ class Operation<in A, in B, out C>(private val aType: KClass<*>, private val bTy
 open class OperationList(private vararg val operations: Operation<*, *, *>) {
     @Suppress("UNCHECKED_CAST")
     operator fun invoke(a: Any, b: Any): Any? {
-        try {
-            return (operations
+        return try {
+            (operations
                     .single { operation -> operation.compatibleParameters(a::class, b::class) }
                     .function as (Any, Any) -> Any)(a, b)
         } catch (e: NoSuchElementException) {
             try {
                 // We can reverse the order since the list doesn't include cross products,
                 // so they should pretty much all be commutative.
-                return (operations
+                (operations
                         .single { operation -> operation.compatibleParameters(b::class, a::class) }
                         .function as (Any, Any) -> Any)(b, a)
             } catch (e: NoSuchElementException) {
                 print("Cannot execute operation: $a ${this::class} $b")
-
-                return null
             }
         }
     }
@@ -36,8 +36,8 @@ object Multiply : OperationList(
         Operation(DoubleFunction::class, DoubleFunction::class) { a: DoubleFunction, b: DoubleFunction -> a * b },
         Operation(VectorValuedFunction::class, VectorValuedFunction::class) { a: VectorValuedFunction, b: VectorValuedFunction -> a * b },
         Operation(ScalarField::class, ScalarField::class) { a: ScalarField, b: ScalarField -> a * b },
-        Operation(ScalarField::class, DoubleVector::class) { a: ScalarField, b: DoubleVector -> a + b },
-        Operation(ScalarField::class, Double::class) { a: ScalarField, b: Double -> a + b },
+        Operation(ScalarField::class, DoubleVector::class) { a: ScalarField, b: DoubleVector -> a * b },
+        Operation(ScalarField::class, Double::class) { a: ScalarField, b: Double -> a * b },
         Operation(VectorField::class, VectorField::class) { a: VectorField, b: VectorField -> a * b },
         Operation(VectorField::class, VectorField::class) { a: VectorField, b: VectorField -> a * b },
         Operation(Derivative::class, DoubleFunction::class) { a: Derivative, b: DoubleFunction -> a * b },

@@ -1,3 +1,5 @@
+package core
+
 // Single-variable functions.
 fun DoubleFunction.differentiate(parameter: Double, delta: Double = defaultDelta): Double {
     return (this(parameter + delta) - this(parameter)) / delta

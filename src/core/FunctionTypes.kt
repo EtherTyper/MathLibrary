@@ -1,3 +1,5 @@
+package core
+
 abstract class FunctionWrapper<in A, out B>(private val function: (A) -> B) {
     operator fun invoke(a: A): B = function(a)
 }

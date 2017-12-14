@@ -1,3 +1,7 @@
+package core
+
+import kotlin.math.pow
+
 fun section(name: String, block: (() -> Unit)) {
     print("\u001B[1;31m\n$name\n\n\u001B[0m")
     block()
@@ -33,8 +37,8 @@ fun main(args: Array<String>) {
         println("‖$vector1‖ = ${vector1.magnitude}")
     }
 
-    val doubleFunction = DoubleFunction { i: Double -> Math.pow(i, 2.0) * 5 }
-    val scalarField = ScalarField { vector: DoubleVector -> Math.pow(vector[0], 2.0) * vector[1] }
+    val doubleFunction = DoubleFunction { i: Double -> i.pow(2.0) * 5 }
+    val scalarField = ScalarField { vector: DoubleVector -> vector[0].pow(2.0) * vector[1] }
     val rotatingVectorField = VectorField { vector: DoubleVector -> vector.to3D cross DoubleVector.i }
 
     val outwardsField = VectorField { vector: DoubleVector -> vector * vector.magnitude }
@@ -53,7 +57,7 @@ fun main(args: Array<String>) {
         println("δ/δx i\u0302 = ${DirectionalDerivative.d_dx * DoubleVector.i}")
     }
 
-    section("Nabla Operations") {
+    section("core.Nabla Operations") {
         println("∇(x ^ 2 * y)|(3, 2) = ${Nabla(scalarField)(DoubleVector(3.0, 2.0))}")
         println("∇ ⋅ (‖\u0305v‖ * \u0305v)|(2, 3, 4) = ${(Nabla * outwardsField)(vector1)}")
         println("∇ × (\u0305v × i\u0302)|(2, 3, 4) = ${(Nabla cross rotatingVectorField)(vector1)}")

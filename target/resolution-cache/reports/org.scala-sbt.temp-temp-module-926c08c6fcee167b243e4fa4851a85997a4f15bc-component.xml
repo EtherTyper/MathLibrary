@@ -35,7 +35,7 @@
 		</module>
 		<module organisation="ch.qos.logback" name="logback-classic">
 			<revision name="1.1.7" status="release" pubdate="20160329152502" resolver="public" artresolver="public" homepage="" downloaded="true" searched="true" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="35">
-				<license name="Eclipse Public License - v 1.0" url="http://www.eclipse.org/legal/epl-v10.html"/>
+				<license name="Eclipse Public License - core.getV 1.0" url="http://www.eclipse.org/legal/epl-v10.html"/>
 				<license name="GNU Lesser General Public License" url="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html"/>
 				<metadata-artifact status="successful" details="" size="12792" time="308" location="/Users/ethertyper/.ivy2/cache/ch.qos.logback/logback-classic/ivy-1.1.7.xml" searched="true" original-local-location="/Users/ethertyper/.ivy2/cache/ch.qos.logback/logback-classic/ivy-1.1.7.xml.original" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/ch/qos/logback/logback-classic/1.1.7/logback-classic-1.1.7.pom"/>
 				<caller organisation="org.foundweekends.giter8" name="giter8_2.10" conf="compile, runtime" rev="1.1.7" rev-constraint-default="1.1.7" rev-constraint-dynamic="1.1.7" callerrev="0.7.2"/>
@@ -70,7 +70,7 @@
 		</module>
 		<module organisation="ch.qos.logback" name="logback-core">
 			<revision name="1.1.7" status="release" pubdate="20160329152356" resolver="public" artresolver="public" homepage="" downloaded="true" searched="true" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="36">
-				<license name="Eclipse Public License - v 1.0" url="http://www.eclipse.org/legal/epl-v10.html"/>
+				<license name="Eclipse Public License - core.getV 1.0" url="http://www.eclipse.org/legal/epl-v10.html"/>
 				<license name="GNU Lesser General Public License" url="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html"/>
 				<metadata-artifact status="successful" details="" size="4408" time="321" location="/Users/ethertyper/.ivy2/cache/ch.qos.logback/logback-core/ivy-1.1.7.xml" searched="true" original-local-location="/Users/ethertyper/.ivy2/cache/ch.qos.logback/logback-core/ivy-1.1.7.xml.original" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/ch/qos/logback/logback-core/1.1.7/logback-core-1.1.7.pom"/>
 				<caller organisation="ch.qos.logback" name="logback-classic" conf="compile, runtime" rev="1.1.7" rev-constraint-default="1.1.7" rev-constraint-dynamic="1.1.7" callerrev="1.1.7"/>

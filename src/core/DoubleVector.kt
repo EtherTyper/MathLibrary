@@ -1,3 +1,7 @@
+package core
+
+import kotlin.math.acos
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 open class DoubleVector constructor(vararg val dimensions: Double, mandatoryArity: Int? = null) : Number() {
@@ -70,6 +74,10 @@ open class DoubleVector constructor(vararg val dimensions: Double, mandatoryArit
     override fun toString(): String = "<${dimensions.joinToString(separator = ", ")}>"
 
     val magnitude get() = sqrt(this * this)
+
+    infix fun angleFrom(other: DoubleVector) = acos(this * other / (this.magnitude * other.magnitude))
+    infix fun projectionOnto(other: DoubleVector) = other * (this * other) / (other.magnitude.pow(2))
+    infix fun rejectionFrom(other: DoubleVector) = this - this projectionOnto other
 
     // Number conformance
     override fun toByte() = magnitude.toByte()

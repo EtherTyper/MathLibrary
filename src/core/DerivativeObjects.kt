@@ -1,3 +1,5 @@
+package core
+
 import kotlin.math.abs
 
 open class DirectionalDerivative(private val direction: DoubleVector, private val delta: Double = defaultDelta) {
@@ -14,6 +16,7 @@ open class DirectionalDerivative(private val direction: DoubleVector, private va
     @Suppress("UNUSED_PARAMETER")
     operator fun times(other: Double) = 0.0
 
+    @Suppress("unused")
     companion object {
         // Partial derivatives
         val d_dx = PartialDerivative(0)
@@ -28,7 +31,6 @@ class PartialDerivative(private val direction: Int, private val delta: Double = 
         other.partialDerivative(direction, parameter, delta)
     }
 
-    @Suppress("UNUSED_PARAMETER")
     operator fun times(other: DoubleVector) = DoubleVector(*DoubleArray(other.arity))
 }
 

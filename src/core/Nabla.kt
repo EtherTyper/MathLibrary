@@ -1,8 +1,10 @@
+package core
+
 open class Nabla constructor(private val arity: Int = 3, private val delta: Double = defaultDelta) {
     operator fun times(other: VectorField): ScalarField {
         return ScalarField { parameter ->
             (0.until(this.arity)).map { dimension ->
-                other.partialDerivative(dimension, parameter)[dimension]
+                other.partialDerivative(dimension, parameter, delta)[dimension]
             }.toDoubleArray().sum()
         }
     }
@@ -11,7 +13,7 @@ open class Nabla constructor(private val arity: Int = 3, private val delta: Doub
 
     operator fun invoke(other: ScalarField): VectorField {
         return VectorField { parameter ->
-            other.gradient(parameter)
+            other.gradient(parameter, delta)
         }
     }
 
@@ -19,7 +21,7 @@ open class Nabla constructor(private val arity: Int = 3, private val delta: Doub
         return SquareMatrix(
                 arrayOf(
                         (0.until(3)).map(DoubleVector.Companion::unit).toTypedArray(),
-                        (0.until(3)).map({ i -> PartialDerivative(i) }).toTypedArray(),
+                        (0.until(3)).map({ i -> PartialDerivative(i, delta) }).toTypedArray(),
                         (0.until(3)).map({ i -> ScalarField { t -> other(t)[i] } }).toTypedArray()
                 )
         ).determinant as VectorField
