@@ -9,9 +9,23 @@ class Operation<in A, in B, out C>(private val aType: KClass<*>, private val bTy
 open class OperationList(private val operations: Array<Operation<*, *, *>>) {
     @Suppress("UNCHECKED_CAST")
     operator fun invoke(a: Any, b: Any): Any? {
-        return (operations
-                .single { operation -> operation.compatibleParameters(a::class, b::class) }
-                .function as (Any, Any) -> Any)(a, b)
+        try {
+            return (operations
+                    .single { operation -> operation.compatibleParameters(a::class, b::class) }
+                    .function as (Any, Any) -> Any)(a, b)
+        } catch (e: NoSuchElementException) {
+            try {
+                // We can reverse the order since the list doesn't include cross products,
+                // so they should pretty much all be commutative.
+                return (operations
+                        .single { operation -> operation.compatibleParameters(b::class, a::class) }
+                        .function as (Any, Any) -> Any)(b, a)
+            } catch (e: NoSuchElementException) {
+                print("Cannot execute operation: $a ${this::class} $b")
+
+                return null
+            }
+        }
     }
 }
 
@@ -20,6 +34,13 @@ object Multiply : OperationList(
                 Operation(Double::class, Double::class) { a: Double, b: Double -> a * b },
                 Operation(DoubleVector::class, Double::class) { a: DoubleVector, b: Double -> a * b },
                 Operation(DoubleVector::class, DoubleVector::class) { a: DoubleVector, b: DoubleVector -> a * b },
+                Operation(DoubleFunction::class, DoubleFunction::class) { a: DoubleFunction, b: DoubleFunction -> a * b },
+                Operation(VectorValuedFunction::class, VectorValuedFunction::class) { a: VectorValuedFunction, b: VectorValuedFunction -> a * b },
+                Operation(ScalarField::class, ScalarField::class) { a: ScalarField, b: ScalarField -> a * b },
+                Operation(ScalarField::class, DoubleVector::class) { a: ScalarField, b: DoubleVector -> a + b },
+                Operation(ScalarField::class, Double::class) { a: ScalarField, b: Double -> a + b },
+                Operation(VectorField::class, VectorField::class) { a: VectorField, b: VectorField -> a * b },
+                Operation(VectorField::class, VectorField::class) { a: VectorField, b: VectorField -> a * b },
                 Operation(Derivative::class, DoubleFunction::class) { a: Derivative, b: DoubleFunction -> a * b },
                 Operation(Derivative::class, Double::class) { a: Derivative, b: Double -> a * b },
                 Operation(DirectionalDerivative::class, ScalarField::class) { a: DirectionalDerivative, b: ScalarField -> a * b },
@@ -34,7 +55,18 @@ object Add : OperationList(
                 Operation(Double::class, Double::class) { a: Double, b: Double -> a + b },
                 Operation(DoubleVector::class, DoubleVector::class) { a: DoubleVector, b: DoubleVector -> a + b },
                 Operation(DoubleVector::class, Double::class) { a: DoubleVector, b: Double -> a + b },
-                Operation(Double::class, DoubleVector::class) { a: Double, b: DoubleVector -> b + a }
+                Operation(DoubleFunction::class, DoubleFunction::class) { a: DoubleFunction, b: DoubleFunction -> a + b },
+                Operation(DoubleFunction::class, Double::class) { a: DoubleFunction, b: Double -> a + b },
+                Operation(VectorValuedFunction::class, VectorValuedFunction::class) { a: VectorValuedFunction, b: VectorValuedFunction -> a + b },
+                Operation(VectorValuedFunction::class, DoubleVector::class) { a: VectorValuedFunction, b: DoubleVector -> a + b },
+                Operation(VectorValuedFunction::class, Double::class) { a: VectorValuedFunction, b: Double -> a + b },
+                Operation(ScalarField::class, ScalarField::class) { a: ScalarField, b: ScalarField -> a + b },
+                Operation(ScalarField::class, DoubleVector::class) { a: ScalarField, b: DoubleVector -> a + b },
+                Operation(ScalarField::class, Double::class) { a: ScalarField, b: Double -> a + b },
+                Operation(VectorField::class, ScalarField::class) { a: VectorField, b: VectorField -> a + b },
+                Operation(VectorField::class, VectorField::class) { a: VectorField, b: VectorField -> a + b },
+                Operation(VectorField::class, DoubleVector::class) { a: VectorField, b: DoubleVector -> a + b },
+                Operation(VectorField::class, Double::class) { a: VectorField, b: Double -> a + b }
         )
 )
 
@@ -43,6 +75,17 @@ object Subtract : OperationList(
                 Operation(Double::class, Double::class) { a: Double, b: Double -> a - b },
                 Operation(DoubleVector::class, DoubleVector::class) { a: DoubleVector, b: DoubleVector -> a - b },
                 Operation(DoubleVector::class, Double::class) { a: DoubleVector, b: Double -> a - b },
-                Operation(Double::class, DoubleVector::class) { a: Double, b: DoubleVector -> b - a }
+                Operation(DoubleFunction::class, DoubleFunction::class) { a: DoubleFunction, b: DoubleFunction -> a - b },
+                Operation(DoubleFunction::class, Double::class) { a: DoubleFunction, b: Double -> a - b },
+                Operation(VectorValuedFunction::class, VectorValuedFunction::class) { a: VectorValuedFunction, b: VectorValuedFunction -> a - b },
+                Operation(VectorValuedFunction::class, DoubleVector::class) { a: VectorValuedFunction, b: DoubleVector -> a - b },
+                Operation(VectorValuedFunction::class, Double::class) { a: VectorValuedFunction, b: Double -> a - b },
+                Operation(ScalarField::class, ScalarField::class) { a: ScalarField, b: ScalarField -> a - b },
+                Operation(ScalarField::class, DoubleVector::class) { a: ScalarField, b: DoubleVector -> a - b },
+                Operation(ScalarField::class, Double::class) { a: ScalarField, b: Double -> a - b },
+                Operation(VectorField::class, ScalarField::class) { a: VectorField, b: VectorField -> a - b },
+                Operation(VectorField::class, VectorField::class) { a: VectorField, b: VectorField -> a - b },
+                Operation(VectorField::class, DoubleVector::class) { a: VectorField, b: DoubleVector -> a - b },
+                Operation(VectorField::class, Double::class) { a: VectorField, b: Double -> a - b }
         )
 )

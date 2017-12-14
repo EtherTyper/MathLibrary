@@ -1,4 +1,4 @@
-open class Nabla constructor(val arity: Int = 3, private val delta: Double = defaultDelta) {
+open class Nabla constructor(private val arity: Int = 3, private val delta: Double = defaultDelta) {
     operator fun times(other: VectorField): ScalarField {
         return ScalarField { parameter ->
             (0.until(this.arity)).map { dimension ->
@@ -7,10 +7,22 @@ open class Nabla constructor(val arity: Int = 3, private val delta: Double = def
         }
     }
 
+    operator fun times(other: DoubleVector) = this * VectorField { other }
+
     operator fun invoke(other: ScalarField): VectorField {
         return VectorField { parameter ->
             other.gradient(parameter)
         }
+    }
+
+    infix fun cross(other: VectorField): VectorField {
+        return SquareMatrix(
+                arrayOf(
+                        (0.until(3)).map(DoubleVector.Companion::unit).toTypedArray(),
+                        (0.until(3)).map({ i -> PartialDerivative(i) }).toTypedArray(),
+                        (0.until(3)).map({ i -> ScalarField { t -> other(t)[i] } }).toTypedArray()
+                )
+        ).determinant as VectorField
     }
 
     // Dot products.
