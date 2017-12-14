@@ -62,7 +62,8 @@ open class DoubleVector constructor(vararg val dimensions: Double, mandatoryArit
         val k get() = unit(2).extended(3).to3D
 
         @Suppress("ObjectPropertyName")
-        val `0` get() = DoubleVector().extended(3).to3D
+        val `0`
+            get() = DoubleVector().extended(3).to3D
         val zero get() = DoubleVector().extended(3).to3D
     }
 

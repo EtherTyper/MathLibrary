@@ -11,7 +11,7 @@ fun main(args: Array<String>) {
 
         println("Constant: ${123.456.v}")
     }
-    
+
     section("Arity Checks") {
         try {
             println("This should error, as 3D vectors should have arities of exactly 3.")
@@ -26,7 +26,6 @@ fun main(args: Array<String>) {
     val vector2 = DoubleVector(5.0, 6.0, 7.0)
 
     section("Vector Operations") {
-
         println("$vector1 + $vector2 = ${vector1 + vector2}")
         println("$vector1 - $vector2 = ${vector1 - vector2}")
         println("$vector1 ⋅ $vector2 = ${vector1 * vector2}")
