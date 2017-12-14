@@ -28,3 +28,17 @@ object Multiply : OperationList(
                 Operation(PartialDerivative::class, DoubleVector::class) { a: PartialDerivative, b: DoubleVector -> a * b }
         )
 )
+
+object Add : OperationList(
+        arrayOf(
+                Operation(Double::class, Double::class) { a: Double, b: Double -> a + b },
+                Operation(DoubleVector::class, DoubleVector::class) { a: DoubleVector, b: DoubleVector -> a + b }
+        )
+)
+
+object Subtract : OperationList(
+        arrayOf(
+                Operation(Double::class, Double::class) { a: Double, b: Double -> a - b },
+                Operation(DoubleVector::class, DoubleVector::class) { a: DoubleVector, b: DoubleVector -> a - b }
+        )
+)

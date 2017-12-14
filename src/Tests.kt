@@ -59,8 +59,8 @@ fun main(args: Array<String>) {
         println("∇ ⋅ (‖\u0305v‖ * \u0305v)|(2, 3, 4) = ${(Nabla * outwardsField)(vector1)}")
     }
 
-    val twoByTwo = SquareMatrix(arrayOf(arrayOf(1.0, 3.0), arrayOf(1.0, 4.0)))
-    val threeByThree = SquareMatrix(arrayOf(arrayOf(0.0, 1.0, 2.0), arrayOf(3.0, 4.0, 5.0), arrayOf(6.0, 7.0, 8.0)))
+    val twoByTwo = SquareMatrix(arrayOf(arrayOf<Any>(1.0, 3.0), arrayOf<Any>(1.0, 4.0)))
+    val threeByThree = SquareMatrix(arrayOf(arrayOf<Any>(0.0, 1.0, 2.0), arrayOf<Any>(3.0, 4.0, 5.0), arrayOf<Any>(6.0, 7.0, 8.0)))
 
     section("Type-Agnostic Multiplication") {
         println("<1, 2, 3> * 2.5 = ${Multiply(DoubleVector(1.0, 2.0, 3.0), 2.5)}")
@@ -69,8 +69,9 @@ fun main(args: Array<String>) {
         println("δ/δy (\u0305v × i\u0302)|(2, 3, 4) = ${derivativeOfVectorField(DoubleVector.`0`)}")
     }
 
-    section("Matrices") {
+    section("Matrices and Determinants") {
         println("$twoByTwo = ${twoByTwo.determinant}")
+        println()
         println("$threeByThree = ${threeByThree.determinant}")
     }
 }
