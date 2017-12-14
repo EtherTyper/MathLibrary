@@ -32,13 +32,17 @@ object Multiply : OperationList(
 object Add : OperationList(
         arrayOf(
                 Operation(Double::class, Double::class) { a: Double, b: Double -> a + b },
-                Operation(DoubleVector::class, DoubleVector::class) { a: DoubleVector, b: DoubleVector -> a + b }
+                Operation(DoubleVector::class, DoubleVector::class) { a: DoubleVector, b: DoubleVector -> a + b },
+                Operation(DoubleVector::class, Double::class) { a: DoubleVector, b: Double -> a + b },
+                Operation(Double::class, DoubleVector::class) { a: Double, b: DoubleVector -> b + a }
         )
 )
 
 object Subtract : OperationList(
         arrayOf(
                 Operation(Double::class, Double::class) { a: Double, b: Double -> a - b },
-                Operation(DoubleVector::class, DoubleVector::class) { a: DoubleVector, b: DoubleVector -> a - b }
+                Operation(DoubleVector::class, DoubleVector::class) { a: DoubleVector, b: DoubleVector -> a - b },
+                Operation(DoubleVector::class, Double::class) { a: DoubleVector, b: Double -> a - b },
+                Operation(Double::class, DoubleVector::class) { a: Double, b: DoubleVector -> b - a }
         )
 )
