@@ -1,6 +1,6 @@
 import kotlin.math.*
 
-class DirectionalDerivative(private val direction: DoubleVector, private val delta: Double = defaultDelta): Multipliable<ScalarField, ScalarField> {
+open class DirectionalDerivative(private val direction: DoubleVector, private val delta: Double = defaultDelta) : Multipliable<ScalarField, ScalarField> {
     init {
         if (abs(direction.magnitude - 1) > delta) {
             throw UnitVectorError(direction.magnitude)
@@ -16,13 +16,20 @@ class DirectionalDerivative(private val direction: DoubleVector, private val del
 
     companion object {
         // Partial derivatives
-        val d_dx = DirectionalDerivative(DoubleVector.i)
-        val d_dy = DirectionalDerivative(DoubleVector.j)
-        val d_dz = DirectionalDerivative(DoubleVector.k)
+        val d_dx = PartialDerivative(0)
+        val d_dy = PartialDerivative(1)
+        val d_dz = PartialDerivative(2)
     }
 }
 
-open class Derivative(private val delta: Double = defaultDelta): Multipliable<DoubleFunction, DoubleFunction> {
+class PartialDerivative(private val direction: Int, private val delta: Double = defaultDelta)
+    : DirectionalDerivative(DoubleVector.unit(direction), delta) {
+    operator fun times(other: VectorField): VectorField = VectorField { parameter: DoubleVector ->
+        other.partialDerivative(direction, parameter, delta)
+    }
+}
+
+open class Derivative(private val delta: Double = defaultDelta) : Multipliable<DoubleFunction, DoubleFunction> {
     override operator fun times(other: DoubleFunction): DoubleFunction = DoubleFunction { parameter: Double ->
         other.differentiate(parameter, delta)
     }
@@ -30,5 +37,5 @@ open class Derivative(private val delta: Double = defaultDelta): Multipliable<Do
     @Suppress("UNUSED_PARAMETER")
     operator fun times(other: Double) = 0
 
-    companion object: Derivative()
+    companion object : Derivative()
 }

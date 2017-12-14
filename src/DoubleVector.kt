@@ -60,6 +60,7 @@ open class DoubleVector constructor(vararg val dimensions: Double, mandatoryArit
         val i get() = unit(0).extended(3).to3D
         val j get() = unit(1).extended(3).to3D
         val k get() = unit(2).extended(3).to3D
+        val `0` = DoubleVector().extended(3).to3D
     }
 
     override fun toString(): String = "<${dimensions.joinToString(separator = ", ")}>"
