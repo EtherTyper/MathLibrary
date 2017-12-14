@@ -29,6 +29,6 @@ class SquareMatrix(private val members: Array<Array<Double>>) {
         }
 
     override fun toString(): String {
-        return members.joinToString(separator = "\n") { array -> array.joinToString(" ") }
+        return "| ${members.joinToString(separator = " |\n| ") { array -> array.joinToString(" ") }} |"
     }
 }

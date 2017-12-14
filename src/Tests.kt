@@ -1,3 +1,6 @@
+import com.sun.org.apache.xpath.internal.operations.Mult
+import kotlin.reflect.full.isSubclassOf
+
 fun section(name: String, block: (() -> Unit)) {
     print("\u001B[1;31m\n$name\n\n\u001B[0m")
     block()
@@ -27,11 +30,11 @@ fun main(args: Array<String>) {
 
     section("Vector Operations") {
 
-        println("$vector1 + $vector2 = " + (vector1 + vector2))
-        println("$vector1 - $vector2 = " + (vector1 - vector2))
-        println("$vector1 ⋅ $vector2 = " + (vector1 * vector2))
-        println("$vector1 × $vector2 = " + (vector1.to3D cross vector2.to3D))
-        println("‖$vector1‖ = " + vector1.magnitude)
+        println("$vector1 + $vector2 = ${vector1 + vector2}")
+        println("$vector1 - $vector2 = ${vector1 - vector2}")
+        println("$vector1 ⋅ $vector2 = ${vector1 * vector2}")
+        println("$vector1 × $vector2 = ${vector1.to3D cross vector2.to3D}")
+        println("‖$vector1‖ = ${vector1.magnitude}")
     }
 
     val doubleFunction = DoubleFunction { i: Double -> Math.pow(i, 2.0) * 5 }
@@ -41,23 +44,31 @@ fun main(args: Array<String>) {
     val outwardsField = VectorField { vector: DoubleVector -> vector * vector.magnitude }
 
     section("Derivatives") {
-        println("(i ^ 2 * 5)'|(i=3) = " + doubleFunction.differentiate(3.0))
-        println("∇(x ^ 2 * y)|(3, 2) = " + scalarField.gradient(DoubleVector(3.0, 2.0)))
-        println("δ(\u0305v × i\u0302)/δy|(2, 3, 4) = " + rotatingVectorField.partialDerivative(1, vector1))
+        println("(i ^ 2 * 5)'|(i=3) = ${doubleFunction.differentiate(3.0)}")
+        println("∇(x ^ 2 * y)|(3, 2) = ${scalarField.gradient(DoubleVector(3.0, 2.0))}")
+        println("δ(\u0305v × i\u0302)/δy|(2, 3, 4) = ${rotatingVectorField.partialDerivative(1, vector1)}")
         println()
-        println("d/di (i ^ 2 * 5)|(i=3) = " + (Derivative * doubleFunction)(3.0))
-        println("δ/δx (x ^ 2 * y)|(3, 2) = " + (DirectionalDerivative.d_dx * scalarField)(DoubleVector(3.0, 2.0)))
-        println("δ/δy (\u0305v × i\u0302)|(2, 3, 4) = " + (DirectionalDerivative.d_dy * rotatingVectorField)(DoubleVector.`0`))
+        println("d/di (i ^ 2 * 5)|(i=3) = ${(Derivative * doubleFunction)(3.0)}")
+        println("δ/δx (x ^ 2 * y)|(3, 2) = ${(DirectionalDerivative.d_dx * scalarField)(DoubleVector(3.0, 2.0))}")
+        println("δ/δy (\u0305v × i\u0302)|(2, 3, 4) = ${(DirectionalDerivative.d_dy * rotatingVectorField)(DoubleVector.`0`)}")
+        println()
+        println("d/dt 1 = ${Derivative * 1.0}")
+        println("δ/δx 1 = ${DirectionalDerivative.d_dx * 1.0}")
+        println("δ/δx i\u0302 = ${DirectionalDerivative.d_dx * DoubleVector.i}")
     }
 
     section("Nabla Operations") {
-        println("∇(x ^ 2 * y)|(3, 2) = " + Nabla(scalarField)(DoubleVector(3.0, 2.0)))
-        println("∇ ⋅ (‖\u0305v‖ * \u0305v)|(2, 3, 4) = " + (Nabla * outwardsField)(vector1))
+        println("∇(x ^ 2 * y)|(3, 2) = ${Nabla(scalarField)(DoubleVector(3.0, 2.0))}")
+        println("∇ ⋅ (‖\u0305v‖ * \u0305v)|(2, 3, 4) = ${(Nabla * outwardsField)(vector1)}")
     }
+
+    val twoByTwo = SquareMatrix(arrayOf(arrayOf(1.0, 3.0), arrayOf(1.0, 4.0)))
+    val threeByThree = SquareMatrix(arrayOf(arrayOf(0.0, 1.0, 2.0), arrayOf(3.0, 4.0, 5.0), arrayOf(6.0, 7.0, 8.0)))
 
     section("Matrices") {
-        println(SquareMatrix(arrayOf(arrayOf(1.0, 3.0), arrayOf(1.0, 4.0))).determinant)
-
-        println(SquareMatrix(arrayOf(arrayOf(0.0, 1.0, 2.0), arrayOf(3.0, 4.0, 5.0), arrayOf(6.0, 7.0, 8.0))).determinant)
+        println("$twoByTwo = ${twoByTwo.determinant}")
+        println("$threeByThree = ${threeByThree.determinant}")
     }
+
+    println(MultiplicationOperations.applyOperation(DoubleVector.i.to3D, 2.0))
 }
