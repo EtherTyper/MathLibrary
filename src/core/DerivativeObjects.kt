@@ -9,7 +9,7 @@ open class DirectionalDerivative(private val direction: DoubleVector, private va
         }
     }
 
-    operator fun times(other: ScalarField): ScalarField = ScalarField { parameter: DoubleVector ->
+    operator fun times(other: ScalarField) = ScalarField { parameter: DoubleVector ->
         other.gradient(parameter, delta) * direction
     }
 
@@ -35,7 +35,11 @@ class PartialDerivative(private val direction: Int, private val delta: Double = 
 }
 
 open class Derivative(private val delta: Double = defaultDelta) {
-    operator fun times(other: DoubleFunction): DoubleFunction = DoubleFunction { parameter: Double ->
+    operator fun times(other: VectorValuedFunction) = VectorValuedFunction { parameter: Double ->
+        other.differentiate(parameter, delta)
+    }
+
+    operator fun times(other: DoubleFunction) = DoubleFunction { parameter: Double ->
         other.differentiate(parameter, delta)
     }
 

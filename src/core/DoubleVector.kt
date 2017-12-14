@@ -68,7 +68,7 @@ open class DoubleVector constructor(vararg val dimensions: Double, mandatoryArit
         @Suppress("ObjectPropertyName")
         val `0`
             get() = DoubleVector().extended(3).to3D
-        val zero get() = DoubleVector().extended(3).to3D
+        val zero get() = `0`
     }
 
     override fun toString(): String = "<${dimensions.joinToString(separator = ", ")}>"

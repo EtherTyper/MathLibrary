@@ -4,7 +4,7 @@ abstract class FunctionWrapper<in A, out B>(private val function: (A) -> B) {
     operator fun invoke(a: A): B = function(a)
 }
 
-class DoubleFunction(function: (Double) -> Double) : FunctionWrapper<Double, Double>(function) {
+open class DoubleFunction(function: (Double) -> Double) : FunctionWrapper<Double, Double>(function) {
     operator fun plus(other: DoubleFunction) = DoubleFunction { a -> this(a) + other(a) }
     operator fun minus(other: DoubleFunction) = DoubleFunction { a -> this(a) - other(a) }
     operator fun times(other: DoubleFunction) = DoubleFunction { a -> this(a) * other(a) }
@@ -16,7 +16,7 @@ class DoubleFunction(function: (Double) -> Double) : FunctionWrapper<Double, Dou
     operator fun div(other: Double) = DoubleFunction { a -> this(a) / other }
 }
 
-class VectorValuedFunction(function: (Double) -> DoubleVector) : FunctionWrapper<Double, DoubleVector>(function) {
+open class VectorValuedFunction(function: (Double) -> DoubleVector) : FunctionWrapper<Double, DoubleVector>(function) {
     operator fun plus(other: VectorValuedFunction) = VectorValuedFunction { a -> this(a) + other(a) }
     operator fun minus(other: VectorValuedFunction) = VectorValuedFunction { a -> this(a) - other(a) }
     operator fun times(other: VectorValuedFunction) = DoubleFunction { a -> this(a) * other(a) }
@@ -35,7 +35,7 @@ class VectorValuedFunction(function: (Double) -> DoubleVector) : FunctionWrapper
     operator fun div(other: Double) = VectorValuedFunction { a -> this(a) / other }
 }
 
-class ScalarField(function: (DoubleVector) -> Double) : FunctionWrapper<DoubleVector, Double>(function) {
+open class ScalarField(function: (DoubleVector) -> Double) : FunctionWrapper<DoubleVector, Double>(function) {
     operator fun plus(other: ScalarField) = ScalarField { a -> this(a) + other(a) }
     operator fun minus(other: ScalarField) = ScalarField { a -> this(a) - other(a) }
     operator fun times(other: ScalarField) = ScalarField { a -> this(a) * other(a) }
@@ -52,7 +52,7 @@ class ScalarField(function: (DoubleVector) -> Double) : FunctionWrapper<DoubleVe
     operator fun div(other: Double) = ScalarField { a -> this(a) / other }
 }
 
-class VectorField(function: (DoubleVector) -> DoubleVector) : FunctionWrapper<DoubleVector, DoubleVector>(function) {
+open class VectorField(function: (DoubleVector) -> DoubleVector) : FunctionWrapper<DoubleVector, DoubleVector>(function) {
     operator fun plus(other: VectorField) = VectorField { a -> this(a) + other(a) }
     operator fun minus(other: VectorField) = VectorField { a -> this(a) - other(a) }
     operator fun times(other: VectorField) = ScalarField { a -> this(a) * other(a) }
