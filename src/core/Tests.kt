@@ -1,5 +1,9 @@
 package core
 
+import applications.Mass
+import applications.Projectile
+import kotlin.math.PI
+import kotlin.math.ln
 import kotlin.math.pow
 
 fun section(name: String, block: (() -> Unit)) {
@@ -35,6 +39,10 @@ fun main(args: Array<String>) {
         println("$vector1 ⋅ $vector2 = ${vector1 * vector2}")
         println("$vector1 × $vector2 = ${vector1.to3D cross vector2.to3D}")
         println("‖$vector1‖ = ${vector1.magnitude}")
+        println("$vector1\u0302 = ${vector1.unit}")
+        println("proj $vector1($vector2) = ${vector1 projectionOnto vector2}")
+        println("rej $vector1($vector2) = ${vector1 rejectionFrom vector2}")
+        println("Angle between $vector1 and $vector2: ${vector1 angleFrom vector2} radians")
     }
 
     val doubleFunction = DoubleFunction { i: Double -> i.pow(2.0) * 5 }
@@ -57,7 +65,7 @@ fun main(args: Array<String>) {
         println("δ/δx i\u0302 = ${DirectionalDerivative.d_dx * DoubleVector.i}")
     }
 
-    section("core.Nabla Operations") {
+    section("Nabla Operations") {
         println("∇(x ^ 2 * y)|(3, 2) = ${Nabla(scalarField)(DoubleVector(3.0, 2.0))}")
         println("∇ ⋅ (‖\u0305v‖ * \u0305v)|(2, 3, 4) = ${(Nabla * outwardsField)(vector1)}")
         println("∇ × (\u0305v × i\u0302)|(2, 3, 4) = ${(Nabla cross rotatingVectorField)(vector1)}")
@@ -77,5 +85,18 @@ fun main(args: Array<String>) {
         println("$twoByTwo = ${twoByTwo.determinant}")
         println()
         println("$threeByThree = ${threeByThree.determinant}")
+    }
+
+    val projectile = Projectile(10.0, 10.0, PI/4)
+    val mass = Mass { position -> ln(position.magnitude) }
+
+    section("Other Applications (and cool Physics!)") {
+        println(projectile)
+        println()
+        println("Projectile position at 3s: ${projectile(3.0)} m")
+        println("Projectile mass at 3s: ${mass(projectile(3.0))} kg")
+        println("Force gravity on projectile at 3s: ${(projectile gravityOn mass)(3.0)} N")
+        println("Torque gravity about (0, 1, 0) on projectile at 3s: " +
+                "${(projectile gravityOn mass).torqueAbout(DoubleVector(0.0, 1.0, 0.0).to3D)(3.0)} Nm")
     }
 }

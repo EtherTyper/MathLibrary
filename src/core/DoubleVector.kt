@@ -74,10 +74,11 @@ open class DoubleVector constructor(vararg val dimensions: Double, mandatoryArit
     override fun toString(): String = "<${dimensions.joinToString(separator = ", ")}>"
 
     val magnitude get() = sqrt(this * this)
+    val unit get() = this / magnitude
 
     infix fun angleFrom(other: DoubleVector) = acos(this * other / (this.magnitude * other.magnitude))
     infix fun projectionOnto(other: DoubleVector) = other * (this * other) / (other.magnitude.pow(2))
-    infix fun rejectionFrom(other: DoubleVector) = this - this projectionOnto other
+    infix fun rejectionFrom(other: DoubleVector) = this - (this projectionOnto other)
 
     // Number conformance
     override fun toByte() = magnitude.toByte()

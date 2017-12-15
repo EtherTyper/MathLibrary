@@ -29,10 +29,22 @@ open class VectorValuedFunction(function: (Double) -> DoubleVector) : FunctionWr
     infix fun cross(other: DoubleVector) = VectorValuedFunction { a -> this(a).to3D cross other.to3D }
     operator fun div(other: DoubleVector) = VectorValuedFunction { a -> this(a) / other }
 
+    operator fun plus(other: DoubleFunction) = VectorValuedFunction { a -> this(a) + other(a) }
+    operator fun minus(other: DoubleFunction) = VectorValuedFunction { a -> this(a) - other(a) }
+    operator fun times(other: DoubleFunction) = VectorValuedFunction { a -> this(a) * other(a) }
+    operator fun div(other: DoubleFunction) = VectorValuedFunction { a -> this(a) / other(a) }
+
     operator fun plus(other: Double) = VectorValuedFunction { a -> this(a) + other }
     operator fun minus(other: Double) = VectorValuedFunction { a -> this(a) - other }
     operator fun times(other: Double) = VectorValuedFunction { a -> this(a) * other }
     operator fun div(other: Double) = VectorValuedFunction { a -> this(a) / other }
+
+    val unitTangent get() = VectorValuedFunction { a -> (Derivative * this)(a).unit }
+    val principalUnitNormal get() = unitTangent.unitTangent
+
+    val curvature get() = DoubleFunction { a ->
+        (Derivative * unitTangent)(a).magnitude / (Derivative * this)(a).magnitude
+    }
 }
 
 open class ScalarField(function: (DoubleVector) -> Double) : FunctionWrapper<DoubleVector, Double>(function) {
@@ -44,7 +56,6 @@ open class ScalarField(function: (DoubleVector) -> Double) : FunctionWrapper<Dou
     operator fun plus(other: DoubleVector) = VectorField { a -> other + this(a) }
     operator fun minus(other: DoubleVector) = VectorField { a -> other - this(a) }
     operator fun times(other: DoubleVector) = VectorField { a -> other * this(a) }
-    operator fun div(other: DoubleVector) = VectorField { a -> other / this(a) }
 
     operator fun plus(other: Double) = ScalarField { a -> this(a) + other }
     operator fun minus(other: Double) = ScalarField { a -> this(a) - other }

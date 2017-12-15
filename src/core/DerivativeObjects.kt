@@ -34,6 +34,22 @@ class PartialDerivative(private val direction: Int, private val delta: Double = 
     operator fun times(other: DoubleVector) = DoubleVector(*DoubleArray(other.arity))
 }
 
+class MultipleDerivative(private vararg val dimensions: Int) {
+    constructor(numDimensions: Int) : this(*(0.until(numDimensions)).toList().toIntArray())
+
+    operator fun times(other: VectorField): VectorField =
+            dimensions.map { i -> PartialDerivative(i) }.fold(other) { acc, partial -> partial * acc }
+
+    operator fun times(other: ScalarField): ScalarField =
+            dimensions.map { i -> PartialDerivative(i) }.fold(other) { acc, partial -> partial * acc }
+
+    companion object {
+        // Area and volume derivatives
+        val d_dA = MultipleDerivative(2)
+        val d_dV = MultipleDerivative(3)
+    }
+}
+
 open class Derivative(private val delta: Double = defaultDelta) {
     operator fun times(other: VectorValuedFunction) = VectorValuedFunction { parameter: Double ->
         other.differentiate(parameter, delta)
