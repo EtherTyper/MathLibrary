@@ -3,7 +3,9 @@ package applications
 import core.*
 
 // TODO: Work once I get integrals working.
-// Could be
+// Could map 3D position -> force, represent force on a space curve, or
+// represent force on a parametric surface. The input vector is irrelevant
+// until concepts like work and potential energy are implemented.
 open class Force(field: (DoubleVector) -> Vector3D) : VectorField(field) {
     open infix fun torqueAbout(point: Vector3D): VectorField {
         return VectorField { parameter ->
@@ -18,9 +20,9 @@ open class Force(field: (DoubleVector) -> Vector3D) : VectorField(field) {
         get() = MultipleDerivative.d_dA * this * -1.0
 }
 
-class ConstrainedForce(val position: VectorValuedFunction, val field: (Double) -> Vector3D)
+class ConstrainedForce(private val position: VectorValuedFunction, private val field: (Double) -> Vector3D)
     : VectorValuedFunction(field) {
-    val force = Force { vector -> field(vector[0]) }
+    private val force = Force { vector -> field(vector[0]) }
 
     infix fun torqueAbout(point: Vector3D): VectorValuedFunction {
         return VectorValuedFunction { t ->
