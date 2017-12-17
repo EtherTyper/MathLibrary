@@ -33,4 +33,8 @@ class SquareMatrix(private val members: Array<Array<out Any>>) {
     override fun toString(): String {
         return "| ${members.joinToString(separator = " |\n| ") { array -> array.joinToString(" ") }} |"
     }
+
+    companion object {
+        val unitVectorArray get() = (0.until(3)).map(DoubleVector.Companion::unit).toTypedArray()
+    }
 }

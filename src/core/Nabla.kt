@@ -20,7 +20,7 @@ open class Nabla constructor(private val arity: Int = 3, private val delta: Doub
     infix fun cross(other: VectorField): VectorField {
         return SquareMatrix(
                 arrayOf(
-                        (0.until(3)).map(DoubleVector.Companion::unit).toTypedArray(),
+                        SquareMatrix.unitVectorArray,
                         (0.until(3)).map({ i -> PartialDerivative(i, delta) }).toTypedArray(),
                         (0.until(3)).map({ i -> ScalarField { t -> other(t)[i] } }).toTypedArray()
                 )
@@ -28,7 +28,7 @@ open class Nabla constructor(private val arity: Int = 3, private val delta: Doub
     }
 
     // Dot products.
-    operator fun get(index: Int): DirectionalDerivative = DirectionalDerivative(DoubleVector.unit(index))
+    operator fun get(index: Int) = DirectionalDerivative(DoubleVector.unit(index))
 
     companion object : Nabla()
 }

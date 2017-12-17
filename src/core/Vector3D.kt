@@ -4,7 +4,7 @@ class Vector3D(vector: DoubleVector) : DoubleVector(*vector.dimensions, mandator
     infix fun cross(other: Vector3D): Vector3D {
         return (SquareMatrix(
                 arrayOf(
-                        (0.until(3)).map(Companion::unit).toTypedArray(),
+                        SquareMatrix.unitVectorArray,
                         this.dimensions.toTypedArray(),
                         other.dimensions.toTypedArray()
                 )

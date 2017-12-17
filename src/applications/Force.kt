@@ -3,8 +3,9 @@ package applications
 import core.*
 
 // TODO: Work once I get integrals working.
-class Force(field: (DoubleVector) -> Vector3D) : VectorField(field) {
-    infix fun torqueAbout(point: Vector3D): VectorField {
+// Could be
+open class Force(field: (DoubleVector) -> Vector3D) : VectorField(field) {
+    open infix fun torqueAbout(point: Vector3D): VectorField {
         return VectorField { parameter ->
             (parameter - point).to3D cross this(parameter).to3D
         }
@@ -13,13 +14,17 @@ class Force(field: (DoubleVector) -> Vector3D) : VectorField(field) {
     infix fun accelerationOf(mass: Mass) = this / mass
 
     // Assuming this field represents the normal force.
-    val pressure = MultipleDerivative.d_dA * this * -1.0
+    val pressure: VectorField
+        get() = MultipleDerivative.d_dA * this * -1.0
 }
 
-class ConstrainedForce(val position: VectorValuedFunction, field: (Double) -> Vector3D) : VectorValuedFunction(field) {
+class ConstrainedForce(val position: VectorValuedFunction, val field: (Double) -> Vector3D)
+    : VectorValuedFunction(field) {
+    val force = Force { vector -> field(vector[0]) }
+
     infix fun torqueAbout(point: Vector3D): VectorValuedFunction {
-        return VectorValuedFunction { parameter ->
-            (position(parameter) - point).to3D cross this(parameter).to3D
+        return VectorValuedFunction { t ->
+            force.torqueAbout(point.to3D)(position(t))
         }
     }
 
