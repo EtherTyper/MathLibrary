@@ -2,9 +2,7 @@ package core
 
 import applications.Mass
 import applications.Projectile
-import kotlin.math.PI
-import kotlin.math.ln
-import kotlin.math.pow
+import kotlin.math.*
 
 fun section(name: String, block: (() -> Unit)) {
     print("\u001B[1;31m\n$name\n\n\u001B[0m")
@@ -71,6 +69,16 @@ fun main(args: Array<String>) {
         println("∇ × (\u0305v × i\u0302)|(2, 3, 4) = ${(Nabla cross rotatingVectorField)(vector1)}")
     }
 
+    val circle = VectorValuedFunction { t -> DoubleVector(4 * cos(2 * t), 4 * sin(2 * t)) }
+
+    section("VVF Operations") {
+        println("For the circle \u0305r = 4cos(2t)i\u0302 + 4sin(2t)j\u0302 at (0,0):")
+        println()
+        println("Unit tangent = ${circle.unitTangent(0.0)}")
+        println("Principal unit normal = ${circle.principalUnitNormal(0.0)}")
+        println("Curvature = ${circle.curvature(0.0)}")
+    }
+
     val twoByTwo = SquareMatrix(arrayOf(arrayOf<Any>(1.0, 3.0), arrayOf<Any>(1.0, 4.0)))
     val threeByThree = SquareMatrix(arrayOf(arrayOf<Any>(0.0, 1.0, 2.0), arrayOf<Any>(3.0, 4.0, 5.0), arrayOf<Any>(6.0, 7.0, 8.0)))
 
@@ -94,7 +102,8 @@ fun main(args: Array<String>) {
         println(projectile)
         println()
         println("Projectile position at 3s: ${projectile(3.0)} m")
-        println("Projectile mass at 3s: ${mass(projectile(3.0))} kg")
+        println("Projectile mass at 3s: ${mass(projectile)(3.0)} kg")
+        println("Projectile density at 3s: ${mass.density(projectile)(3.0)}")
         println("Force gravity on projectile at 3s: ${(projectile gravityOn mass)(3.0)} N")
         println("Torque gravity about (0, 1, 0) on projectile at 3s: " +
                 "${(projectile gravityOn mass).torqueAbout(DoubleVector(0.0, 1.0, 0.0).to3D)(3.0)} Nm")

@@ -22,13 +22,9 @@ open class Force(field: (DoubleVector) -> Vector3D) : VectorField(field) {
 
 class ConstrainedForce(private val position: VectorValuedFunction, private val field: (DoubleVector) -> Vector3D)
     : VectorValuedFunction({ t -> field(position(t)) }) {
-    private val force = Force { vector -> field(vector) }
+    private val force = Force(field::invoke)
 
-    infix fun torqueAbout(point: Vector3D): VectorValuedFunction {
-        return VectorValuedFunction { t ->
-            force.torqueAbout(point.to3D)(position(t))
-        }
-    }
+    infix fun torqueAbout(point: Vector3D) = force.torqueAbout(point.to3D)(position)
 
-    infix fun accelerationOf(mass: Mass) = this / DoubleFunction { t -> mass(position(t)) }
+    infix fun accelerationOf(mass: Mass) = this / mass(position)
 }
