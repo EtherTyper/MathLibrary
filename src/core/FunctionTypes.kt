@@ -18,8 +18,8 @@ open class DoubleFunction(function: (Double) -> Double) : FunctionWrapper<Double
     operator fun times(other: Double) = DoubleFunction { a -> this(a) * other }
     operator fun div(other: Double) = DoubleFunction { a -> this(a) / other }
 
-    operator fun invoke(other: DoubleFunction) = DoubleFunction(this { i: Double -> other(i) })
-    operator fun invoke(other: ScalarField) = ScalarField(this { i: DoubleVector -> other(i) })
+    operator fun invoke(other: DoubleFunction) = DoubleFunction(this(other::invoke))
+    operator fun invoke(other: ScalarField) = ScalarField(this(other::invoke))
 }
 
 open class VectorValuedFunction(function: (Double) -> DoubleVector) : FunctionWrapper<Double, DoubleVector>(function) {
@@ -52,8 +52,8 @@ open class VectorValuedFunction(function: (Double) -> DoubleVector) : FunctionWr
         (Derivative * unitTangent)(a).magnitude / (Derivative * this)(a).magnitude
     }
 
-    operator fun invoke(other: DoubleFunction) = VectorValuedFunction(this { i: Double -> other(i) })
-    operator fun invoke(other: ScalarField) = VectorField(this { i: DoubleVector -> other(i) })
+    operator fun invoke(other: DoubleFunction) = VectorValuedFunction(this(other::invoke))
+    operator fun invoke(other: ScalarField) = VectorField(this(other::invoke))
 }
 
 open class ScalarField(function: (DoubleVector) -> Double) : FunctionWrapper<DoubleVector, Double>(function) {
@@ -98,6 +98,6 @@ open class VectorField(function: (DoubleVector) -> DoubleVector) : FunctionWrapp
     operator fun times(other: Double) = VectorField { a -> this(a) * other }
     operator fun div(other: Double) = VectorField { a -> this(a) / other }
 
-    operator fun invoke(other: VectorValuedFunction) = VectorValuedFunction(this { i: Double -> other(i) })
-    operator fun invoke(other: VectorField) = VectorField(this { i: DoubleVector -> other(i) })
+    operator fun invoke(other: VectorValuedFunction) = VectorValuedFunction(this(other::invoke))
+    operator fun invoke(other: VectorField) = VectorField(this(other::invoke))
 }

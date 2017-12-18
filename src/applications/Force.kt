@@ -24,7 +24,7 @@ class ConstrainedForce(private val position: VectorValuedFunction, private val f
     : VectorValuedFunction({ t -> field(position(t)) }) {
     private val force = Force(field::invoke)
 
-    infix fun torqueAbout(point: Vector3D) = force.torqueAbout(point.to3D)(position)
+    infix fun torqueAbout(point: Vector3D) = (force torqueAbout point.to3D)(position)
 
-    infix fun accelerationOf(mass: Mass) = this / mass(position)
+    infix fun accelerationOf(mass: Mass) = (force accelerationOf mass)(position)
 }
