@@ -20,9 +20,9 @@ open class Force(field: (DoubleVector) -> Vector3D) : VectorField(field) {
         get() = MultipleDerivative.d_dA * this * -1.0
 }
 
-class ConstrainedForce(private val position: VectorValuedFunction, private val field: (Double) -> Vector3D)
-    : VectorValuedFunction(field) {
-    private val force = Force { vector -> field(vector[0]) }
+class ConstrainedForce(private val position: VectorValuedFunction, private val field: (DoubleVector) -> Vector3D)
+    : VectorValuedFunction({ t -> field(position(t)) }) {
+    private val force = Force { vector -> field(vector) }
 
     infix fun torqueAbout(point: Vector3D): VectorValuedFunction {
         return VectorValuedFunction { t ->
