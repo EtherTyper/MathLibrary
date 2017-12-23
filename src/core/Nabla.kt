@@ -28,7 +28,8 @@ open class Nabla constructor(private val arity: Int = 3, private val delta: Doub
     }
 
     // Dot products.
-    operator fun get(index: Int) = DirectionalDerivative(DoubleVector.unit(index))
+    operator fun get(index: DoubleVector) = DirectionalDerivative(index.unit)
+    operator fun get(index: Int) = PartialDerivative(index)
 
     companion object : Nabla()
 }

@@ -42,14 +42,9 @@ open class DoubleVector constructor(vararg val dimensions: Double, mandatoryArit
 
     // Element-wise operations between vectors. (no element-wise multiplication)
     operator fun plus(other: DoubleVector) = applyElementwise(other, Double::plus)
-
     operator fun minus(other: DoubleVector) = applyElementwise(other, Double::minus)
-    operator fun div(other: DoubleVector) = applyElementwise(other, Double::div)
 
     // Apply an operation to every element and a constant scalar.
-    operator fun plus(other: Double) = applyElementwise(other, Double::plus)
-
-    operator fun minus(other: Double) = applyElementwise(other, Double::minus)
     operator fun times(other: Double) = applyElementwise(other, Double::times)
     operator fun div(other: Double) = applyElementwise(other, Double::div)
 

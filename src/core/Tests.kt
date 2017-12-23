@@ -9,6 +9,17 @@ fun section(name: String, block: (() -> Unit)) {
     block()
 }
 
+fun shouldError(block: (() -> Unit)) {
+    try {
+        block()
+
+        println("No error occurred.")
+    } catch (e: Error) {
+        println("Error: ${e.message}")
+        println("\u001B[1;32m\u2705 Success!\u001B[0m")
+    }
+}
+
 fun main(args: Array<String>) {
     section("Constants") {
         println("i\u0302: ${DoubleVector.i}")
@@ -19,13 +30,8 @@ fun main(args: Array<String>) {
     }
 
     section("Arity Checks") {
-        try {
-            println("This should error, as 3D vectors should have arities of exactly 3.")
-            println(123.456.v.to3D)
-        } catch (e: Error) {
-            println("Error: ${e.message}")
-            println("\u001B[1;32m\u2705 Success!\u001B[0m")
-        }
+        println("This should error, as 3D vectors should have arities of exactly 3.")
+        shouldError { 123.456.v.to3D }
     }
 
     val vector1 = DoubleVector(2.0, 3.0, 4.0)
@@ -56,7 +62,7 @@ fun main(args: Array<String>) {
         println()
         println("d/di (i ^ 2 * 5)|(i=3) = ${(Derivative * doubleFunction)(3.0)}")
         println("δ/δx (x ^ 2 * y)|(3, 2) = ${(DirectionalDerivative.d_dx * scalarField)(DoubleVector(3.0, 2.0))}")
-        println("δ/δy (\u0305v × i\u0302)|(2, 3, 4) = ${(DirectionalDerivative.d_dy * rotatingVectorField)(DoubleVector.`0`)}")
+        println("δ/δy (\u0305v × i\u0302)|(0, 0, 0) = ${(DirectionalDerivative.d_dy * rotatingVectorField)(DoubleVector.`0`)}")
         println()
         println("d/dt 1 = ${Derivative * 1.0}")
         println("δ/δx 1 = ${DirectionalDerivative.d_dx * 1.0}")
@@ -67,6 +73,7 @@ fun main(args: Array<String>) {
         println("∇(x ^ 2 * y)|(3, 2) = ${Nabla(scalarField)(DoubleVector(3.0, 2.0))}")
         println("∇ ⋅ (‖\u0305v‖ * \u0305v)|(2, 3, 4) = ${(Nabla * outwardsField)(vector1)}")
         println("∇ × (\u0305v × i\u0302)|(2, 3, 4) = ${(Nabla cross rotatingVectorField)(vector1)}")
+        println("∇<4.0, 3.0>(x ^ 2 * y)|(3, 2) = ${(Nabla[DoubleVector(4.0, 3.0)] * scalarField)(DoubleVector(3.0, 2.0))}")
     }
 
     val circle = VectorValuedFunction { t -> DoubleVector(4 * cos(2 * t), 4 * sin(2 * t)) }
@@ -82,11 +89,14 @@ fun main(args: Array<String>) {
     val twoByTwo = SquareMatrix(arrayOf(arrayOf<Any>(1.0, 3.0), arrayOf<Any>(1.0, 4.0)))
     val threeByThree = SquareMatrix(arrayOf(arrayOf<Any>(0.0, 1.0, 2.0), arrayOf<Any>(3.0, 4.0, 5.0), arrayOf<Any>(6.0, 7.0, 8.0)))
 
-    section("Type-Agnostic Multiplication") {
+    section("Type-Agnostic Operations") {
         println("<1, 2, 3> * 2.5 = ${Multiply(DoubleVector(1.0, 2.0, 3.0), 2.5)}")
 
         val derivativeOfVectorField = Multiply(DirectionalDerivative.d_dy, rotatingVectorField) as VectorField
         println("δ/δy (\u0305v × i\u0302)|(2, 3, 4) = ${derivativeOfVectorField(DoubleVector.`0`)}")
+
+        println("This should error, as scalars and vectors cannot be added.")
+        shouldError { Add(DoubleVector(1.0, 2.0, 3.0), 2.5) }
     }
 
     section("Matrices and Determinants") {

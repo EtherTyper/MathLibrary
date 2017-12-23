@@ -24,9 +24,11 @@ class SquareMatrix(private val members: Array<Array<out Any>>) {
                     )
 
                     Multiply(multiplier, minor.determinant)
-                }).foldIndexed(initial = 0.0 as Any) { index, acc, value ->
-                    if (index % 2 == 0) Add(acc, value as Any) as Any else Subtract(acc, value as Any) as Any
-                }
+                }).reduceIndexed { index, acc, value ->
+                    if (index % 2 == 0)
+                        Add(acc as Any, value as Any) as Any
+                    else Subtract(acc as Any, value as Any) as Any
+                } as Any
             }
         }
 
