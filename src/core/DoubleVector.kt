@@ -54,6 +54,12 @@ open class DoubleVector constructor(vararg val dimensions: Double, mandatoryArit
 
     operator fun get(index: Int): Double = dimensions[index]
 
+    override fun equals(other: Any?) =
+            if (other is DoubleVector)
+                this.dimensions.contentEquals(other.dimensions)
+            else false
+    override fun hashCode() = this.dimensions.map(Double::hashCode).sum()
+
     companion object {
         fun unit(dimensionality: Int) = DoubleVector(*DoubleArray(dimensionality), 1.0)
 

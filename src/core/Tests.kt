@@ -4,23 +4,23 @@ import applications.Mass
 import applications.Projectile
 import kotlin.math.*
 
-fun section(name: String, block: (() -> Unit)) {
-    print("\u001B[1;31m\n$name\n\n\u001B[0m")
-    block()
-}
-
-fun shouldError(block: (() -> Unit)) {
-    try {
-        block()
-
-        println("No error occurred.")
-    } catch (e: Error) {
-        println("Error: ${e.message}")
-        println("\u001B[1;32m\u2705 Success!\u001B[0m")
-    }
-}
-
 fun main(args: Array<String>) {
+    fun section(name: String, block: (() -> Unit)) {
+        print("\u001B[1;31m\n$name\n\n\u001B[0m")
+        block()
+    }
+
+    fun shouldError(block: (() -> Unit)) {
+        try {
+            block()
+
+            println("No error occurred.")
+        } catch (e: Error) {
+            println("Error: ${e.message}")
+            println("\u001B[1;32m\u2705 Success!\u001B[0m")
+        }
+    }
+
     section("Constants") {
         println("i\u0302: ${DoubleVector.i}")
         println("j\u0302: ${DoubleVector.j}")
@@ -86,14 +86,15 @@ fun main(args: Array<String>) {
         println("Curvature = ${circle.curvature(0.0)}")
     }
 
-    val twoByTwo = SquareMatrix(arrayOf(arrayOf<Any>(1.0, 3.0), arrayOf<Any>(1.0, 4.0)))
-    val threeByThree = SquareMatrix(arrayOf(arrayOf<Any>(0.0, 1.0, 2.0), arrayOf<Any>(3.0, 4.0, 5.0), arrayOf<Any>(6.0, 7.0, 8.0)))
+    val twoByTwo = SquareMatrix(arrayOf(arrayOf(1.0, 3.0), arrayOf(1.0, 4.0)))
+    val threeByThree = SquareMatrix(arrayOf(arrayOf(0.0, 1.0, 2.0), arrayOf(3.0, 4.0, 5.0), arrayOf(6.0, 7.0, 8.0)))
 
     section("Type-Agnostic Operations") {
         println("<1, 2, 3> * 2.5 = ${Multiply(DoubleVector(1.0, 2.0, 3.0), 2.5)}")
 
         val derivativeOfVectorField = Multiply(DirectionalDerivative.d_dy, rotatingVectorField) as VectorField
         println("δ/δy (\u0305v × i\u0302)|(2, 3, 4) = ${derivativeOfVectorField(DoubleVector.`0`)}")
+        println()
 
         println("This should error, as scalars and vectors cannot be added.")
         shouldError { Add(DoubleVector(1.0, 2.0, 3.0), 2.5) }
@@ -103,6 +104,9 @@ fun main(args: Array<String>) {
         println("$twoByTwo = ${twoByTwo.determinant}")
         println()
         println("$threeByThree = ${threeByThree.determinant}")
+        println()
+        println("This should error, as the matrix is misshaped.")
+        shouldError { SquareMatrix(arrayOf(arrayOf(1, 2, 3, 4), arrayOf(5, 6, 7, 8))) }
     }
 
     val projectile = Projectile(10.0, 10.0, PI/4)
