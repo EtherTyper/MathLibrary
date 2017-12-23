@@ -1,6 +1,7 @@
 package core
 
 import kotlin.math.acos
+import kotlin.math.max
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -12,7 +13,7 @@ open class DoubleVector constructor(vararg val dimensions: Double, mandatoryArit
     }
 
     fun extended(targetArity: Int): DoubleVector {
-        val dimensionsToAdd = Math.max(targetArity - arity, 0)
+        val dimensionsToAdd = max(targetArity - arity, 0)
         return DoubleVector(*dimensions, *DoubleArray(dimensionsToAdd))
     }
 
