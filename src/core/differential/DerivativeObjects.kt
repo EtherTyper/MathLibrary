@@ -1,5 +1,6 @@
-package core
+package core.differential
 
+import core.vector.*
 import kotlin.math.abs
 
 open class DirectionalDerivative(private val direction: DoubleVector, private val delta: Double = defaultDelta) {

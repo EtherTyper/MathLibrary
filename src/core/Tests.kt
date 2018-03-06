@@ -2,6 +2,8 @@ package core
 
 import applications.Mass
 import applications.Projectile
+import core.differential.*
+import core.vector.*
 import kotlin.math.*
 
 fun main(args: Array<String>) {

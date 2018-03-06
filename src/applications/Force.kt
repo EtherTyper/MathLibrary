@@ -1,6 +1,10 @@
 package applications
 
-import core.*
+import core.differential.MultipleDerivative
+import core.vector.DoubleVector
+import core.vector.Vector3D
+import core.vector.VectorField
+import core.vector.VectorValuedFunction
 
 // TODO: Work once I get integrals working.
 // Could map 3D position -> force, represent force on a space curve, or

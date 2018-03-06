@@ -1,5 +1,8 @@
-package core
+package core.vector
 
+import core.differential.Derivative
+import core.differential.DirectionalDerivative
+import core.differential.PartialDerivative
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 

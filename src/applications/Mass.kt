@@ -1,8 +1,8 @@
 package applications
 
-import core.DoubleVector
-import core.MultipleDerivative
-import core.ScalarField
+import core.vector.DoubleVector
+import core.differential.MultipleDerivative
+import core.vector.ScalarField
 
 class Mass(dimensionality: Int = 2, field: (DoubleVector) -> Double) : ScalarField(field) {
     // Could be linear density, voluminous density, etc.

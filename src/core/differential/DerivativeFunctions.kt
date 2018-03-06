@@ -1,4 +1,6 @@
-package core
+package core.differential
+
+import core.vector.*
 
 // Single-variable functions.
 fun DoubleFunction.differentiate(parameter: Double, delta: Double = defaultDelta): Double {

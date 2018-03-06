@@ -1,8 +1,8 @@
 package applications
 
-import core.Derivative
-import core.DoubleVector
-import core.VectorValuedFunction
+import core.differential.Derivative
+import core.vector.DoubleVector
+import core.vector.VectorValuedFunction
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.pow

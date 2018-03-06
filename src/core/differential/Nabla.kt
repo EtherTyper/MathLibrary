@@ -1,4 +1,10 @@
-package core
+package core.differential
+
+import core.SquareMatrix
+import core.vector.DoubleVector
+import core.vector.ScalarField
+import core.vector.VectorField
+import core.vector.defaultDelta
 
 open class Nabla constructor(private val arity: Int = 3, private val delta: Double = defaultDelta) {
     operator fun times(other: VectorField): ScalarField {

@@ -1,11 +1,16 @@
 package core
 
+import core.vector.*
+
 class SquareMatrix(private val members: Array<Array<out Any>>) {
     init {
         if (!members.all { array -> array.size == members.size } || members.isEmpty()) {
             throw MatrixDimensionError()
         }
     }
+
+//    val transpose: SquareMatrix
+//        get() =
 
     val determinant: Any
         get() {

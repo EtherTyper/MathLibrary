@@ -1,4 +1,4 @@
-package core
+package core.vector
 
 operator fun ScalarField.get(direction: Int, parameter: DoubleVector): DoubleFunction {
     return DoubleFunction { value: Double ->
