@@ -1,7 +1,7 @@
 package core
 
-import applications.Mass
-import applications.Projectile
+import applications.mechanics.Mass
+import applications.mechanics.Projectile
 import core.differential.*
 import core.linear.SquareMatrix
 import core.vector.*

@@ -1,4 +1,4 @@
-package applications
+package applications.mechanics
 
 import core.differential.MultipleDerivative
 import core.vector.DoubleVector
