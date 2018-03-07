@@ -35,8 +35,4 @@ class SquareMatrix(members: Array<Array<out Any>>) : Matrix(members) {
                 } as Any
             }
         }
-
-    companion object {
-        val unitVectorArray get() = (0.until(3)).map(DoubleVector.Companion::unit).toTypedArray()
-    }
 }

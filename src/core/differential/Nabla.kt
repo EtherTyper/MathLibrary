@@ -1,5 +1,6 @@
 package core.differential
 
+import core.linear.Matrix
 import core.linear.SquareMatrix
 import core.vector.DoubleVector
 import core.vector.ScalarField
@@ -26,7 +27,7 @@ open class Nabla constructor(private val arity: Int = 3, private val delta: Doub
     infix fun cross(other: VectorField): VectorField {
         return SquareMatrix(
                 arrayOf(
-                        SquareMatrix.unitVectorArray,
+                        Matrix.unitVectorArray,
                         (0.until(3)).map({ i -> PartialDerivative(i, delta) }).toTypedArray(),
                         (0.until(3)).map({ i -> ScalarField { t -> other(t)[i] } }).toTypedArray()
                 )

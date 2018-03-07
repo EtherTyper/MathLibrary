@@ -59,6 +59,9 @@ open class DoubleVector constructor(vararg val dimensions: Double, mandatoryArit
     // Dot products.
     operator fun times(other: DoubleVector) = applyElementwise(other, Double::times).dimensions.reduce(Double::plus)
 
+    // Outer products.
+    infix fun outer(other: DoubleVector) = this.column * other.row
+
     operator fun get(index: Int): Double = dimensions[index]
 
     override fun equals(other: Any?) =
