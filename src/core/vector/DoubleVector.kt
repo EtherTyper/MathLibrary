@@ -1,5 +1,7 @@
 package core.vector
 
+import core.linear.Column
+import core.linear.Row
 import kotlin.math.acos
 import kotlin.math.max
 import kotlin.math.pow
@@ -19,6 +21,9 @@ open class DoubleVector constructor(vararg val dimensions: Double, mandatoryArit
 
     val to3D get() = Vector3D(this)
     val arity get() = dimensions.size
+
+    val column get() = Column(*dimensions)
+    val row get() = Row(*dimensions)
 
     private fun applyElementwise(other: DoubleVector, operation: (Double, Double) -> Double): DoubleVector {
         val extendedOther = other.extended(arity)
@@ -43,10 +48,12 @@ open class DoubleVector constructor(vararg val dimensions: Double, mandatoryArit
 
     // Element-wise operations between vectors. (no element-wise multiplication)
     operator fun plus(other: DoubleVector) = applyElementwise(other, Double::plus)
+
     operator fun minus(other: DoubleVector) = applyElementwise(other, Double::minus)
 
     // Apply an operation to every element and a constant scalar.
     operator fun times(other: Double) = applyElementwise(other, Double::times)
+
     operator fun div(other: Double) = applyElementwise(other, Double::div)
 
     // Dot products.
@@ -58,6 +65,7 @@ open class DoubleVector constructor(vararg val dimensions: Double, mandatoryArit
             if (other is DoubleVector)
                 this.dimensions.contentEquals(other.dimensions)
             else false
+
     override fun hashCode() = this.dimensions.map(Double::hashCode).sum()
 
     companion object {

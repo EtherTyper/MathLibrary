@@ -3,6 +3,7 @@ package core
 import applications.Mass
 import applications.Projectile
 import core.differential.*
+import core.linear.SquareMatrix
 import core.vector.*
 import kotlin.math.*
 
@@ -107,11 +108,13 @@ fun main(args: Array<String>) {
         println()
         println("$threeByThree = ${threeByThree.determinant}")
         println()
+        println("$threeByThree' = \n\n${threeByThree.transpose}")
+        println()
         println("This should error, as the matrix is misshaped.")
         shouldError { SquareMatrix(arrayOf(arrayOf(1, 2, 3, 4), arrayOf(5, 6, 7, 8))) }
     }
 
-    val projectile = Projectile(10.0, 10.0, PI/4)
+    val projectile = Projectile(10.0, 10.0, PI / 4)
     val mass = Mass { position -> ln(position.magnitude) }
 
     section("Other Applications (and cool Physics!)") {

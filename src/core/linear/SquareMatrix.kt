@@ -1,16 +1,15 @@
-package core
+package core.linear
 
 import core.vector.*
 
-class SquareMatrix(private val members: Array<Array<out Any>>) {
+class SquareMatrix(members: Array<Array<out Any>>) : Matrix(members) {
     init {
         if (!members.all { array -> array.size == members.size } || members.isEmpty()) {
-            throw MatrixDimensionError()
+            throw SquareMatrixDimensionError()
         }
     }
 
-//    val transpose: SquareMatrix
-//        get() =
+    override val transpose get() = SquareMatrix(super.transpose.members)
 
     val determinant: Any
         get() {
@@ -36,10 +35,6 @@ class SquareMatrix(private val members: Array<Array<out Any>>) {
                 } as Any
             }
         }
-
-    override fun toString(): String {
-        return "| ${members.joinToString(separator = " |\n| ") { array -> array.joinToString(" ") }} |"
-    }
 
     companion object {
         val unitVectorArray get() = (0.until(3)).map(DoubleVector.Companion::unit).toTypedArray()

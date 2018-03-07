@@ -1,6 +1,6 @@
 package core.differential
 
-import core.SquareMatrix
+import core.linear.SquareMatrix
 import core.vector.DoubleVector
 import core.vector.ScalarField
 import core.vector.VectorField
@@ -35,6 +35,7 @@ open class Nabla constructor(private val arity: Int = 3, private val delta: Doub
 
     // Dot products.
     operator fun get(index: DoubleVector) = DirectionalDerivative(index.unit)
+
     operator fun get(index: Int) = PartialDerivative(index)
 
     companion object : Nabla()

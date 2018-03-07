@@ -1,6 +1,6 @@
 package core.vector
 
-import core.SquareMatrix
+import core.linear.SquareMatrix
 
 class Vector3D(vector: DoubleVector) : DoubleVector(*vector.dimensions, mandatoryArity = 3) {
     infix fun cross(other: Vector3D): Vector3D {

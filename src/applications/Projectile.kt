@@ -17,8 +17,8 @@ class Projectile(val h: Double = 0.0, val v_0: Double, val theta: Double = PI, v
     val velocity = Derivative * this // (v_0 * cos(theta)) * i + (v_0 * sin(theta) - gt) * j
     val acceleration = (Derivative * velocity)(0.0) // -gt * j (Constant)
 
-    infix fun gravityOn(other: Mass) = ConstrainedForce(this) {
-        position: DoubleVector -> (acceleration * other(position)).extended(3).to3D
+    infix fun gravityOn(other: Mass) = ConstrainedForce(this) { position: DoubleVector ->
+        (acceleration * other(position)).extended(3).to3D
     }
 
     override fun toString(): String {

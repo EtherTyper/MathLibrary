@@ -4,7 +4,7 @@ import core.differential.Derivative
 
 abstract class FunctionWrapper<in A, out B>(private val function: (A) -> B) {
     operator fun invoke(other: A): B = function(other)
-    operator fun <Input>invoke(other: (Input) -> (A)) = { input: Input ->
+    operator fun <Input> invoke(other: (Input) -> (A)) = { input: Input ->
         this(other(input))
     }
 }
@@ -44,9 +44,10 @@ open class VectorValuedFunction(function: (Double) -> DoubleVector) : FunctionWr
     val unitTangent get() = VectorValuedFunction { a -> (Derivative * this)(a).unit }
     val principalUnitNormal get() = unitTangent.unitTangent
 
-    val curvature get() = DoubleFunction { a ->
-        (Derivative * unitTangent)(a).magnitude / (Derivative * this)(a).magnitude
-    }
+    val curvature
+        get() = DoubleFunction { a ->
+            (Derivative * unitTangent)(a).magnitude / (Derivative * this)(a).magnitude
+        }
 
     operator fun invoke(other: DoubleFunction) = VectorValuedFunction(this(other::invoke))
     operator fun invoke(other: ScalarField) = VectorField(this(other::invoke))

@@ -1,7 +1,7 @@
 package applications
 
-import core.vector.DoubleVector
 import core.differential.MultipleDerivative
+import core.vector.DoubleVector
 import core.vector.ScalarField
 
 class Mass(dimensionality: Int = 2, field: (DoubleVector) -> Double) : ScalarField(field) {
