@@ -5,6 +5,9 @@ import core.vector.DoubleVector
 import core.vector.ScalarField
 import core.vector.VectorField
 import java.awt.Graphics
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.sin
 
 class PointCharge(val position: DoubleVector, val charge: Double, val radius: Double) {
     val potential = ScalarField({ point ->
@@ -29,6 +32,14 @@ class PointCharge(val position: DoubleVector, val charge: Double, val radius: Do
                 (radius * graphical_scale * 2).toInt()
         )
     }
+
+    fun surfacePoints(points: Int): List<DoubleVector> =
+            (0 until points).map({ point ->
+                val theta = 0 + (2 * PI) * (point.toDouble() / points)
+                val pointVector = position + DoubleVector(cos(theta), sin(theta)) * radius
+
+                pointVector
+            })
 
     override fun toString() = "[$position, q = $charge, r = $radius]"
 }

@@ -1,6 +1,7 @@
 package applications.electrostatics
 
 import core.differential.DescentLine
+import core.differential.Isocline
 import core.vector.DoubleVector
 import java.awt.Color
 import java.awt.Dimension
@@ -13,12 +14,11 @@ import javax.swing.SwingUtilities
 
 private val chargeCluster = ChargeCluster(
         PointCharge(DoubleVector(0.0, 0.0), charge = 1.0, radius = 1.0),
-        PointCharge(DoubleVector(3.0, 3.0), charge = -1.0, radius = 0.5)
+        PointCharge(DoubleVector(2.0, 5.0), charge = 1.0, radius = 1.0),
+        PointCharge(DoubleVector(3.0, 3.0), charge = -2.0, radius = 0.5)
 )
 
 fun main(args: Array<String>) {
-    print(chargeCluster)
-
     SwingUtilities.invokeLater {
         Window()
     }
@@ -45,6 +45,27 @@ class Window : JFrame {
     }
 }
 
+fun drawPointArray(g: Graphics2D, points: Collection<DoubleVector>) {
+    val graphicalPath = GeneralPath(GeneralPath.WIND_EVEN_ODD, points.size)
+
+    points.forEachIndexed({ index: Int, fieldPoint: DoubleVector ->
+        val graphicalPointLocation = fieldPoint.toGraphical(chargeCluster)
+
+        if (index == 0)
+            graphicalPath.moveTo(
+                    graphicalPointLocation[0],
+                    graphicalPointLocation[1]
+            )
+        else
+            graphicalPath.lineTo(
+                    graphicalPointLocation[0],
+                    graphicalPointLocation[1]
+            )
+    })
+
+    g.draw(graphicalPath)
+}
+
 class Canvas : JPanel() {
     override fun paintComponent(g: Graphics?) {
         @Suppress("NAME_SHADOWING")
@@ -60,25 +81,29 @@ class Canvas : JPanel() {
 
         g.color = Color.RED
 
-        val descentPath = DescentLine(1.0, DoubleVector(2.0, 4.0), chargeCluster.potential, chargeCluster::isInBounds)
+        val isoclineStartPoints = mutableListOf<DoubleVector>()
 
-        val path = GeneralPath(GeneralPath.WIND_EVEN_ODD, descentPath.fieldPointArray.size)
+        for (charge in chargeCluster.charges) {
+            if (charge.charge > 0) {
+                for (surfacePoint in charge.surfacePoints(20)) {
+                    val descentPath = DescentLine(coulumbs_constant * 10, surfacePoint, chargeCluster.potential, chargeCluster::isInBounds)
+                    drawPointArray(g, descentPath.fieldPointArray)
 
-        descentPath.fieldPointArray.forEachIndexed({ index: Int, fieldPoint: DoubleVector ->
-            val graphicalPointLocation = fieldPoint.toGraphical(chargeCluster)
+                    isoclineStartPoints.addAll(descentPath.isoclinePointArray)
+                }
+            }
+        }
 
-            if (index == 0)
-                path.moveTo(
-                        graphicalPointLocation[0],
-                        graphicalPointLocation[1]
-                )
-            else
-                path.lineTo(
-                        graphicalPointLocation[0],
-                        graphicalPointLocation[1]
-                )
-        })
+        g.color = Color.GREEN
 
-        g.draw(path)
+        println(isoclineStartPoints.size)
+
+        for (isoclinePoint in isoclineStartPoints) {
+            val isocline = Isocline(isoclinePoint, chargeCluster.potential, chargeCluster::isInBounds)
+
+            println(isocline.pointArray.size)
+
+            drawPointArray(g, isocline.pointArray)
+        }
     }
 }
