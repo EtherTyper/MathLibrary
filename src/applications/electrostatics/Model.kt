@@ -14,12 +14,7 @@ import javax.swing.JFrame
 import javax.swing.JPanel
 import javax.swing.SwingUtilities
 
-private var chargeCluster = ChargeCluster(
-        PointCharge(DoubleVector(0.0, 0.0), charge = 1.0, radius = 1.0),
-        PointCharge(DoubleVector(2.0, 5.0), charge = 1.0, radius = 1.0),
-        PointCharge(DoubleVector(3.0, 3.0), charge = -2.0, radius = 0.5),
-        PointCharge(DoubleVector(4.0, 4.0), charge = 0.0, radius = 0.25)
-)
+private var chargeCluster = ChargeCluster()
 
 fun main(args: Array<String>) {
     SwingUtilities.invokeLater {
@@ -45,7 +40,11 @@ class Window : JFrame {
                     chargeCluster = ChargeCluster(*chargeCluster.charges,
                             PointCharge(
                                     DoubleVector(e.point.x.toDouble(), e.point.y.toDouble()).fromGraphical(chargeCluster),
-                                    if (e.button == MouseEvent.BUTTON1) 1.0 else -1.0,
+                                    when {
+                                        SwingUtilities.isLeftMouseButton(e) -> 1.0
+                                        SwingUtilities.isRightMouseButton(e) -> -1.0
+                                        else -> 0.0
+                                    },
                                     0.5
                             )
                     )
