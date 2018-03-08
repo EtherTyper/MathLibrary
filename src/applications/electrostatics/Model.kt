@@ -96,7 +96,7 @@ class Canvas : JPanel() {
         super.paintComponent(g)
         background = Color.BLACK
 
-        for (charge in chargeCluster.charges) {
+        for (charge in chargeCluster) {
             g.color = when {
                 charge.charge > 0 -> Color.BLUE
                 charge.charge < 0 -> Color.RED
@@ -110,7 +110,7 @@ class Canvas : JPanel() {
 
         val isoclineStartPoints = mutableListOf<DoubleVector>()
 
-        for (charge in chargeCluster.charges) {
+        for (charge in chargeCluster) {
             if (charge.charge > 0) {
                 for (surfacePoint in charge.surfacePoints(20)) {
                     // We set the isocline threshold to the max here to disable isoclines.

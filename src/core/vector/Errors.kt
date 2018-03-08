@@ -7,4 +7,5 @@ class UnitVectorError(magnitude: Double) : Error("Expected unit vector but got v
 class BadOperationError(a: Any, b: Any, kClass: KClass<*>) : Error("Cannot execute operation: $a ${kClass.simpleName} $b")
 
 open class MatrixDimensionError(message: String) : Error(message)
-class SquareMatrixDimensionError : MatrixDimensionError("Matrix must be square shaped to take the determinant.")
+class NotAMatrixError : MatrixDimensionError("Each row must be the same length.")
+class SquareMatrixDimensionError : MatrixDimensionError("Square matrices must have the same number of columns as rows.")

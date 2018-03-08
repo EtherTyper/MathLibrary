@@ -1,8 +1,15 @@
 package core.linear
 
 import core.vector.DoubleVector
+import core.vector.NotAMatrixError
 
 open class Matrix(val members: Array<Array<out Any>>) {
+    init {
+        if (members.map { array -> array.size }.toSet().size != 1) {
+            throw NotAMatrixError()
+        }
+    }
+
     open val transpose: Matrix
         get() {
             if (members.isEmpty()) return this

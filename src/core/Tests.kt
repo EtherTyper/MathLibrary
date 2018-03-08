@@ -4,6 +4,7 @@ import applications.mechanics.Mass
 import applications.mechanics.Projectile
 import core.differential.*
 import core.linear.Column
+import core.linear.Matrix
 import core.linear.Row
 import core.linear.SquareMatrix
 import core.vector.*
@@ -123,7 +124,10 @@ fun main(args: Array<String>) {
         println()
         println("A' (where C3 is replaced) = \n\n${threeByThree.column.replace(2, Column(10.0, 20.0, 30.0))}")
         println()
-        println("This should error, as the matrix is misshaped.")
+        println("This should error, as the matrix is misshapen.")
+        shouldError { Matrix(arrayOf(arrayOf(1, 2, 3), arrayOf(5, 6, 7, 8))) }
+        println()
+        println("This should error, as the matrix isn't square.")
         shouldError { SquareMatrix(arrayOf(arrayOf(1, 2, 3, 4), arrayOf(5, 6, 7, 8))) }
     }
 
