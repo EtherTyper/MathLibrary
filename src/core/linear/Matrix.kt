@@ -14,19 +14,39 @@ open class Matrix(val members: Array<Array<out Any>>) {
 
     val cols: Int = if (rows == 0) 0 else members[0].size
 
-    fun row(index: Int): Row {
-        @Suppress("UNCHECKED_CAST")
-        return Row(*DoubleArray(members[index].size, { i -> members[index][i] as Double }))
+    operator fun get(rowIndex: Int, colIndex: Int): Any {
+        return members[rowIndex][colIndex]
     }
 
-    fun column(index: Int): Column {
-        return transpose.row(index).transpose
+    class RowHelper(val matrix: Matrix) {
+        operator fun get(index: Int): Row {
+            @Suppress("UNCHECKED_CAST")
+            return Row(*DoubleArray(matrix.members[index].size,
+                    { i -> matrix.members[index][i] as Double }))
+        }
+
+        fun replace(index: Int, value: Row): Matrix {
+            return Matrix(matrix.rows, matrix.cols, { i, j -> if (i == index) value[j] else matrix.members[i][j] })
+        }
     }
+
+    class ColHelper(val matrix: Matrix) {
+        operator fun get(index: Int): Column {
+            return matrix.transpose.row[index].transpose
+        }
+
+        fun replace(index: Int, col: Column): Matrix {
+            return matrix.transpose.row.replace(index, col.transpose).transpose
+        }
+    }
+
+    val row = RowHelper(this)
+    val column = ColHelper(this)
 
     operator fun times(other: Matrix): Matrix {
         if (members.isEmpty() || other.members.isEmpty()) return this
 
-        return Matrix(rows, other.cols, { i, j -> this.row(i).vector * other.column(j).vector })
+        return Matrix(rows, other.cols, { i, j -> this.row[i].vector * other.column[j].vector })
     }
 
     override fun toString(): String {

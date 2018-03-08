@@ -8,12 +8,16 @@ class Column(vararg val values: Double) : Matrix(values.size, 1, { i, _ -> value
     override val transpose: Row
         get() = Row(*values)
 
+    operator fun get(index: Int) = values[index]
+
     val vector get() = DoubleVector(*values)
 }
 
 class Row(vararg val values: Double) : Matrix(arrayOf(values.toTypedArray())) {
     override val transpose: Column
         get() = Column(*values)
+
+    operator fun get(index: Int) = values[index]
 
     val vector get() = DoubleVector(*values)
 }

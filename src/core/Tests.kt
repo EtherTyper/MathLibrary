@@ -3,6 +3,8 @@ package core
 import applications.mechanics.Mass
 import applications.mechanics.Projectile
 import core.differential.*
+import core.linear.Column
+import core.linear.Row
 import core.linear.SquareMatrix
 import core.vector.*
 import kotlin.math.*
@@ -113,9 +115,13 @@ fun main(args: Array<String>) {
         println()
         println("$threeByThree' = \n\n${threeByThree.transpose}")
         println()
-        println("R2 = ${threeByThree.row(1)}")
+        println("R2 = ${threeByThree.row[1]}")
         println()
-        println("C3 = \n${threeByThree.column(2)}")
+        println("A' (where R2 is replaced) = \n\n${threeByThree.row.replace(1, Row(10.0, 20.0, 30.0))}")
+        println()
+        println("C3 = \n${threeByThree.column[2]}")
+        println()
+        println("A' (where C3 is replaced) = \n\n${threeByThree.column.replace(2, Column(10.0, 20.0, 30.0))}")
         println()
         println("This should error, as the matrix is misshaped.")
         shouldError { SquareMatrix(arrayOf(arrayOf(1, 2, 3, 4), arrayOf(5, 6, 7, 8))) }
