@@ -77,8 +77,8 @@ class Canvas : JPanel() {
 
         for (charge in chargeCluster.charges) {
             g.color = when {
-                charge.charge > 0 -> Color.RED
-                charge.charge < 0 -> Color.BLUE
+                charge.charge > 0 -> Color.BLUE
+                charge.charge < 0 -> Color.RED
                 else -> Color.GRAY
             }
 
