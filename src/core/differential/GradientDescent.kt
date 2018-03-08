@@ -64,12 +64,10 @@ class Isocline(startPoint: DoubleVector,
             val zeroDerivative = DoubleVector(-gradient[1], gradient[0]) * direction
 
             val error = scalarField(startPoint) / scalarField(lastPoint) - 1
-            if (error > 0.2) {
-                return lastPoint - gradient.unit / 10.0
-            } else if (error < -0.2) {
-                return lastPoint + gradient.unit / 10.0
-            } else {
-                return lastPoint + zeroDerivative.unit / 100.0
+            return when {
+                error > 0.2 -> lastPoint - gradient.unit / 10.0
+                error < -0.2 -> lastPoint + gradient.unit / 10.0
+                else -> lastPoint + zeroDerivative.unit / 100.0
             }
         }
     }
