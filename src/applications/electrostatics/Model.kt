@@ -15,7 +15,8 @@ import javax.swing.SwingUtilities
 private val chargeCluster = ChargeCluster(
         PointCharge(DoubleVector(0.0, 0.0), charge = 1.0, radius = 1.0),
         PointCharge(DoubleVector(2.0, 5.0), charge = 1.0, radius = 1.0),
-        PointCharge(DoubleVector(3.0, 3.0), charge = -2.0, radius = 0.5)
+        PointCharge(DoubleVector(3.0, 3.0), charge = -2.0, radius = 0.5),
+        PointCharge(DoubleVector(4.0, 4.0), charge = 0.0, radius = 0.25)
 )
 
 fun main(args: Array<String>) {
@@ -74,8 +75,13 @@ class Canvas : JPanel() {
         super.paintComponent(g)
         background = Color.BLACK
 
-        g.color = Color.GRAY
         for (charge in chargeCluster.charges) {
+            g.color = when {
+                charge.charge > 0 -> Color.RED
+                charge.charge < 0 -> Color.BLUE
+                else -> Color.GRAY
+            }
+
             charge.draw(g, chargeCluster)
         }
 
