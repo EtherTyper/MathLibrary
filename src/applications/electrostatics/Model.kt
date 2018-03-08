@@ -7,12 +7,14 @@ import java.awt.Color
 import java.awt.Dimension
 import java.awt.Graphics
 import java.awt.Graphics2D
+import java.awt.event.MouseAdapter
+import java.awt.event.MouseEvent
 import java.awt.geom.GeneralPath
 import javax.swing.JFrame
 import javax.swing.JPanel
 import javax.swing.SwingUtilities
 
-private val chargeCluster = ChargeCluster(
+private var chargeCluster = ChargeCluster(
         PointCharge(DoubleVector(0.0, 0.0), charge = 1.0, radius = 1.0),
         PointCharge(DoubleVector(2.0, 5.0), charge = 1.0, radius = 1.0),
         PointCharge(DoubleVector(3.0, 3.0), charge = -2.0, radius = 0.5),
@@ -27,13 +29,32 @@ fun main(args: Array<String>) {
 
 @Suppress("ConvertSecondaryConstructorToPrimary")
 class Window : JFrame {
-    val size = chargeCluster.upperBound.toGraphical(chargeCluster)
-    val idealWidth = size[0].toInt()
-    val idealHeight = size[1].toInt()
+    val size get() = chargeCluster.upperBound.toGraphical(chargeCluster)
+    val idealWidth get() = size[0].toInt()
+    val idealHeight get() = size[1].toInt()
 
     constructor() {
         val canvas = Canvas()
         canvas.preferredSize = Dimension(idealWidth, idealHeight)
+
+        canvas.addMouseListener(object : MouseAdapter() {
+            override fun mouseReleased(e: MouseEvent?) {
+                super.mouseReleased(e)
+
+                if (e != null)
+                    chargeCluster = ChargeCluster(*chargeCluster.charges,
+                            PointCharge(
+                                    DoubleVector(e.point.x.toDouble(), e.point.y.toDouble()).fromGraphical(chargeCluster),
+                                    if (e.button == MouseEvent.BUTTON1) 1.0 else -1.0,
+                                    0.5
+                            )
+                    )
+
+                canvas.preferredSize = Dimension(idealWidth, idealHeight)
+                repaint()
+                pack()
+            }
+        })
 
         contentPane.add(canvas)
 
