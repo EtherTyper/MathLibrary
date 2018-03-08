@@ -16,6 +16,9 @@ class DescentLine(isoclineSignificance: Double,
             if (scalarField(fieldPointArray.last()) - scalarField(isoclinePointArray.last()) > isoclineSignificance)
                 isoclinePointArray.add(fieldPointArray.last())
         }
+
+        // We don't want to include surface points as isoclines.
+        isoclinePointArray.removeAt(0)
     }
 }
 

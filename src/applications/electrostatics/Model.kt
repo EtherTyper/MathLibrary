@@ -86,7 +86,8 @@ class Canvas : JPanel() {
         for (charge in chargeCluster.charges) {
             if (charge.charge > 0) {
                 for (surfacePoint in charge.surfacePoints(20)) {
-                    val descentPath = DescentLine(coulumbs_constant * 10, surfacePoint, chargeCluster.potential, chargeCluster::isInBounds)
+                    // We set the isocline threshold to the max here to disable isoclines.
+                    val descentPath = DescentLine(Double.MAX_VALUE, surfacePoint, chargeCluster.potential, chargeCluster::isInBounds)
                     drawPointArray(g, descentPath.fieldPointArray)
 
                     isoclineStartPoints.addAll(descentPath.isoclinePointArray)
