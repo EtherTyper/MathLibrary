@@ -97,12 +97,8 @@ class Canvas : JPanel() {
 
         g.color = Color.GREEN
 
-        println(isoclineStartPoints.size)
-
         for (isoclinePoint in isoclineStartPoints) {
             val isocline = Isocline(isoclinePoint, chargeCluster.potential, chargeCluster::isInBounds)
-
-            println(isocline.pointArray.size)
 
             drawPointArray(g, isocline.pointArray)
         }
