@@ -1,6 +1,7 @@
 package core.linear
 
 import core.vector.DoubleVector
+import core.vector.MatrixDimensionError
 import core.vector.NotAMatrixError
 
 open class Matrix(val members: Array<Array<out Any>>) {
@@ -54,6 +55,35 @@ open class Matrix(val members: Array<Array<out Any>>) {
         if (members.isEmpty() || other.members.isEmpty()) return this
 
         return Matrix(rows, other.cols, { i, j -> this.row[i].vector * other.column[j].vector })
+    }
+
+    infix fun rowCat(other: Matrix): Matrix {
+        if (rows != other.rows)
+            throw MatrixDimensionError("Matrices must have equal row numbers to concatenate by rows.")
+
+        return Matrix(rows, cols + other.cols, { i, j ->
+            if (j < cols)
+                this[i, j]
+            else
+                other[i, j - cols]
+        })
+    }
+
+    infix fun colCat(other: Matrix): Matrix {
+        if (cols != other.cols)
+            throw MatrixDimensionError("Matrices must have equal column numbers to concatenate by columns.")
+
+        return Matrix(rows + other.rows, cols, { i, j ->
+            if (i < rows)
+                this[i, j]
+            else
+                other[i - rows, j]
+        })
+    }
+
+    infix fun directAdd(other: Matrix): Matrix {
+        return ((this rowCat SquareMatrix.zeros(rows, other.cols))
+                colCat (SquareMatrix.zeros(other.rows, cols) rowCat other))
     }
 
     override fun toString(): String {

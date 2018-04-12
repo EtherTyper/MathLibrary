@@ -35,4 +35,12 @@ class SquareMatrix(members: Array<Array<out Any>>) : Matrix(members) {
                 } as Any
             }
         }
+
+    companion object {
+        fun zeros(m: Int, n: Int): Matrix =
+                Matrix(m, n, { _, _ -> 0 })
+
+        fun eye(n: Int): Matrix =
+                Matrix(n, n, { i, j -> if (i == j) 1 else 0 })
+    }
 }

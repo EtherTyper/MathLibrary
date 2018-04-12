@@ -7,6 +7,10 @@ import core.linear.Column
 import core.linear.Matrix
 import core.linear.Row
 import core.linear.SquareMatrix
+import core.transform.MaclaurinSeries
+import core.transform.Series
+import core.transform.factorial
+import core.transform.nthDerivative
 import core.vector.*
 import kotlin.math.*
 
@@ -118,17 +122,19 @@ fun main(args: Array<String>) {
         println()
         println("R2 = ${threeByThree.row[1]}")
         println()
-        println("A' (where R2 is replaced) = \n\n${threeByThree.row.replace(1, Row(10.0, 20.0, 30.0))}")
+        println("A where R2 is replaced = \n\n${threeByThree.row.replace(1, Row(10.0, 20.0, 30.0))}")
         println()
         println("C3 = \n${threeByThree.column[2]}")
         println()
-        println("A' (where C3 is replaced) = \n\n${threeByThree.column.replace(2, Column(10.0, 20.0, 30.0))}")
+        println("A where C3 is replaced = \n\n${threeByThree.column.replace(2, Column(10.0, 20.0, 30.0))}")
         println()
         println("This should error, as the matrix is misshapen.")
         shouldError { Matrix(arrayOf(arrayOf(1, 2, 3), arrayOf(5, 6, 7, 8))) }
         println()
         println("This should error, as the matrix isn't square.")
         shouldError { SquareMatrix(arrayOf(arrayOf(1, 2, 3, 4), arrayOf(5, 6, 7, 8))) }
+        println()
+        println("(Direct sum)\nA ⊕ I_4 = \n${threeByThree directAdd SquareMatrix.eye(4)}")
     }
 
     val projectile = Projectile(10.0, 10.0, PI / 4)
@@ -144,4 +150,15 @@ fun main(args: Array<String>) {
         println("Torque gravity about (0, 1, 0) on projectile at 3s: " +
                 "${(projectile gravityOn mass).torqueAbout(DoubleVector(0.0, 1.0, 0.0).to3D)(3.0)} Nm")
     }
+
+    val cosine = DoubleFunction(::cos)
+
+    val series = Series({ f -> DoubleFunction({ n -> n.pow(f) }) }, 3)
+
+    println((0 until 10).map(Int::toDouble).map({ i -> series(i) }))
+
+    println((0 until 10).map(cosine::nthDerivative).map { i -> i(0.0) })
+    println((0 until 10).map(Int::factorial))
+
+    println((0 until 10).map({ i -> MaclaurinSeries(cosine, i)(PI)}))
 }
