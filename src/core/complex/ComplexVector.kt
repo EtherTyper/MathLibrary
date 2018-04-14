@@ -1,68 +1,76 @@
-package core.vector
+package core.complex
 
 import core.linear.Column
 import core.linear.Row
+import core.vector.ArityError
+import core.vector.DoubleVector
+import core.vector.Vector3D
 import kotlin.math.acos
 import kotlin.math.max
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-open class DoubleVector(vararg val dimensions: Double, mandatoryArity: Int? = null) : Number() {
+open class ComplexVector(vararg val dimensions: Complex, mandatoryArity: Int? = null) : Number() {
     init {
         if (mandatoryArity != null && dimensions.size != mandatoryArity) {
             throw ArityError(mandatoryArity, dimensions.size)
         }
     }
 
-    fun extended(targetArity: Int): DoubleVector {
+    fun extended(targetArity: Int): ComplexVector {
         val dimensionsToAdd = max(targetArity - arity, 0)
-        return DoubleVector(*dimensions, *DoubleArray(dimensionsToAdd))
+
+        return ComplexVector(*dimensions, *Array(dimensionsToAdd, { _ -> Complex.`0` }))
     }
 
-    val to3D get() = Vector3D(this)
+    val collapseToReal: DoubleVector get() =
+        DoubleVector(
+                *dimensions.map(Complex::collapseToReal).toDoubleArray()
+        )
+
+    val to3D get() = Vector3D(collapseToReal)
     val arity get() = dimensions.size
 
-    val column get() = Column(*dimensions)
-    val row get() = Row(*dimensions)
+    val column get() = Column(*collapseToReal.dimensions)
+    val row get() = Row(*collapseToReal.dimensions)
 
-    private fun applyElementwise(other: DoubleVector, operation: (Double, Double) -> Double): DoubleVector {
+    private fun applyElementwise(other: ComplexVector, operation: (Complex, Complex) -> Complex): ComplexVector {
         val extendedOther = other.extended(arity)
         val extendedThis = extended(other.arity)
 
-        return DoubleVector(
+        return ComplexVector(
                 *extendedOther
                         .dimensions
                         .mapIndexed({ i, dimension -> operation(extendedThis[i], dimension) })
-                        .toDoubleArray()
+                        .toTypedArray()
         )
     }
 
-    private fun applyElementwise(other: Double, operation: (Double, Double) -> Double): DoubleVector {
-        return DoubleVector(
+    private fun applyElementwise(other: Complex, operation: (Complex, Complex) -> Complex): ComplexVector {
+        return ComplexVector(
                 *this
                         .dimensions
                         .map({ dimension -> operation(dimension, other) })
-                        .toDoubleArray()
+                        .toTypedArray()
         )
     }
 
     // Element-wise operations between vectors. (no element-wise multiplication)
-    operator fun plus(other: DoubleVector) = applyElementwise(other, Double::plus)
+    operator fun plus(other: ComplexVector) = applyElementwise(other, Complex::plus)
 
-    operator fun minus(other: DoubleVector) = applyElementwise(other, Double::minus)
+    operator fun minus(other: ComplexVector) = applyElementwise(other, Complex::minus)
 
     // Apply an operation to every element and a constant scalar.
-    operator fun times(other: Double) = applyElementwise(other, Double::times)
-
-    operator fun div(other: Double) = applyElementwise(other, Double::div)
+    operator fun times(other: Complex) = applyElementwise(other, Complex::times)
+    operator fun div(other: Complex) = applyElementwise(other, Complex::div)
 
     // Dot products.
-    operator fun times(other: DoubleVector) = applyElementwise(other, Double::times).dimensions.reduce(Double::plus)
+    operator fun times(other: ComplexVector) = applyElementwise(other, Complex::times).dimensions.reduce(Double::plus)
 
     // Outer products.
     infix fun outer(other: DoubleVector) = this.column * other.row
 
-    operator fun get(index: Int): Double = dimensions[index]
+    operator fun get(index: Int): Complex = dimensions[index]
 
     override fun equals(other: Any?) =
             if (other is DoubleVector)
@@ -102,5 +110,3 @@ open class DoubleVector(vararg val dimensions: Double, mandatoryArity: Int? = nu
     override fun toLong() = magnitude.toLong()
     override fun toShort() = magnitude.toShort()
 }
-
-val Number.v get() = DoubleVector(this.toDouble())

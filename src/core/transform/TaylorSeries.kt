@@ -20,12 +20,14 @@ fun DoubleFunction.nthDerivative(n: Int): DoubleFunction {
     }
 }
 
+fun taylorSeriesTerm(term: Int, function: DoubleFunction, center: Int): DoubleFunction {
+    return function.nthDerivative(term) / term.factorial().toDouble() * DoubleFunction({ x ->
+        (x - center).pow(term)
+    })
+}
+
 open class TaylorSeries(function: DoubleFunction, accuracy: Int, center: Int) : Series(
-        { term ->
-            function.nthDerivative(term) / term.factorial().toDouble() * DoubleFunction({ x ->
-                (x - center).pow(term)
-            })
-        }, accuracy
+        { term -> taylorSeriesTerm(term, function, center) }, accuracy
 )
 
 open class MaclaurinSeries(function: DoubleFunction, accuracy: Int) : TaylorSeries(function, accuracy, 0)

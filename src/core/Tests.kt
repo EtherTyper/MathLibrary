@@ -7,10 +7,7 @@ import core.linear.Column
 import core.linear.Matrix
 import core.linear.Row
 import core.linear.SquareMatrix
-import core.transform.MaclaurinSeries
-import core.transform.Series
-import core.transform.factorial
-import core.transform.nthDerivative
+import core.transform.*
 import core.vector.*
 import kotlin.math.*
 
@@ -36,12 +33,12 @@ fun main(args: Array<String>) {
         println("j\u0302: ${DoubleVector.j}")
         println("k\u0302: ${DoubleVector.k}")
 
-        println("Constant: ${123.456.v}")
+        println("Constant: ${core.complex.v}")
     }
 
     section("Arity Checks") {
         println("This should error, as 3D vectors should have arities of exactly 3.")
-        shouldError { 123.456.v.to3D }
+        shouldError { core.complex.v.to3D }
     }
 
     val vector1 = DoubleVector(2.0, 3.0, 4.0)
@@ -160,5 +157,7 @@ fun main(args: Array<String>) {
     println((0 until 10).map(cosine::nthDerivative).map { i -> i(0.0) })
     println((0 until 10).map(Int::factorial))
 
-    println((0 until 10).map({ i -> MaclaurinSeries(cosine, i)(PI)}))
+    println((0 until 10).map({ i -> taylorSeriesTerm(i, cosine, 0)(PI)}))
+
+    val new = 0
 }
