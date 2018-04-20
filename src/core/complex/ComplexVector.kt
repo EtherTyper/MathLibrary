@@ -9,6 +9,7 @@ import kotlin.math.acos
 import kotlin.math.max
 import kotlin.math.pow
 import kotlin.math.sqrt
+import kotlin.reflect.full.createInstance
 
 open class ComplexVector(vararg val dimensions: Complex, mandatoryArity: Int? = null) : Number() {
     init {
@@ -57,15 +58,16 @@ open class ComplexVector(vararg val dimensions: Complex, mandatoryArity: Int? = 
 
     // Element-wise operations between vectors. (no element-wise multiplication)
     operator fun plus(other: ComplexVector) = applyElementwise(other, Complex::plus)
-
     operator fun minus(other: ComplexVector) = applyElementwise(other, Complex::minus)
 
     // Apply an operation to every element and a constant scalar.
     operator fun times(other: Complex) = applyElementwise(other, Complex::times)
     operator fun div(other: Complex) = applyElementwise(other, Complex::div)
+    operator fun times(other: Double) = this * Complex(other)
+    operator fun div(other: Double) = this / Complex(other)
 
     // Dot products.
-    operator fun times(other: ComplexVector) = applyElementwise(other, Complex::times).dimensions.reduce(Double::plus)
+    operator fun times(other: ComplexVector) = conjugate.applyElementwise(other, Complex::times).dimensions.reduce(Complex::plus)
 
     // Outer products.
     infix fun outer(other: DoubleVector) = this.column * other.row
@@ -73,11 +75,11 @@ open class ComplexVector(vararg val dimensions: Complex, mandatoryArity: Int? = 
     operator fun get(index: Int): Complex = dimensions[index]
 
     override fun equals(other: Any?) =
-            if (other is DoubleVector)
+            if (other is ComplexVector)
                 this.dimensions.contentEquals(other.dimensions)
             else false
 
-    override fun hashCode() = this.dimensions.map(Double::hashCode).sum()
+    override fun hashCode() = this.dimensions.map(Complex::hashCode).sum()
 
     companion object {
         fun unit(dimensionality: Int) = DoubleVector(*DoubleArray(dimensionality), 1.0)
@@ -94,12 +96,13 @@ open class ComplexVector(vararg val dimensions: Complex, mandatoryArity: Int? = 
 
     override fun toString(): String = "<${dimensions.joinToString(separator = ", ")}>"
 
-    val magnitude get() = sqrt(this * this)
+    val conjugate get() = ComplexVector(*dimensions.map(Complex::conjugate).toTypedArray())
+    val magnitude get() = sqrt((this * this).real)
     val unit get() = this / magnitude
 
-    infix fun angleFrom(other: DoubleVector) = acos(this * other / (this.magnitude * other.magnitude))
-    infix fun projectionOnto(other: DoubleVector) = other * (this * other) / (other.magnitude.pow(2))
-    infix fun rejectionFrom(other: DoubleVector) = this - (this projectionOnto other)
+    infix fun angleFrom(other: ComplexVector) = acos(this * other / (this.magnitude * other.magnitude))
+    infix fun projectionOnto(other: ComplexVector) = other * (this * other) / (other.magnitude.pow(2))
+    infix fun rejectionFrom(other: ComplexVector) = this - (this projectionOnto other)
 
     // Number conformance
     override fun toByte() = magnitude.toByte()

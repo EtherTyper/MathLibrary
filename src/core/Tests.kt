@@ -33,12 +33,12 @@ fun main(args: Array<String>) {
         println("j\u0302: ${DoubleVector.j}")
         println("k\u0302: ${DoubleVector.k}")
 
-        println("Constant: ${core.complex.v}")
+        println("Constant: ${1.v}")
     }
 
     section("Arity Checks") {
         println("This should error, as 3D vectors should have arities of exactly 3.")
-        shouldError { core.complex.v.to3D }
+        shouldError { 1.v.to3D }
     }
 
     val vector1 = DoubleVector(2.0, 3.0, 4.0)

@@ -21,12 +21,14 @@ class Complex(public val real: Double, public val imaginary: Double = 0.0) : Num
 
     operator fun div(other: Complex): Complex {
         val numerator = this * other.conjugate
-        val denominator = (other * other.conjugate).real
+        val denominator = (other * other.conjugate).real // Should always be real.
 
         return numerator / denominator
     }
 
     operator fun div(other: Double) = this * (1 / other)
+
+    operator fun unaryMinus() = this * -1.0
 
     public val conjugate get(): Complex = Complex(real, -imaginary)
     public val magnitude get(): Double = sqrt((this * conjugate).real)
@@ -45,13 +47,12 @@ class Complex(public val real: Double, public val imaginary: Double = 0.0) : Num
     override fun toLong() = magnitude.toLong()
     override fun toShort() = magnitude.toShort()
 
+    @Suppress("ObjectPropertyName")
     companion object {
-        @Suppress("ObjectPropertyName")
         val `0` = Complex(0.0, 0.0)
+        val i = Complex(0.0, 1.0)
     }
 }
-
-fun exp(i: Complex): Complex = exp(i.real) * Complex(cos(i.imaginary), sin(i.imaginary))
 
 operator fun Double.plus(other: Complex) = other + this
 operator fun Double.minus(other: Complex) = Complex(this) - other
