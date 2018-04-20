@@ -5,20 +5,17 @@ import core.linear.Row
 import core.vector.ArityError
 import core.vector.DoubleVector
 import core.vector.Vector3D
-import kotlin.math.acos
 import kotlin.math.max
 import kotlin.math.pow
-import kotlin.math.sqrt
-import kotlin.reflect.full.createInstance
 
-open class ComplexVector(vararg val dimensions: Complex, mandatoryArity: Int? = null) : Number() {
+open class ComplexVector(private vararg val dimensions: Complex, mandatoryArity: Int? = null) : Number() {
     init {
         if (mandatoryArity != null && dimensions.size != mandatoryArity) {
             throw ArityError(mandatoryArity, dimensions.size)
         }
     }
 
-    fun extended(targetArity: Int): ComplexVector {
+    open fun extended(targetArity: Int): ComplexVector {
         val dimensionsToAdd = max(targetArity - arity, 0)
 
         return ComplexVector(*dimensions, *Array(dimensionsToAdd, { _ -> Complex.`0` }))
@@ -42,7 +39,7 @@ open class ComplexVector(vararg val dimensions: Complex, mandatoryArity: Int? = 
         return ComplexVector(
                 *extendedOther
                         .dimensions
-                        .mapIndexed({ i, dimension -> operation(extendedThis[i], dimension) })
+                        .mapIndexed({ i, dimension -> operation(extendedThis.getComplex(i), dimension) })
                         .toTypedArray()
         )
     }
@@ -63,8 +60,8 @@ open class ComplexVector(vararg val dimensions: Complex, mandatoryArity: Int? = 
     // Apply an operation to every element and a constant scalar.
     operator fun times(other: Complex) = applyElementwise(other, Complex::times)
     operator fun div(other: Complex) = applyElementwise(other, Complex::div)
-    operator fun times(other: Double) = this * Complex(other)
-    operator fun div(other: Double) = this / Complex(other)
+    open operator fun times(other: Double) = this * Complex(other)
+    open operator fun div(other: Double) = this / Complex(other)
 
     // Dot products.
     operator fun times(other: ComplexVector) = conjugate.applyElementwise(other, Complex::times).dimensions.reduce(Complex::plus)
@@ -72,7 +69,7 @@ open class ComplexVector(vararg val dimensions: Complex, mandatoryArity: Int? = 
     // Outer products.
     infix fun outer(other: DoubleVector) = this.column * other.row
 
-    operator fun get(index: Int): Complex = dimensions[index]
+    fun getComplex(index: Int) = dimensions[index]
 
     override fun equals(other: Any?) =
             if (other is ComplexVector)
@@ -81,24 +78,11 @@ open class ComplexVector(vararg val dimensions: Complex, mandatoryArity: Int? = 
 
     override fun hashCode() = this.dimensions.map(Complex::hashCode).sum()
 
-    companion object {
-        fun unit(dimensionality: Int) = DoubleVector(*DoubleArray(dimensionality), 1.0)
-
-        val i get() = unit(0).extended(3).to3D
-        val j get() = unit(1).extended(3).to3D
-        val k get() = unit(2).extended(3).to3D
-
-        @Suppress("ObjectPropertyName")
-        val `0`
-            get() = DoubleVector().extended(3).to3D
-        val zero get() = `0`
-    }
-
     override fun toString(): String = "<${dimensions.joinToString(separator = ", ")}>"
 
-    val conjugate get() = ComplexVector(*dimensions.map(Complex::conjugate).toTypedArray())
-    val magnitude get() = sqrt((this * this).real)
-    val unit get() = this / magnitude
+    open val conjugate get() = ComplexVector(*dimensions.map(Complex::conjugate).toTypedArray())
+    open val magnitude get() = sqrt(this * this).real
+    open val unit get() = this / magnitude
 
     infix fun angleFrom(other: ComplexVector) = acos(this * other / (this.magnitude * other.magnitude))
     infix fun projectionOnto(other: ComplexVector) = other * (this * other) / (other.magnitude.pow(2))

@@ -147,17 +147,4 @@ fun main(args: Array<String>) {
         println("Torque gravity about (0, 1, 0) on projectile at 3s: " +
                 "${(projectile gravityOn mass).torqueAbout(DoubleVector(0.0, 1.0, 0.0).to3D)(3.0)} Nm")
     }
-
-    val cosine = DoubleFunction(::cos)
-
-    val series = Series({ f -> DoubleFunction({ n -> n.pow(f) }) }, 3)
-
-    println((0 until 10).map(Int::toDouble).map({ i -> series(i) }))
-
-    println((0 until 10).map(cosine::nthDerivative).map { i -> i(0.0) })
-    println((0 until 10).map(Int::factorial))
-
-    println((0 until 10).map({ i -> taylorSeriesTerm(i, cosine, 0)(PI)}))
-
-    val new = 0
 }
