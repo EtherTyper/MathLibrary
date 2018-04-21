@@ -1,6 +1,9 @@
 package core.linear
 
-import core.vector.*
+import core.vector.Add
+import core.vector.Multiply
+import core.vector.SquareMatrixDimensionError
+import core.vector.Subtract
 
 class SquareMatrix(members: Array<Array<out Any>>) : Matrix(members) {
     init {
@@ -38,9 +41,9 @@ class SquareMatrix(members: Array<Array<out Any>>) : Matrix(members) {
 
     companion object {
         fun zeros(m: Int, n: Int): Matrix =
-                Matrix(m, n, { _, _ -> 0 })
+                Matrix(m, n, { _, _ -> 0.0 })
 
         fun eye(n: Int): Matrix =
-                Matrix(n, n, { i, j -> if (i == j) 1 else 0 })
+                Matrix(n, n, { i, j -> if (i == j) 1.0 else 0.0 })
     }
 }

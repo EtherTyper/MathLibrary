@@ -5,7 +5,7 @@ import core.vector.DoubleVector
 import core.vector.ScalarField
 import core.vector.VectorField
 
-class ChargeCluster(vararg val charges: PointCharge): Iterable<PointCharge> {
+class ChargeCluster(vararg val charges: PointCharge) : Iterable<PointCharge> {
     override fun iterator() = charges.iterator()
 
     val upperBound: DoubleVector

@@ -41,7 +41,9 @@ open class DoubleVector(vararg val dimensions: Double, mandatoryArity: Int? = nu
             get() = DoubleVector().extended(3).to3D
     }
 
-    override fun toString(): String = "<${dimensions.joinToString(separator = ", ")}>"
+    override fun toString(): String = "<${dimensions.joinToString(separator = ", ") { dimension ->
+        "%.3f".format(dimension)
+    }}>"
 
     override val conjugate get() = this
     override val unit get() = super.unit.collapseToReal

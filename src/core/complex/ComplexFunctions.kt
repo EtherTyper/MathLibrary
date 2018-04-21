@@ -3,7 +3,6 @@ package core.complex
 import kotlin.math.PI
 import kotlin.math.cosh
 import kotlin.math.sinh
-import kotlin.math.sqrt
 
 fun sin(n: Complex): Complex = Complex(
         kotlin.math.sin(n.real) * cosh(n.imaginary),

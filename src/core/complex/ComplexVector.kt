@@ -21,10 +21,11 @@ open class ComplexVector(private vararg val dimensions: Complex, mandatoryArity:
         return ComplexVector(*dimensions, *Array(dimensionsToAdd, { _ -> Complex.`0` }))
     }
 
-    val collapseToReal: DoubleVector get() =
-        DoubleVector(
-                *dimensions.map(Complex::collapseToReal).toDoubleArray()
-        )
+    val collapseToReal: DoubleVector
+        get() =
+            DoubleVector(
+                    *dimensions.map(Complex::collapseToReal).toDoubleArray()
+            )
 
     val to3D get() = Vector3D(collapseToReal)
     val arity get() = dimensions.size
@@ -55,10 +56,12 @@ open class ComplexVector(private vararg val dimensions: Complex, mandatoryArity:
 
     // Element-wise operations between vectors. (no element-wise multiplication)
     operator fun plus(other: ComplexVector) = applyElementwise(other, Complex::plus)
+
     operator fun minus(other: ComplexVector) = applyElementwise(other, Complex::minus)
 
     // Apply an operation to every element and a constant scalar.
     operator fun times(other: Complex) = applyElementwise(other, Complex::times)
+
     operator fun div(other: Complex) = applyElementwise(other, Complex::div)
     open operator fun times(other: Double) = this * Complex(other)
     open operator fun div(other: Double) = this / Complex(other)
@@ -90,6 +93,7 @@ open class ComplexVector(private vararg val dimensions: Complex, mandatoryArity:
 
     // Number conformance
     override fun toByte() = magnitude.toByte()
+
     override fun toChar() = magnitude.toChar()
     override fun toDouble() = magnitude
     override fun toFloat() = magnitude.toFloat()

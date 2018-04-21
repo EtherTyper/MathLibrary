@@ -1,5 +1,6 @@
 package core.linear
 
+import core.complex.Complex
 import core.vector.DoubleVector
 import core.vector.MatrixDimensionError
 import core.vector.NotAMatrixError
@@ -87,7 +88,9 @@ open class Matrix(val members: Array<Array<out Any>>) {
     }
 
     override fun toString(): String {
-        return "| ${members.joinToString(separator = " |\n| ") { array -> array.joinToString(" ") }} |"
+        return "| ${members.joinToString(separator = " |\n| ") { array ->
+            array.joinToString(" ")
+        }} |"
     }
 
     constructor(rows: Int, cols: Int, generator: (Int, Int) -> Any) : this(

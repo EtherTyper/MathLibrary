@@ -1,5 +1,8 @@
 package core.complex
-import kotlin.math.*
+
+import kotlin.math.PI
+import kotlin.math.atan2
+import kotlin.math.sqrt
 
 class Complex(public val real: Double, public val imaginary: Double = 0.0) : Number() {
     operator fun plus(other: Complex) = Complex(
@@ -40,12 +43,17 @@ class Complex(public val real: Double, public val imaginary: Double = 0.0) : Num
 
     // Number conformance
     override fun toByte() = magnitude.toByte()
+
     override fun toChar() = magnitude.toChar()
     override fun toDouble() = magnitude
     override fun toFloat() = magnitude.toFloat()
     override fun toInt() = magnitude.toInt()
     override fun toLong() = magnitude.toLong()
     override fun toShort() = magnitude.toShort()
+
+    override fun toString(): String {
+        return "%.3f + %.3fi".format(real, imaginary)
+    }
 
     @Suppress("ObjectPropertyName")
     companion object {
