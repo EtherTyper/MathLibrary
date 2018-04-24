@@ -1,8 +1,8 @@
 package core.linear
 
-import core.complex.Complex
 import core.vector.DoubleVector
 import core.vector.MatrixDimensionError
+import core.vector.Multiply
 import core.vector.NotAMatrixError
 
 open class Matrix(val members: Array<Array<out Any>>) {
@@ -83,8 +83,14 @@ open class Matrix(val members: Array<Array<out Any>>) {
     }
 
     infix fun directAdd(other: Matrix): Matrix {
-        return ((this rowCat SquareMatrix.zeros(rows, other.cols))
-                colCat (SquareMatrix.zeros(other.rows, cols) rowCat other))
+        return ((this rowCat Matrix.zeros(rows, other.cols))
+                colCat (Matrix.zeros(other.rows, cols) rowCat other))
+    }
+
+    infix fun kronecker(other: Matrix): Matrix {
+        return Matrix(rows * other.rows, cols * other.cols, { i, j ->
+            Multiply(this[i / other.rows, j / other.cols], other[i % other.rows, j % other.cols]) as Any
+        })
     }
 
     override fun toString(): String {
@@ -100,6 +106,9 @@ open class Matrix(val members: Array<Array<out Any>>) {
     )
 
     companion object {
+        fun zeros(m: Int, n: Int): Matrix =
+                Matrix(m, n, { _, _ -> 0.0 })
+
         val unitVectorArray get() = (0.until(3)).map(DoubleVector.Companion::unit).toTypedArray()
     }
 }
