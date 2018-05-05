@@ -5,7 +5,7 @@ import core.UnitVectorError
 import core.vector.defaultDelta
 import kotlin.math.abs
 
-class UnitaryMatrix(members: Array<Array<out Any>>, delta: Double = defaultDelta) : SquareMatrix(members) {
+open class UnitaryMatrix(members: Array<Array<out Any>>, delta: Double = defaultDelta) : SquareMatrix(members) {
     init {
         for (i in 0..cols) {
             // All columns must be unit vectors.

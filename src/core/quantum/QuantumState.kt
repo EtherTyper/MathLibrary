@@ -34,4 +34,7 @@ open class QuantumState(val qubits: Int, vararg dimensions: Complex, delta: Doub
 
         throw Error("Basis not found.")
     }
+
+    infix fun combine(other: QuantumState) = QuantumState(qubits + other.qubits,
+            *(this.column kronecker other.column).vector.dimensions)
 }
