@@ -1,5 +1,6 @@
 package core.quantum
 
+import core.linear.Matrix
 import core.linear.UnitaryMatrix
 
 class QuantumGate(val qubits: Int, members: Array<Array<out Any>>): UnitaryMatrix(members) {
@@ -8,4 +9,8 @@ class QuantumGate(val qubits: Int, members: Array<Array<out Any>>): UnitaryMatri
     operator fun times(other: QuantumState) = QuantumState(super.times(other.column).column[0].vector)
 
     infix fun combine(other: QuantumGate) = QuantumGate(qubits + other.qubits, (this kronecker other).members)
+
+    companion object {
+        fun identityGate(qubits: Int) = QuantumGate(Matrix.eye(qubits.binaryExp))
+    }
 }

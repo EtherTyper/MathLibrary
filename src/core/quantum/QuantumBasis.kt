@@ -15,6 +15,6 @@ open class QuantumBasis(val qubits: Int, vararg val states: QuantumState) : Iter
     )
 
     companion object {
-        fun eyeBasis(qubits: Int) = QuantumBasis(Matrix.eye(2.0.pow(qubits).toInt()))
+        fun eyeBasis(qubits: Int) = QuantumBasis(Matrix.eye(qubits.binaryExp))
     }
 }

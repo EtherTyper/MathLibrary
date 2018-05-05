@@ -10,9 +10,10 @@ import kotlin.math.pow
 import kotlin.math.roundToInt
 
 val Int.binaryLog get() = (ln(this.toDouble()) / ln(2.0)).roundToInt()
+val Int.binaryExp get() = 2.0.pow(this).roundToInt()
 
 open class QuantumState(val qubits: Int, vararg dimensions: Complex, delta: Double = defaultDelta) :
-        ComplexVector(*dimensions, mandatoryArity = 2.0.pow(qubits).toInt()) {
+        ComplexVector(*dimensions, mandatoryArity = qubits.binaryExp) {
     init {
         @Suppress("LeakingThis")
         if (abs(magnitude - 1) > delta) {
