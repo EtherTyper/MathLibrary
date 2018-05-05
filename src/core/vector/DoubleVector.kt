@@ -1,5 +1,6 @@
 package core.vector
 
+import core.ArityError
 import core.complex.Complex
 import core.complex.ComplexVector
 

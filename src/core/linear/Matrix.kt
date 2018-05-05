@@ -2,9 +2,9 @@ package core.linear
 
 import core.complex.Complex
 import core.vector.DoubleVector
-import core.vector.MatrixDimensionError
+import core.MatrixDimensionError
 import core.vector.Multiply
-import core.vector.NotAMatrixError
+import core.NotAMatrixError
 
 open class Matrix(val members: Array<Array<out Any>>) {
     init {

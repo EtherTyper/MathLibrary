@@ -1,5 +1,6 @@
 package core.differential
 
+import core.UnitVectorError
 import core.vector.*
 import kotlin.math.abs
 

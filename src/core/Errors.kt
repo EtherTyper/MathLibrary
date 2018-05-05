@@ -1,4 +1,4 @@
-package core.vector
+package core
 
 import kotlin.reflect.KClass
 

@@ -1,5 +1,6 @@
 package core.vector
 
+import core.BadOperationError
 import core.differential.Derivative
 import core.differential.DirectionalDerivative
 import core.differential.PartialDerivative

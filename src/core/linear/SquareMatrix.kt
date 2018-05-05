@@ -2,7 +2,7 @@ package core.linear
 
 import core.vector.Add
 import core.vector.Multiply
-import core.vector.SquareMatrixDimensionError
+import core.SquareMatrixDimensionError
 import core.vector.Subtract
 
 class SquareMatrix(members: Array<Array<out Any>>) : Matrix(members) {

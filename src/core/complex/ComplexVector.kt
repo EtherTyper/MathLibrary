@@ -2,7 +2,7 @@ package core.complex
 
 import core.linear.Column
 import core.linear.Row
-import core.vector.ArityError
+import core.ArityError
 import core.vector.DoubleVector
 import core.vector.Vector3D
 import kotlin.math.max
@@ -93,6 +93,7 @@ open class ComplexVector(private vararg val dimensions: Complex, mandatoryArity:
 
     // Number conformance
     override fun toByte() = magnitude.toByte()
+
     override fun toChar() = magnitude.toChar()
     override fun toDouble() = magnitude
     override fun toFloat() = magnitude.toFloat()
