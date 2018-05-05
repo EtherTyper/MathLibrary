@@ -1,8 +1,15 @@
 package core.quantum
 
+// So people can't call "parallel" from within the context of a
+// parallel leg builder. See https://kotlinlang.org/docs/reference/type-safe-builders.html#full-definition-of-the-comexamplehtml-package.
+@DslMarker
+annotation class CircuitMarker
+
+@CircuitMarker
 open class QuantumCircuit(val qubits: Int, val parallelLegs: MutableList<ParallelLeg>) {
     class GateApplication(val qubits: IntRange, val gate: QuantumGate)
 
+    @CircuitMarker
     class ParallelLeg(val qubits: Int, val gates: MutableList<GateApplication>) {
         fun applyGate(qubits: IntRange, gate: QuantumGate) {
             gates.add(GateApplication(qubits, gate))
@@ -28,10 +35,12 @@ open class QuantumCircuit(val qubits: Int, val parallelLegs: MutableList<Paralle
                 }
 
                 // If we've already added this gate to the list, don't do that again.
-                if (explicitGate != null && usedGates.add(explicitGate))
+                if (explicitGate != null && !usedGates.add(explicitGate))
                     continue
 
-                val gateToAdd = explicitGate?.gate ?: QuantumGate.identityGate(qubits)
+                // If no gate is applied to this qubit, we can think of an identity
+                // gate being applied to it instead, implicitly.
+                val gateToAdd = explicitGate?.gate ?: QuantumGate.identityGate(1)
 
                 result = result combine gateToAdd
             }
@@ -45,7 +54,7 @@ open class QuantumCircuit(val qubits: Int, val parallelLegs: MutableList<Paralle
     // This is done through repeated matrix multiplication.
     // The latest matrices are applied the furthest left (last.)
     val evaluate get() = parallelLegs.foldRight(
-            QuantumGate.identityGate(0),
+            QuantumGate.identityGate(qubits),
             { leg, acc -> leg.evaluate * acc }
     )
 
@@ -58,10 +67,10 @@ open class QuantumCircuit(val qubits: Int, val parallelLegs: MutableList<Paralle
         }
     }
 
-    fun parallel(init: ParallelLeg.() -> Unit): ParallelLeg {
+    fun parallel(init: ParallelLeg.() -> Unit) {
         val leg = ParallelLeg(qubits, mutableListOf())
         leg.init()
 
-        return leg
+        parallelLegs.add(leg)
     }
 }

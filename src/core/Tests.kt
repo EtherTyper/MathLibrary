@@ -149,16 +149,30 @@ fun main(args: Array<String>) {
     println(SquareMatrix(arrayOf(arrayOf(1.0, 2.0), arrayOf(3.0, 4.0))) kronecker
             SquareMatrix(arrayOf(arrayOf(5.0, 6.0), arrayOf(7.0, 8.0))))
 
-    val hadamard = QuantumGate(
-            UnitaryMatrix(arrayOf(
-                    arrayOf(1.0 / sqrt(2.0), 1.0 / sqrt(2.0)),
-                    arrayOf(1.0 / sqrt(2.0), -1.0 / sqrt(2.0))
-            ))
-    )
+    section("Quantum computer simulator") {
+        val hadamard = QuantumGate(
+                UnitaryMatrix(arrayOf(
+                        arrayOf(1.0 / sqrt(2.0), 1.0 / sqrt(2.0)),
+                        arrayOf(1.0 / sqrt(2.0), -1.0 / sqrt(2.0))
+                ))
+        )
 
-//    val circuit = QuantumCircuit.circuit(4) {
-//        parallel {
-//            applyGate(0..2, )
-//        }
-//    }
+        println("H = \n$hadamard\n")
+
+        val circuit = QuantumCircuit.circuit(3) {
+            parallel {
+                applyGate(1.until(2), hadamard)
+            }
+
+            parallel {
+                // Undo original Hadamard transformation.
+                applyGate(1.until(2), hadamard)
+            }
+        }
+
+        println("Equivalent gate for first step of circuit: \n${circuit.parallelLegs[0].evaluate}\n")
+
+        // This should equal I if everything works out.
+        println("Equivalent gate for entire circuit: \n${circuit.evaluate}\n")
+    }
 }
