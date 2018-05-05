@@ -9,6 +9,8 @@ import kotlin.math.ln
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
+val Int.binaryLog get() = (ln(this.toDouble()) / ln(2.0)).roundToInt()
+
 open class QuantumState(val qubits: Int, vararg dimensions: Complex, delta: Double = defaultDelta) :
         ComplexVector(*dimensions, mandatoryArity = 2.0.pow(qubits).toInt()) {
     init {
@@ -18,7 +20,7 @@ open class QuantumState(val qubits: Int, vararg dimensions: Complex, delta: Doub
         }
     }
 
-    constructor(vector: ComplexVector) : this((ln(vector.arity.toDouble()) / ln(2.0)).roundToInt(), *vector.dimensions)
+    constructor(vector: ComplexVector) : this(vector.arity.binaryLog, *vector.dimensions)
 
     fun measure(basis: QuantumBasis): QuantumState {
         val randomNumber = Math.random()
