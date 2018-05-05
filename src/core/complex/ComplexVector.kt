@@ -30,8 +30,8 @@ open class ComplexVector(private vararg val dimensions: Complex, mandatoryArity:
     val to3D get() = Vector3D(collapseToReal)
     val arity get() = dimensions.size
 
-    val column get() = Column(*collapseToReal.dimensions)
-    val row get() = Row(*collapseToReal.dimensions)
+    val column get() = Column(*dimensions)
+    val row get() = Row(*dimensions)
 
     private fun applyElementwise(other: ComplexVector, operation: (Complex, Complex) -> Complex): ComplexVector {
         val extendedOther = other.extended(arity)
@@ -93,7 +93,6 @@ open class ComplexVector(private vararg val dimensions: Complex, mandatoryArity:
 
     // Number conformance
     override fun toByte() = magnitude.toByte()
-
     override fun toChar() = magnitude.toChar()
     override fun toDouble() = magnitude
     override fun toFloat() = magnitude.toFloat()

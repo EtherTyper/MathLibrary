@@ -1,5 +1,6 @@
 package core.linear
 
+import core.complex.Complex
 import core.vector.DoubleVector
 import core.vector.MatrixDimensionError
 import core.vector.Multiply
@@ -30,8 +31,11 @@ open class Matrix(val members: Array<Array<out Any>>) {
     class RowHelper(val matrix: Matrix) {
         operator fun get(index: Int): Row {
             @Suppress("UNCHECKED_CAST")
-            return Row(*DoubleArray(matrix.members[index].size,
-                    { i -> matrix.members[index][i] as Double }))
+            return Row(*Array(matrix.members[index].size,
+                    { i ->
+                        val value = matrix.members[index][i]
+                        value as? Complex ?: Complex(value as Double)
+                    }))
         }
 
         fun replace(index: Int, value: Row): Matrix {
