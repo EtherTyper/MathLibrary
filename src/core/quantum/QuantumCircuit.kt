@@ -1,21 +1,18 @@
 package core.quantum
 
-open class QuantumCircuit(val qubits: Int, val legs: MutableList<ParallelLeg>) {
-    companion object {
-        fun circuit(qubits: Int, init: QuantumCircuit.() -> Unit): QuantumCircuit {
-            val circuit = QuantumCircuit(qubits, mutableListOf())
-            circuit.init()
-
-            return circuit
-        }
-    }
+open class QuantumCircuit(val qubits: Int, val parallelLegs: MutableList<ParallelLeg>) {
+    class GateApplication(val qubits: IntRange, val gate: QuantumGate)
 
     class ParallelLeg(val qubits: Int, val gates: MutableList<GateApplication>) {
         fun applyGate(qubits: IntRange, gate: QuantumGate) {
             gates.add(GateApplication(qubits, gate))
         }
 
-        // Evaulate quantum operations that run in parallel.
+        // Evaluate quantum operations that run in parallel.
+        //
+        // This is done through repeated tensor products,
+        // and filling in I matrices for every qubit that's
+        // not being operated on.
         val evaluate: QuantumGate get() {
             val usedGates: MutableSet<GateApplication> = mutableSetOf()
             var result = QuantumGate.identityGate(0)
@@ -43,7 +40,23 @@ open class QuantumCircuit(val qubits: Int, val legs: MutableList<ParallelLeg>) {
         }
     }
 
-    class GateApplication(val qubits: IntRange, val gate: QuantumGate)
+    // Evaluate quantum operations that run in sequence.
+    //
+    // This is done through repeated matrix multiplication.
+    // The latest matrices are applied the furthest left (last.)
+    val evaluate get() = parallelLegs.foldRight(
+            QuantumGate.identityGate(0),
+            { leg, acc -> leg.evaluate * acc }
+    )
+
+    companion object {
+        fun circuit(qubits: Int, init: QuantumCircuit.() -> Unit): QuantumCircuit {
+            val circuit = QuantumCircuit(qubits, mutableListOf())
+            circuit.init()
+
+            return circuit
+        }
+    }
 
     fun parallel(init: ParallelLeg.() -> Unit): ParallelLeg {
         val leg = ParallelLeg(qubits, mutableListOf())

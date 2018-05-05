@@ -19,4 +19,6 @@ open class UnitaryMatrix(members: Array<Array<out Any>>, delta: Double = default
             }
         }
     }
+
+    operator fun times(other: UnitaryMatrix) = UnitaryMatrix(super.times(other).members)
 }
