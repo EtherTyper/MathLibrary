@@ -4,12 +4,12 @@ import core.ArityError
 import core.complex.Complex
 import core.complex.ComplexVector
 
-open class DoubleVector(vararg val dimensions: Double, mandatoryArity: Int? = null) : ComplexVector(
-        *dimensions.map { x -> Complex(x) }.toTypedArray()
+open class DoubleVector(vararg val doubleDimensions: Double, mandatoryArity: Int? = null) : ComplexVector(
+        *doubleDimensions.map { x -> Complex(x) }.toTypedArray()
 ) {
     init {
-        if (mandatoryArity != null && dimensions.size != mandatoryArity) {
-            throw ArityError(mandatoryArity, dimensions.size)
+        if (mandatoryArity != null && doubleDimensions.size != mandatoryArity) {
+            throw ArityError(mandatoryArity, doubleDimensions.size)
         }
     }
 
@@ -21,14 +21,14 @@ open class DoubleVector(vararg val dimensions: Double, mandatoryArity: Int? = nu
     override operator fun div(other: Double) = super.div(other).collapseToReal
     operator fun times(other: DoubleVector) = super.times(other).collapseToReal
 
-    operator fun get(index: Int) = dimensions[index]
+    operator fun get(index: Int) = doubleDimensions[index]
 
     override fun equals(other: Any?) =
             if (other is DoubleVector)
-                this.dimensions.contentEquals(other.dimensions)
+                this.doubleDimensions.contentEquals(other.doubleDimensions)
             else false
 
-    override fun hashCode() = this.dimensions.map(Double::hashCode).sum()
+    override fun hashCode() = this.doubleDimensions.map(Double::hashCode).sum()
 
     companion object {
         fun unit(dimensionality: Int) = DoubleVector(*DoubleArray(dimensionality), 1.0)
@@ -42,7 +42,7 @@ open class DoubleVector(vararg val dimensions: Double, mandatoryArity: Int? = nu
             get() = DoubleVector().extended(3).to3D
     }
 
-    override fun toString(): String = "<${dimensions.joinToString(separator = ", ") { dimension ->
+    override fun toString(): String = "<${doubleDimensions.joinToString(separator = ", ") { dimension ->
         "%.3f".format(dimension)
     }}>"
 

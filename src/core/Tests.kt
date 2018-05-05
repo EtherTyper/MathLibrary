@@ -3,10 +3,9 @@ package core
 import applications.mechanics.Mass
 import applications.mechanics.Projectile
 import core.differential.*
-import core.linear.Column
-import core.linear.Matrix
-import core.linear.Row
-import core.linear.SquareMatrix
+import core.linear.*
+import core.quantum.QuantumCircuit
+import core.quantum.QuantumGate
 import core.vector.*
 import kotlin.math.*
 
@@ -130,7 +129,7 @@ fun main(args: Array<String>) {
         println("This should error, as the matrix isn't square.")
         shouldError { SquareMatrix(arrayOf(arrayOf(1, 2, 3, 4), arrayOf(5, 6, 7, 8))) }
         println()
-        println("(Direct sum)\nA ⊕ I_4 = \n${threeByThree directAdd SquareMatrix.eye(4)}")
+        println("(Direct sum)\nA ⊕ I_4 = \n${threeByThree directAdd Matrix.eye(4)}")
     }
 
     val projectile = Projectile(10.0, 10.0, PI / 4)
@@ -149,4 +148,17 @@ fun main(args: Array<String>) {
 
     println(SquareMatrix(arrayOf(arrayOf(1.0, 2.0), arrayOf(3.0, 4.0))) kronecker
             SquareMatrix(arrayOf(arrayOf(5.0, 6.0), arrayOf(7.0, 8.0))))
+
+    val hadamard = QuantumGate(
+            UnitaryMatrix(arrayOf(
+                    arrayOf(1.0 / sqrt(2.0), 1.0 / sqrt(2.0)),
+                    arrayOf(1.0 / sqrt(2.0), -1.0 / sqrt(2.0))
+            ))
+    )
+
+//    val circuit = QuantumCircuit.circuit(4) {
+//        parallel {
+//            applyGate(0..2, )
+//        }
+//    }
 }

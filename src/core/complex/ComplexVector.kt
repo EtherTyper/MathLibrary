@@ -8,7 +8,7 @@ import core.vector.Vector3D
 import kotlin.math.max
 import kotlin.math.pow
 
-open class ComplexVector(vararg val dimensions: Complex, mandatoryArity: Int? = null) : Number() {
+open class ComplexVector(open vararg val dimensions: Complex, mandatoryArity: Int? = null) : Number() {
     init {
         if (mandatoryArity != null && dimensions.size != mandatoryArity) {
             throw ArityError(mandatoryArity, dimensions.size)
