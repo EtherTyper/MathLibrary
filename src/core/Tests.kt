@@ -172,7 +172,7 @@ fun main(args: Array<String>) {
 
         println("Equivalent gate for first step of circuit: \n${circuit.parallelLegs[0].evaluate}\n")
 
-        // This should equal I if everything works out.
+        // This should equal I if everything works out, since H^2 = I.
         println("Equivalent gate for entire circuit: \n${circuit.evaluate}\n")
     }
 }

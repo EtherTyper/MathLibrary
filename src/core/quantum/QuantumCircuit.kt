@@ -1,7 +1,7 @@
 package core.quantum
 
-// So people can't call "parallel" from within the context of a
-// parallel leg builder. See https://kotlinlang.org/docs/reference/type-safe-builders.html#full-definition-of-the-comexamplehtml-package.
+// So people can't call "parallel" from within the context of a parallel leg builder.
+// See https://kotlinlang.org/docs/reference/type-safe-builders.html#full-definition-of-the-comexamplehtml-package.
 @DslMarker
 annotation class CircuitMarker
 
@@ -46,6 +46,12 @@ open class QuantumCircuit(val qubits: Int, val parallelLegs: MutableList<Paralle
             }
 
             return result
+        }
+    }
+
+    fun applyGate(qubits: IntRange, gate: QuantumGate) {
+        parallel {
+            applyGate(qubits, gate)
         }
     }
 
