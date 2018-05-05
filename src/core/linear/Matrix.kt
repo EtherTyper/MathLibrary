@@ -1,10 +1,10 @@
 package core.linear
 
+import core.MatrixDimensionError
+import core.NotAMatrixError
 import core.complex.Complex
 import core.vector.DoubleVector
-import core.MatrixDimensionError
 import core.vector.Multiply
-import core.NotAMatrixError
 
 open class Matrix(val members: Array<Array<out Any>>) {
     init {
@@ -110,8 +110,11 @@ open class Matrix(val members: Array<Array<out Any>>) {
     )
 
     companion object {
-        fun zeros(m: Int, n: Int): Matrix =
+        fun zeros(m: Int, n: Int) =
                 Matrix(m, n, { _, _ -> 0.0 })
+
+        fun eye(n: Int) =
+                UnitaryMatrix(Matrix(n, n, { i, j -> if (i == j) 1.0 else 0.0 }).members)
 
         val unitVectorArray get() = (0.until(3)).map(DoubleVector.Companion::unit).toTypedArray()
     }

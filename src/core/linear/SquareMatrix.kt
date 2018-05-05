@@ -1,11 +1,11 @@
 package core.linear
 
+import core.SquareMatrixDimensionError
 import core.vector.Add
 import core.vector.Multiply
-import core.SquareMatrixDimensionError
 import core.vector.Subtract
 
-class SquareMatrix(members: Array<Array<out Any>>) : Matrix(members) {
+open class SquareMatrix(members: Array<Array<out Any>>) : Matrix(members) {
     init {
         if (!members.all { array -> array.size == members.size } || members.isEmpty()) {
             throw SquareMatrixDimensionError()
@@ -38,9 +38,4 @@ class SquareMatrix(members: Array<Array<out Any>>) : Matrix(members) {
                 } as Any
             }
         }
-
-    companion object {
-        fun eye(n: Int): Matrix =
-                Matrix(n, n, { i, j -> if (i == j) 1.0 else 0.0 })
-    }
 }

@@ -1,14 +1,14 @@
 package core.complex
 
+import core.ArityError
 import core.linear.Column
 import core.linear.Row
-import core.ArityError
 import core.vector.DoubleVector
 import core.vector.Vector3D
 import kotlin.math.max
 import kotlin.math.pow
 
-open class ComplexVector(private vararg val dimensions: Complex, mandatoryArity: Int? = null) : Number() {
+open class ComplexVector(vararg val dimensions: Complex, mandatoryArity: Int? = null) : Number() {
     init {
         if (mandatoryArity != null && dimensions.size != mandatoryArity) {
             throw ArityError(mandatoryArity, dimensions.size)
