@@ -1,4 +1,5 @@
 package core.quantum
+
 @QuantumCircuit.CircuitMarker
 open class QuantumCircuit(val qubits: Int, val parallelLegs: MutableList<ParallelLeg>) {
     // So people can't call "parallel" from within the context of a parallel leg builder.
@@ -19,33 +20,34 @@ open class QuantumCircuit(val qubits: Int, val parallelLegs: MutableList<Paralle
         // This is done through repeated tensor products,
         // and filling in I matrices for every qubit that's
         // not being operated on.
-        val evaluate: QuantumGate get() {
-            val usedGates: MutableSet<GateApplication> = mutableSetOf()
-            var result = QuantumGate.identityGate(0)
+        val evaluate: QuantumGate
+            get() {
+                val usedGates: MutableSet<GateApplication> = mutableSetOf()
+                var result = QuantumGate.identityGate(0)
 
-            for (qubit in qubits - 1 downTo 0) {
-                var explicitGate: GateApplication? = null
+                for (qubit in qubits - 1 downTo 0) {
+                    var explicitGate: GateApplication? = null
 
-                for (gateApplication in gates) {
-                    // Find a gate which applies to this qubit.
-                    if (gateApplication.qubits.contains(qubit)) {
-                        explicitGate = gateApplication
+                    for (gateApplication in gates) {
+                        // Find a gate which applies to this qubit.
+                        if (gateApplication.qubits.contains(qubit)) {
+                            explicitGate = gateApplication
+                        }
                     }
+
+                    // If we've already added this gate to the list, don't do that again.
+                    if (explicitGate != null && !usedGates.add(explicitGate))
+                        continue
+
+                    // If no gate is applied to this qubit, we can think of an identity
+                    // gate being applied to it instead, implicitly.
+                    val gateToAdd = explicitGate?.gate ?: QuantumGate.identityGate(1)
+
+                    result = result combine gateToAdd
                 }
 
-                // If we've already added this gate to the list, don't do that again.
-                if (explicitGate != null && !usedGates.add(explicitGate))
-                    continue
-
-                // If no gate is applied to this qubit, we can think of an identity
-                // gate being applied to it instead, implicitly.
-                val gateToAdd = explicitGate?.gate ?: QuantumGate.identityGate(1)
-
-                result = result combine gateToAdd
+                return result
             }
-
-            return result
-        }
     }
 
     fun applyGate(qubits: Iterable<Int>, gate: QuantumGate) {
@@ -58,10 +60,11 @@ open class QuantumCircuit(val qubits: Int, val parallelLegs: MutableList<Paralle
     //
     // This is done through repeated matrix multiplication.
     // The latest matrices are applied the furthest left (last.)
-    val evaluate get() = parallelLegs.foldRight(
-            QuantumGate.identityGate(qubits),
-            { leg, acc -> leg.evaluate * acc }
-    )
+    val evaluate
+        get() = parallelLegs.foldRight(
+                QuantumGate.identityGate(qubits),
+                { leg, acc -> leg.evaluate * acc }
+        )
 
     companion object {
         fun circuit(qubits: Int, init: QuantumCircuit.() -> Unit): QuantumCircuit {

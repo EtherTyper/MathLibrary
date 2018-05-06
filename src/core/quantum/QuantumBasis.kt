@@ -2,7 +2,6 @@ package core.quantum
 
 import core.linear.Matrix
 import core.linear.UnitaryMatrix
-import kotlin.math.pow
 
 open class QuantumBasis(val qubits: Int, vararg val states: QuantumState) : Iterable<QuantumState> {
     override fun iterator() = states.iterator()
