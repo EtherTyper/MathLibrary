@@ -7,11 +7,11 @@ annotation class CircuitMarker
 
 @CircuitMarker
 open class QuantumCircuit(val qubits: Int, val parallelLegs: MutableList<ParallelLeg>) {
-    class GateApplication(val qubits: IntRange, val gate: QuantumGate)
+    class GateApplication(val qubits: Iterable<Int>, val gate: QuantumGate)
 
     @CircuitMarker
     class ParallelLeg(val qubits: Int, val gates: MutableList<GateApplication>) {
-        fun applyGate(qubits: IntRange, gate: QuantumGate) {
+        fun applyGate(qubits: Iterable<Int>, gate: QuantumGate) {
             gates.add(GateApplication(qubits, gate))
         }
 
@@ -29,7 +29,7 @@ open class QuantumCircuit(val qubits: Int, val parallelLegs: MutableList<Paralle
 
                 for (gateApplication in gates) {
                     // Find a gate which applies to this qubit.
-                    if (gateApplication.qubits.start <= qubit && gateApplication.qubits.endInclusive >= qubit) {
+                    if (gateApplication.qubits.contains(qubit)) {
                         explicitGate = gateApplication
                     }
                 }
@@ -49,7 +49,7 @@ open class QuantumCircuit(val qubits: Int, val parallelLegs: MutableList<Paralle
         }
     }
 
-    fun applyGate(qubits: IntRange, gate: QuantumGate) {
+    fun applyGate(qubits: Iterable<Int>, gate: QuantumGate) {
         parallel {
             applyGate(qubits, gate)
         }

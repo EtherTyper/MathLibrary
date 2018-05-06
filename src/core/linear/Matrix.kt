@@ -99,7 +99,12 @@ open class Matrix(val members: Array<Array<out Any>>) {
 
     override fun toString(): String {
         return "| ${members.joinToString(separator = " |\n| ") { array ->
-            array.joinToString(" ")
+            array.map { member ->
+                if (member is Double)
+                    String.format("%6.3f", member)
+                else
+                    member
+            }.joinToString(" ")
         }} |"
     }
 
