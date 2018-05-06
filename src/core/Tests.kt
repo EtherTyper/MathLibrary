@@ -4,6 +4,7 @@ import applications.mechanics.Mass
 import applications.mechanics.Projectile
 import core.differential.*
 import core.linear.*
+import core.quantum.QuantumBasis
 import core.quantum.QuantumCircuit
 import core.quantum.QuantumGate
 import core.vector.*
@@ -149,7 +150,7 @@ fun main(args: Array<String>) {
     println(SquareMatrix(arrayOf(arrayOf(1.0, 2.0), arrayOf(3.0, 4.0))) kronecker
             SquareMatrix(arrayOf(arrayOf(5.0, 6.0), arrayOf(7.0, 8.0))))
 
-    section("Quantum computer simulator") {
+    section("Quantum Computer Simulator") {
         val hadamard = QuantumGate(
                 UnitaryMatrix(arrayOf(
                         arrayOf(1.0 / sqrt(2.0), 1.0 / sqrt(2.0)),
@@ -161,12 +162,12 @@ fun main(args: Array<String>) {
 
         val circuit = QuantumCircuit.circuit(3) {
             parallel {
-                applyGate(1.until(2), hadamard)
+                applyGate(1 until 2, hadamard)
             }
 
             parallel {
                 // Undo original Hadamard transformation.
-                applyGate(1.until(2), hadamard)
+                applyGate(1 until 2, hadamard)
             }
         }
 
@@ -174,5 +175,7 @@ fun main(args: Array<String>) {
 
         // This should equal I if everything works out, since H^2 = I.
         println("Equivalent gate for entire circuit: \n${circuit.evaluate}\n")
+
+        println("Input run through the quantum gate: \n${circuit apply QuantumBasis.eyeBasis(3).states[5] }")
     }
 }

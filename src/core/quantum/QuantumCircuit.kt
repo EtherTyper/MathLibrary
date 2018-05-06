@@ -1,12 +1,11 @@
 package core.quantum
-
-// So people can't call "parallel" from within the context of a parallel leg builder.
-// See https://kotlinlang.org/docs/reference/type-safe-builders.html#full-definition-of-the-comexamplehtml-package.
-@DslMarker
-annotation class CircuitMarker
-
-@CircuitMarker
+@QuantumCircuit.CircuitMarker
 open class QuantumCircuit(val qubits: Int, val parallelLegs: MutableList<ParallelLeg>) {
+    // So people can't call "parallel" from within the context of a parallel leg builder.
+    // See https://kotlinlang.org/docs/reference/type-safe-builders.html#full-definition-of-the-comexamplehtml-package.
+    @DslMarker
+    annotation class CircuitMarker
+
     class GateApplication(val qubits: Iterable<Int>, val gate: QuantumGate)
 
     @CircuitMarker
@@ -24,7 +23,7 @@ open class QuantumCircuit(val qubits: Int, val parallelLegs: MutableList<Paralle
             val usedGates: MutableSet<GateApplication> = mutableSetOf()
             var result = QuantumGate.identityGate(0)
 
-            for (qubit in 0 until qubits) {
+            for (qubit in qubits - 1 downTo 0) {
                 var explicitGate: GateApplication? = null
 
                 for (gateApplication in gates) {
@@ -79,4 +78,6 @@ open class QuantumCircuit(val qubits: Int, val parallelLegs: MutableList<Paralle
 
         parallelLegs.add(leg)
     }
+
+    infix fun apply(other: QuantumState) = evaluate * other
 }

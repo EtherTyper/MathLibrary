@@ -9,7 +9,7 @@ open class QuantumBasis(val qubits: Int, vararg val states: QuantumState) : Iter
 
     constructor(matrix: UnitaryMatrix) : this(
             matrix.members.size.binaryLog,
-            *(0..matrix.cols).map { columnNumber ->
+            *(0 until matrix.cols).map { columnNumber ->
                 QuantumState(matrix.column[columnNumber].vector)
             }.toTypedArray()
     )
