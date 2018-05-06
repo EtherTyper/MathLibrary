@@ -176,6 +176,9 @@ fun main(args: Array<String>) {
         // This should equal I if everything works out, since H^2 = I.
         println("Equivalent gate for entire circuit: \n${circuit.evaluate}\n")
 
-        println("Input run through the quantum gate: \n${circuit apply QuantumBasis.eyeBasis(3).states[5] }")
+        val output = circuit apply QuantumBasis.eyeBasis(3).states[5]
+
+        println("Input run through the quantum gate: \n$output\n")
+        println("Input run through the quantum gate and measured: \n${output.measure()}\n")
     }
 }

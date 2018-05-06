@@ -23,7 +23,7 @@ open class QuantumState(val qubits: Int, vararg dimensions: Complex, delta: Doub
 
     constructor(vector: ComplexVector) : this(vector.arity.binaryLog, *vector.dimensions)
 
-    fun measure(basis: QuantumBasis): QuantumState {
+    fun measure(basis: QuantumBasis = QuantumBasis.eyeBasis(qubits)): QuantumState {
         val randomNumber = Math.random()
         var sectionEnd = 0.0
 
