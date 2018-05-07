@@ -175,14 +175,14 @@ fun main(args: Array<String>) {
 
     section("Quantum Computer Simulator") {
         val circuit = QuantumCircuit.circuit(3) {
-            parallel {
-                applyGate(1 until 2, QuantumGate.H)
-            }
+            applyGate(0..0, QuantumGate.H)
 
             parallel {
-                // Undo original Hadamard transformation.
-                applyGate(1 until 2, QuantumGate.H)
+                applyGate(0..1, QuantumGate.S)
+                applyGate(2..2, QuantumGate.X)
             }
+
+            applyGate(1..1, QuantumGate.H)
         }
 
         println("Equivalent gate for first step of circuit: \n${circuit.parallelLegs[0].evaluate}\n")

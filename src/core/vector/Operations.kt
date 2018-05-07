@@ -1,6 +1,10 @@
 package core.vector
 
 import core.BadOperationError
+import core.complex.Complex
+import core.complex.minus
+import core.complex.plus
+import core.complex.times
 import core.differential.Derivative
 import core.differential.DirectionalDerivative
 import core.differential.PartialDerivative
@@ -49,7 +53,10 @@ object Multiply : OperationList(
         Operation(DirectionalDerivative::class, ScalarField::class) { a: DirectionalDerivative, b: ScalarField -> a * b },
         Operation(DirectionalDerivative::class, Double::class) { a: DirectionalDerivative, b: Double -> a * b },
         Operation(PartialDerivative::class, VectorField::class) { a: PartialDerivative, b: VectorField -> a * b },
-        Operation(PartialDerivative::class, DoubleVector::class) { a: PartialDerivative, b: DoubleVector -> a * b }
+        Operation(PartialDerivative::class, DoubleVector::class) { a: PartialDerivative, b: DoubleVector -> a * b },
+        Operation(Complex::class, Double::class) { a: Complex, b: Double -> a * b },
+        Operation(Double::class, Complex::class) { a: Double, b: Complex -> a * b },
+        Operation(Complex::class, Complex::class) { a: Complex, b: Complex -> a * b }
 )
 
 object Add : OperationList(
@@ -63,7 +70,10 @@ object Add : OperationList(
         Operation(ScalarField::class, Double::class) { a: ScalarField, b: Double -> a + b },
         Operation(VectorField::class, ScalarField::class) { a: VectorField, b: VectorField -> a + b },
         Operation(VectorField::class, VectorField::class) { a: VectorField, b: VectorField -> a + b },
-        Operation(VectorField::class, DoubleVector::class) { a: VectorField, b: DoubleVector -> a + b }
+        Operation(VectorField::class, DoubleVector::class) { a: VectorField, b: DoubleVector -> a + b },
+        Operation(Complex::class, Double::class) { a: Complex, b: Double -> a + b },
+        Operation(Double::class, Complex::class) { a: Double, b: Complex -> a + b },
+        Operation(Complex::class, Complex::class) { a: Complex, b: Complex -> a + b }
 )
 
 object Subtract : OperationList(
@@ -77,5 +87,8 @@ object Subtract : OperationList(
         Operation(ScalarField::class, Double::class) { a: ScalarField, b: Double -> a - b },
         Operation(VectorField::class, ScalarField::class) { a: VectorField, b: VectorField -> a - b },
         Operation(VectorField::class, VectorField::class) { a: VectorField, b: VectorField -> a - b },
-        Operation(VectorField::class, DoubleVector::class) { a: VectorField, b: DoubleVector -> a - b }
+        Operation(VectorField::class, DoubleVector::class) { a: VectorField, b: DoubleVector -> a - b },
+        Operation(Complex::class, Double::class) { a: Complex, b: Double -> a - b },
+        Operation(Double::class, Complex::class) { a: Double, b: Complex -> a - b },
+        Operation(Complex::class, Complex::class) { a: Complex, b: Complex -> a - b }
 )
