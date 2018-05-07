@@ -47,8 +47,8 @@ open class QuantumState(val qubits: Int, vararg dimensions: Complex, private val
         for (state in 0 until qubits.binaryExp) {
             if (dimensions[state].magnitude >= delta) {
                 stringComponents.add("(${dimensions[state]})|${(1..qubits).map { qubit ->
-                    state % qubit.binaryExp / (qubit.binaryExp - 1)
-                }.joinToString("")}>")
+                    state / ((qubit - 1).binaryExp) % 2
+                }.joinToString("")}⟩")
             }
         }
 

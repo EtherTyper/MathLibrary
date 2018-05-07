@@ -156,7 +156,7 @@ fun main(args: Array<String>) {
         println("\u0305x = ${complexNumber.conjugate}")
         println("x^2 = ${complexNumber * complexNumber}")
         println("|x| = ${complexNumber.magnitude}")
-
+        println()
         println("sin(x) = ${sin(complexNumber)}")
         println("cos(x) = ${cos(complexNumber)}")
         println("tan(x) = ${tan(complexNumber)}")
@@ -204,17 +204,15 @@ fun main(args: Array<String>) {
         }
 
         println("Equivalent gate for first step of circuit: \n${circuit.parallelLegs[0].evaluate}\n")
-
-        // This should equal I if everything works out, since H^2 = I.
         println("Equivalent gate for entire circuit: \n${circuit.evaluate}\n")
 
-        val input = QuantumBasis.eyeBasis(3).states[5]
+        val input = (QuantumGate.identity(2) combine QuantumGate.H) * QuantumBasis.eyeBasis(3).states[5]
 
         println("Input state: \n$input\n")
 
         val output = circuit apply input
 
-        println("Input run through the quantum gate: \n$output\n")
-        println("Input run through the quantum gate and measured: \n${output.measure()}\n")
+        println("Input run through the circuit: \n$output\n")
+        println("Input run through the circuit and measured: \n${output.measure()}\n")
     }
 }
