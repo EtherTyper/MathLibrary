@@ -74,13 +74,11 @@ class QuantumGate(val qubits: Int, members: Array<Array<out Any>>) : UnitaryMatr
 
         val cS = controlled(S)
 
-        private fun cornerOfD(theta: Double) = QuantumGate(
+        fun D(theta: Double) = controlled(controlled(QuantumGate(
                 UnitaryMatrix(arrayOf(
                         arrayOf(Complex(0.0, cos(theta)), Complex(sin(theta))),
                         arrayOf(Complex(sin(theta)), Complex(0.0, cos(theta)))
                 ))
-        )
-
-        fun D(theta: Double) = controlled(controlled(cornerOfD(theta)))
+        )))
     }
 }

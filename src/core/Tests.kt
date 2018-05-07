@@ -151,31 +151,37 @@ fun main(args: Array<String>) {
     section("Complex Arithmetic") {
         val complexNumber = Complex(1.0, 1.0)
 
-        println(complexNumber)
-        println(complexNumber.conjugate)
-        println(complexNumber.magnitude)
+        println("x = $complexNumber")
+        println("\u0305x = ${complexNumber.conjugate}")
+        println("x^2 = ${complexNumber * complexNumber}")
+        println("|x| = ${complexNumber.magnitude}")
+    }
 
-        println(complexNumber * complexNumber)
+    section("Quantum Gates") {
+        // Gates!
+        println("H = \n${QuantumGate.H}\n")
+        println("√X = \n${QuantumGate.sqrtNOT}\n")
+        println("X = \n${QuantumGate.X}\n")
+        println("Y = \n${QuantumGate.Y}\n")
+        println("Z = \n${QuantumGate.Z}\n")
+        println("√S = \n${QuantumGate.sqrtS}\n")
+        println("S = \n${QuantumGate.S}\n")
+        println("cX = \n${QuantumGate.cX}\n")
+        println("cY = \n${QuantumGate.cY}\n")
+        println("cZ = \n${QuantumGate.cZ}\n")
+        println("CCNOT = \n${QuantumGate.CCNOT}\n")
+        println("cS = \n${QuantumGate.cS}\n")
     }
 
     section("Quantum Computer Simulator") {
-        val hadamard = QuantumGate(
-                UnitaryMatrix(arrayOf(
-                        arrayOf(1.0 / sqrt(2.0), 1.0 / sqrt(2.0)),
-                        arrayOf(1.0 / sqrt(2.0), -1.0 / sqrt(2.0))
-                ))
-        )
-
-        println("H = \n$hadamard\n")
-
         val circuit = QuantumCircuit.circuit(3) {
             parallel {
-                applyGate(1 until 2, hadamard)
+                applyGate(1 until 2, QuantumGate.H)
             }
 
             parallel {
                 // Undo original Hadamard transformation.
-                applyGate(1 until 2, hadamard)
+                applyGate(1 until 2, QuantumGate.H)
             }
         }
 
@@ -192,19 +198,5 @@ fun main(args: Array<String>) {
 
         println("Input run through the quantum gate: \n$output\n")
         println("Input run through the quantum gate and measured: \n${output.measure()}\n")
-
-        // Gates!
-        println("H = \n${QuantumGate.H}\n")
-        println("√X = \n${QuantumGate.sqrtNOT}\n")
-        println("X = \n${QuantumGate.X}\n")
-        println("Y = \n${QuantumGate.Y}\n")
-        println("Z = \n${QuantumGate.Z}\n")
-        println("√S = \n${QuantumGate.sqrtS}\n")
-        println("S = \n${QuantumGate.S}\n")
-        println("cX = \n${QuantumGate.cX}\n")
-        println("cY = \n${QuantumGate.cY}\n")
-        println("cZ = \n${QuantumGate.cZ}\n")
-        println("CCNOT = \n${QuantumGate.CCNOT}\n")
-        println("cS = \n${QuantumGate.cS}\n")
     }
 }
