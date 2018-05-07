@@ -12,7 +12,7 @@ import kotlin.math.roundToInt
 val Int.binaryLog get() = (ln(this.toDouble()) / ln(2.0)).roundToInt()
 val Int.binaryExp get() = 2.0.pow(this).roundToInt()
 
-open class QuantumState(val qubits: Int, vararg dimensions: Complex, delta: Double = defaultDelta) :
+open class QuantumState(val qubits: Int, vararg dimensions: Complex, private val delta: Double = defaultDelta) :
         ComplexVector(*dimensions, mandatoryArity = qubits.binaryExp) {
     init {
         @Suppress("LeakingThis")
@@ -40,4 +40,18 @@ open class QuantumState(val qubits: Int, vararg dimensions: Complex, delta: Doub
 
     infix fun combine(other: QuantumState) = QuantumState(qubits + other.qubits,
             *(this.column kronecker other.column).vector.dimensions)
+
+    override fun toString(): String {
+        val stringComponents: MutableList<String> = mutableListOf()
+
+        for (state in 0 until qubits.binaryExp) {
+            if (dimensions[state].magnitude >= delta) {
+                stringComponents.add("(${dimensions[state]})|${(1..qubits).map { qubit ->
+                    state % qubit.binaryExp / (qubit.binaryExp - 1)
+                }.joinToString("")}>")
+            }
+        }
+
+        return stringComponents.joinToString(" + ")
+    }
 }

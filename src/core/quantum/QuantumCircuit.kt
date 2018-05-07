@@ -1,5 +1,7 @@
 package core.quantum
 
+import core.InvalidRangeError
+
 @QuantumCircuit.CircuitMarker
 open class QuantumCircuit(val qubits: Int, val parallelLegs: MutableList<ParallelLeg>) {
     // So people can't call "parallel" from within the context of a parallel leg builder.
@@ -12,6 +14,10 @@ open class QuantumCircuit(val qubits: Int, val parallelLegs: MutableList<Paralle
     @CircuitMarker
     class ParallelLeg(val qubits: Int, val gates: MutableList<GateApplication>) {
         fun applyGate(qubits: Iterable<Int>, gate: QuantumGate) {
+            if (qubits.count() != gate.qubits) {
+                throw InvalidRangeError(gate.qubits, qubits.count())
+            }
+
             gates.add(GateApplication(qubits, gate))
         }
 

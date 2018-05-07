@@ -6,6 +6,7 @@ class ArityError(expected: Int, actual: Int) : Error("Expected vector of arity $
 class UnitVectorError(magnitude: Double) : Error("Expected unit vector but got vector of magnitude $magnitude.")
 class OrthogonalityError : Error("Expected orthogonal vectors.")
 class BadOperationError(a: Any, b: Any, kClass: KClass<*>) : Error("Cannot execute operation: $a ${kClass.simpleName} $b")
+class InvalidRangeError(expectedSize: Int, size: Int) : Error("Expected range of size $expectedSize but got $size.")
 
 open class MatrixDimensionError(message: String) : Error(message)
 class NotAMatrixError : MatrixDimensionError("Each row must be the same length.")

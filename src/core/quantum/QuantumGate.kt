@@ -13,5 +13,7 @@ class QuantumGate(val qubits: Int, members: Array<Array<out Any>>) : UnitaryMatr
 
     companion object {
         fun identityGate(qubits: Int) = QuantumGate(Matrix.eye(qubits.binaryExp))
+
+
     }
 }
