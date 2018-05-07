@@ -71,6 +71,7 @@ class QuantumGate(val qubits: Int, members: Array<Array<out Any>>) : UnitaryMatr
         val cZ = controlled(Z)
 
         val CCNOT = D(PI / 2)
+        // Also, CCNOT = controlled(controlled(X)) = cX
 
         val cS = controlled(S)
 
