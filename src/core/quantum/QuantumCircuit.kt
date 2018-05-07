@@ -29,7 +29,7 @@ open class QuantumCircuit(val qubits: Int, val parallelLegs: MutableList<Paralle
         val evaluate: QuantumGate
             get() {
                 val usedGates: MutableSet<GateApplication> = mutableSetOf()
-                var result = QuantumGate.identityGate(0)
+                var result = QuantumGate.identity(0)
 
                 for (qubit in qubits - 1 downTo 0) {
                     var explicitGate: GateApplication? = null
@@ -47,7 +47,7 @@ open class QuantumCircuit(val qubits: Int, val parallelLegs: MutableList<Paralle
 
                     // If no gate is applied to this qubit, we can think of an identity
                     // gate being applied to it instead, implicitly.
-                    val gateToAdd = explicitGate?.gate ?: QuantumGate.identityGate(1)
+                    val gateToAdd = explicitGate?.gate ?: QuantumGate.identity(1)
 
                     result = result combine gateToAdd
                 }
@@ -68,7 +68,7 @@ open class QuantumCircuit(val qubits: Int, val parallelLegs: MutableList<Paralle
     // The latest matrices are applied the furthest left (last.)
     val evaluate
         get() = parallelLegs.foldRight(
-                QuantumGate.identityGate(qubits),
+                QuantumGate.identity(qubits),
                 { leg, acc -> leg.evaluate * acc }
         )
 

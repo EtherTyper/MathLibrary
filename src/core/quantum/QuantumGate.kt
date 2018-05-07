@@ -18,7 +18,7 @@ class QuantumGate(val qubits: Int, members: Array<Array<out Any>>) : UnitaryMatr
     infix fun combine(other: QuantumGate) = QuantumGate(qubits + other.qubits, (this kronecker other).members)
 
     companion object {
-        fun identityGate(qubits: Int) = QuantumGate(Matrix.eye(qubits.binaryExp))
+        fun identity(qubits: Int) = QuantumGate(Matrix.eye(qubits.binaryExp))
 
         val H = QuantumGate(
                 UnitaryMatrix(arrayOf(
@@ -62,25 +62,25 @@ class QuantumGate(val qubits: Int, members: Array<Array<out Any>>) : UnitaryMatr
 
         fun controlled(other: QuantumGate) = QuantumGate(
                 UnitaryMatrix(
-                        (Matrix.eye(2) directAdd other).members
+                        (QuantumGate.identity(other.qubits) directAdd other).members
                 )
         )
+
+        val cX = controlled(X)
+        val cY = controlled(Y)
+        val cZ = controlled(Z)
 
         val CCNOT = D(PI / 2)
 
-        val CSWAP = QuantumGate(
-                UnitaryMatrix(
-                        (Matrix.eye(5) directAdd X directAdd Matrix.eye(1)).members
-                )
+        val cS = controlled(S)
+
+        private fun cornerOfD(theta: Double) = QuantumGate(
+                UnitaryMatrix(arrayOf(
+                        arrayOf(Complex(0.0, cos(theta)), Complex(sin(theta))),
+                        arrayOf(Complex(sin(theta)), Complex(0.0, cos(theta)))
+                ))
         )
 
-        fun D(theta: Double) = QuantumGate(
-                UnitaryMatrix(
-                        (Matrix.eye(6) directAdd UnitaryMatrix(arrayOf(
-                                arrayOf(Complex(0.0, cos(theta)), Complex(sin(theta))),
-                                arrayOf(Complex(sin(theta)), Complex(0.0, cos(theta)))
-                        ))).members
-                )
-        )
+        fun D(theta: Double) = controlled(controlled(cornerOfD(theta)))
     }
 }

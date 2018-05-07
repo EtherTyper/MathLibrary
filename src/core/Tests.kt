@@ -2,6 +2,7 @@ package core
 
 import applications.mechanics.Mass
 import applications.mechanics.Projectile
+import core.complex.Complex
 import core.differential.*
 import core.linear.*
 import core.quantum.QuantumBasis
@@ -147,8 +148,15 @@ fun main(args: Array<String>) {
                 "${(projectile gravityOn mass).torqueAbout(DoubleVector(0.0, 1.0, 0.0).to3D)(3.0)} Nm")
     }
 
-    println(SquareMatrix(arrayOf(arrayOf(1.0, 2.0), arrayOf(3.0, 4.0))) kronecker
-            SquareMatrix(arrayOf(arrayOf(5.0, 6.0), arrayOf(7.0, 8.0))))
+    section("Complex Arithmetic") {
+        val complexNumber = Complex(1.0, 1.0)
+
+        println(complexNumber)
+        println(complexNumber.conjugate)
+        println(complexNumber.magnitude)
+
+        println(complexNumber * complexNumber)
+    }
 
     section("Quantum Computer Simulator") {
         val hadamard = QuantumGate(
@@ -184,5 +192,19 @@ fun main(args: Array<String>) {
 
         println("Input run through the quantum gate: \n$output\n")
         println("Input run through the quantum gate and measured: \n${output.measure()}\n")
+
+        // Gates!
+        println("H = \n${QuantumGate.H}\n")
+        println("√X = \n${QuantumGate.sqrtNOT}\n")
+        println("X = \n${QuantumGate.X}\n")
+        println("Y = \n${QuantumGate.Y}\n")
+        println("Z = \n${QuantumGate.Z}\n")
+        println("√S = \n${QuantumGate.sqrtS}\n")
+        println("S = \n${QuantumGate.S}\n")
+        println("cX = \n${QuantumGate.cX}\n")
+        println("cY = \n${QuantumGate.cY}\n")
+        println("cZ = \n${QuantumGate.cZ}\n")
+        println("CCNOT = \n${QuantumGate.CCNOT}\n")
+        println("cS = \n${QuantumGate.cS}\n")
     }
 }

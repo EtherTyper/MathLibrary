@@ -59,7 +59,7 @@ open class Matrix(val members: Array<Array<out Any>>) {
     operator fun times(other: Matrix): Matrix {
         if (members.isEmpty() || other.members.isEmpty()) return this
 
-        return Matrix(rows, other.cols, { i, j -> this.row[i].vector * other.column[j].vector })
+        return Matrix(rows, other.cols, { i, j -> this.row[i].vector realDot other.column[j].vector })
     }
 
     infix fun rowCat(other: Matrix): Matrix {

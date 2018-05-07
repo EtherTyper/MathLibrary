@@ -20,6 +20,7 @@ open class DoubleVector(vararg val doubleDimensions: Double, mandatoryArity: Int
     override operator fun times(other: Double) = super.times(other).collapseToReal
     override operator fun div(other: Double) = super.div(other).collapseToReal
     operator fun times(other: DoubleVector) = super.times(other).collapseToReal
+    infix fun realDot(other: DoubleVector) = super.realDot(other).collapseToReal
 
     operator fun get(index: Int) = doubleDimensions[index]
 
