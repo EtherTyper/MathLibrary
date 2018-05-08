@@ -203,7 +203,7 @@ fun main(args: Array<String>) {
                 applyGate(1..1, QuantumGate.X)
             }
 
-            // Undo the Hadamard operation on the third qubit.
+            // Undo the Hadamard operation on the third qubit by applying it again.
             applyGate(2..2, QuantumGate.H)
         }
 
