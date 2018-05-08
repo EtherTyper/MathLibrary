@@ -193,13 +193,17 @@ fun main(args: Array<String>) {
 
     section("Quantum Computer Simulator") {
         val circuit = QuantumCircuit.circuit(3) {
+            // Hadamard the first qubit.
             applyGate(0..0, QuantumGate.H)
 
             parallel {
+                // Swap all data in the first and third qubits.
+                // At the same time, invert the second qubit.
                 applyGate(listOf(0, 2), QuantumGate.S)
                 applyGate(1..1, QuantumGate.X)
             }
 
+            // Undo the Hadamard operation on the third qubit.
             applyGate(2..2, QuantumGate.H)
         }
 
