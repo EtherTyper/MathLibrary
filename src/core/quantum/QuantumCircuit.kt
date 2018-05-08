@@ -28,31 +28,25 @@ open class QuantumCircuit(val qubits: Int, val parallelLegs: MutableList<Paralle
         // not being operated on.
         val evaluate: QuantumGate
             get() {
-                val usedGates: MutableSet<GateApplication> = mutableSetOf()
-                var result = QuantumGate.identity(0)
+                val newQubitOrder = mutableListOf<Int>()
+                var reorderedGate = QuantumGate.identity(0)
 
-                for (qubit in qubits - 1 downTo 0) {
-                    var explicitGate: GateApplication? = null
-
-                    for (gateApplication in gates) {
-                        // Find a gate which applies to this qubit.
-                        if (gateApplication.qubits.contains(qubit)) {
-                            explicitGate = gateApplication
-                        }
+                for (gateApplication in gates) {
+                    for (qubit in gateApplication.qubits) {
+                        newQubitOrder.add(qubit)
                     }
 
-                    // If we've already added this gate to the list, don't do that again.
-                    if (explicitGate != null && !usedGates.add(explicitGate))
-                        continue
-
-                    // If no gate is applied to this qubit, we can think of an identity
-                    // gate being applied to it instead, implicitly.
-                    val gateToAdd = explicitGate?.gate ?: QuantumGate.identity(1)
-
-                    result = result combine gateToAdd
+                    reorderedGate = reorderedGate combine gateApplication.gate
                 }
 
-                return result
+                // Fill in all the unused qubits with identity operations.
+                newQubitOrder.addAll((0 until qubits).filter({ qubit -> !newQubitOrder.contains(qubit) }))
+                reorderedGate = reorderedGate combine QuantumGate.identity(qubits - reorderedGate.qubits)
+
+                val swapGateSequence = qubitCommutationGate(newQubitOrder)
+                val inverseSwapGateSequence = QuantumGate(qubits, swapGateSequence.transpose.members)
+
+                return inverseSwapGateSequence * reorderedGate * swapGateSequence
             }
     }
 

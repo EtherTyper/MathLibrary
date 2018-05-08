@@ -3,6 +3,7 @@ package core.quantum
 import core.complex.Complex
 import core.complex.exp
 import core.linear.Matrix
+import core.linear.SquareMatrix
 import core.linear.UnitaryMatrix
 import kotlin.math.PI
 import kotlin.math.cos

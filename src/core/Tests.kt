@@ -196,17 +196,17 @@ fun main(args: Array<String>) {
             applyGate(0..0, QuantumGate.H)
 
             parallel {
-                applyGate(0..1, QuantumGate.S)
-                applyGate(2..2, QuantumGate.X)
+                applyGate(listOf(0, 2), QuantumGate.S)
+                applyGate(1..1, QuantumGate.X)
             }
 
-            applyGate(1..1, QuantumGate.H)
+            applyGate(2..2, QuantumGate.H)
         }
 
         println("Equivalent gate for first step of circuit: \n${circuit.parallelLegs[0].evaluate}\n")
         println("Equivalent gate for entire circuit: \n${circuit.evaluate}\n")
 
-        val input = (QuantumGate.identity(2) combine QuantumGate.H) * QuantumBasis.eyeBasis(3).states[5]
+        val input = (QuantumGate.identity(2) combine QuantumGate.H) * QuantumBasis.eyeBasis(3).states[6]
 
         println("Input state: \n$input\n")
 

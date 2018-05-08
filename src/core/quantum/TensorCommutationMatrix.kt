@@ -1,6 +1,6 @@
 package core.quantum
 
-fun qubitCommutationMatrix(order: IntArray): QuantumGate {
+fun qubitCommutationGate(order: MutableList<Int>): QuantumGate {
     var gate = QuantumGate.identity(order.size)
 
     for (i in order.indices) {
@@ -18,14 +18,14 @@ fun qubitCommutationMatrix(order: IntArray): QuantumGate {
             order[j] = order[j - 1]
         }
 
-        // Simulate this movement with the
-        gate = qubitSwapMatrix(order.size, i, minimumIndex) * gate
+        // Simulate this movement with swap gates.
+        gate = qubitShiftGate(order.size, i, minimumIndex) * gate
     }
 
     return gate
 }
 
-fun qubitSwapMatrix(qubits: Int, firstQubit: Int, secondQubit: Int): QuantumGate {
+fun qubitShiftGate(qubits: Int, firstQubit: Int, secondQubit: Int): QuantumGate {
     var gate = QuantumGate.identity(qubits)
 
     for (i in secondQubit downTo firstQubit + 1) {
@@ -38,8 +38,9 @@ fun qubitSwapMatrix(qubits: Int, firstQubit: Int, secondQubit: Int): QuantumGate
     return gate
 }
 
+// Just for testing.
 fun main(args: Array<String>) {
-    val swapper = qubitCommutationMatrix(intArrayOf(3, 1, 2, 0))
+    val swapper = qubitCommutationGate(mutableListOf(1, 2, 3, 0))
 
     println(swapper * QuantumBasis.eyeBasis(4).states[1])
     println(swapper * QuantumBasis.eyeBasis(4).states[2])
