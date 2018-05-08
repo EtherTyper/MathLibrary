@@ -6,6 +6,7 @@ import core.complex.Complex
 import core.complex.*
 import core.differential.*
 import core.linear.*
+import core.quantum.QFT
 import core.quantum.QuantumBasis
 import core.quantum.QuantumCircuit
 import core.quantum.QuantumGate
@@ -218,5 +219,9 @@ fun main(args: Array<String>) {
 
         println("Input run through the circuit: \n$output\n")
         println("Input run through the circuit and measured: \n${output.measure()}\n")
+    }
+
+    section("Quantum Fourier Transform") {
+        println("QFT(2) = \n${QFT(2)}")
     }
 }
