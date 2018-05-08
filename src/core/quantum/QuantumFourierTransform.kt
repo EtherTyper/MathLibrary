@@ -5,7 +5,7 @@ fun QFT(qubits: Int) = QuantumCircuit.circuit(qubits, {
         applyGate(listOf(i), QuantumGate.H)
 
         for (j in i + 1 until qubits) {
-            applyGate(listOf(i, j), QuantumGate.controlled(
+            applyGate(listOf(j, i), QuantumGate.controlled(
                     QuantumGate.R(
                             (j - i + 1).toDouble()
                     )
