@@ -68,6 +68,7 @@ open class ComplexVector(open vararg val dimensions: Complex, mandatoryArity: In
 
     // Hermitian and real dot products.
     operator fun times(other: ComplexVector) = conjugate realDot other
+
     infix fun realDot(other: ComplexVector) = applyElementwise(other, Complex::times).dimensions.reduce(Complex::plus)
 
     // Outer products.
