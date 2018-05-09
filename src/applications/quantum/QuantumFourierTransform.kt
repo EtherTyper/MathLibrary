@@ -1,4 +1,4 @@
-package core.quantum
+package applications.quantum
 
 fun QFT(qubits: Int) = QuantumCircuit.circuit(qubits, {
     for (i in 0 until qubits) {

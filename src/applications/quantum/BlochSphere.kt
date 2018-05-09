@@ -1,6 +1,5 @@
-package applications.blochsphere
+package applications.quantum
 
-import core.quantum.QuantumState
 import core.vector.DoubleVector
 import javax.swing.JFrame
 import javax.swing.SwingUtilities

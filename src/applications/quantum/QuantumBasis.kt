@@ -1,4 +1,4 @@
-package core.quantum
+package applications.quantum
 
 import core.linear.Matrix
 import core.linear.UnitaryMatrix

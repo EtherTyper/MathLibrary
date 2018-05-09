@@ -6,10 +6,10 @@ import core.complex.Complex
 import core.complex.*
 import core.differential.*
 import core.linear.*
-import core.quantum.QFT
-import core.quantum.QuantumBasis
-import core.quantum.QuantumCircuit
-import core.quantum.QuantumGate
+import applications.quantum.QFT
+import applications.quantum.QuantumBasis
+import applications.quantum.QuantumCircuit
+import applications.quantum.QuantumGate
 import core.vector.*
 import kotlin.math.*
 

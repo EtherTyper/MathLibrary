@@ -1,4 +1,4 @@
-package core.quantum
+package applications.quantum
 
 import core.InvalidRangeError
 

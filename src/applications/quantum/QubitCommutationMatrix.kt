@@ -1,4 +1,4 @@
-package core.quantum
+package applications.quantum
 
 fun qubitCommutationGate(order: MutableList<Int>): QuantumGate {
     var gate = QuantumGate.identity(order.size)
