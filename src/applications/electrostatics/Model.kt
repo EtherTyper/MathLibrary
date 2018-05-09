@@ -22,13 +22,12 @@ fun main(args: Array<String>) {
     }
 }
 
-@Suppress("ConvertSecondaryConstructorToPrimary")
-class Window : JFrame {
+class Window() : JFrame() {
     val size get() = chargeCluster.upperBound.toGraphical(chargeCluster)
     val idealWidth get() = size[0].toInt()
     val idealHeight get() = size[1].toInt()
 
-    constructor() {
+    init {
         val canvas = Canvas()
         canvas.preferredSize = Dimension(idealWidth, idealHeight)
 
@@ -61,8 +60,6 @@ class Window : JFrame {
         pack()
         title = "Electrostatics Simulation"
         isVisible = true
-
-        JFrame()
     }
 }
 
