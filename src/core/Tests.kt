@@ -181,11 +181,11 @@ fun main(args: Array<String>) {
 
         println("Basis states of 3 qubits in order:\n${basisStates.joinToString("\n")}\n")
 
-        val newOrder = mutableListOf(3, 0, 1, 2)
+        val newOrder = mutableListOf(4, 2, 3, 1)
 
-        println("Qubit rearrangement from ${(0 until newOrder.count()).toList()} -> $newOrder:")
+        println("Qubit rearrangement from ${newOrder.sorted()} -> $newOrder:")
 
-        val qubitCommutationGate = qubitCommutationGate(mutableListOf(4, 2, 3, 1))
+        val qubitCommutationGate = qubitCommutationGate(newOrder)
 
         for (i in 0 until qubitCommutationGate.qubits) {
             val initialState = QuantumBasis.eyeBasis(qubitCommutationGate.qubits).states[i.binaryExp]
