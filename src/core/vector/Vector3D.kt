@@ -6,7 +6,7 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 class Vector3D(vector: DoubleVector) : DoubleVector(*vector.doubleDimensions, mandatoryArity = 3) {
-    constructor(x: Double, y: Double, z: Double): this(DoubleVector(x, y, z))
+    constructor(x: Double, y: Double, z: Double) : this(DoubleVector(x, y, z))
 
     infix fun cross(other: Vector3D): Vector3D {
         return (SquareMatrix(
@@ -20,9 +20,9 @@ class Vector3D(vector: DoubleVector) : DoubleVector(*vector.doubleDimensions, ma
 
     companion object {
         fun spherical(theta: Double, phi: Double, r: Double) = Vector3D(
-            sin(theta) * cos(phi),
-            sin(theta) * sin(phi),
-            cos(theta)
+                sin(theta) * cos(phi),
+                sin(theta) * sin(phi),
+                cos(theta)
         ) * r
     }
 

@@ -1,6 +1,6 @@
 package tests
 
-public class AllTests: Tests() {
+public class AllTests : Tests() {
     companion object {
         @JvmStatic
         fun main(vararg args: String) {

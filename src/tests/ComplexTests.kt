@@ -2,7 +2,7 @@ package tests
 
 import core.complex.*
 
-class ComplexTests: Tests() {
+class ComplexTests : Tests() {
     companion object {
         @JvmStatic
         fun main(vararg args: String) {
