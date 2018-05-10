@@ -35,10 +35,10 @@ class Complex(public val real: Double, public val imaginary: Double = 0.0) : Num
 
     public val conjugate get(): Complex = Complex(real, -imaginary)
     public val magnitude get(): Double = sqrt((this * conjugate).real)
-    public val angle get(): Double = atan2(imaginary, real)
+    public val argument get(): Double = atan2(imaginary, real)
 
     // Used in converting complex vectors to real vectors.
-    val mostlyPositive get(): Boolean = angle < PI / 2 || angle > 3 * PI / 2
+    val mostlyPositive get(): Boolean = argument < PI / 2 || argument > 3 * PI / 2
     val collapseToReal get(): Double = magnitude * if (mostlyPositive) 1 else -1
 
     // Number conformance

@@ -25,5 +25,5 @@ fun asin(n: Complex): Complex = -Complex.i * ln(Complex.i + sqrt(1.0 - n * n))
 fun acos(n: Complex): Complex = PI / 2 - asin(n)
 fun atan(n: Complex): Complex = 0.5 * Complex.i * (ln(1.0 - Complex.i * n) + ln(1.0 + Complex.i * n))
 
-fun ln(n: Complex): Complex = Complex(kotlin.math.ln(n.magnitude), n.angle)
+fun ln(n: Complex): Complex = Complex(kotlin.math.ln(n.magnitude), n.argument)
 fun exp(n: Complex): Complex = kotlin.math.exp(n.real) * Complex(kotlin.math.cos(n.imaginary), kotlin.math.sin(n.imaginary))
