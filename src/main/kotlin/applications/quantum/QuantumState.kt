@@ -3,6 +3,7 @@ package applications.quantum
 import core.UnitVectorError
 import core.complex.Complex
 import core.complex.ComplexVector
+import core.complex.toComplexVector
 import core.vector.defaultDelta
 import kotlin.math.abs
 import kotlin.math.ln
@@ -55,3 +56,5 @@ open class QuantumState(val qubits: Int, vararg dimensions: Complex, private val
         return stringComponents.joinToString(" + ")
     }
 }
+
+fun String.toQuantumState() = QuantumState(this.toComplexVector())

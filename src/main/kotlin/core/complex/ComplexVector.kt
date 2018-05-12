@@ -103,3 +103,5 @@ open class ComplexVector(open vararg val dimensions: Complex, mandatoryArity: In
     override fun toLong() = magnitude.toLong()
     override fun toShort() = magnitude.toShort()
 }
+
+fun String.toComplexVector() = ComplexVector(*this.split(",").map(String::toComplex).toTypedArray())

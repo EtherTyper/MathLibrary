@@ -62,6 +62,15 @@ class Complex(public val real: Double, public val imaginary: Double = 0.0) : Num
     }
 }
 
+fun String.toComplex(): Complex {
+    val (realString, imaginaryString) = this.replace("\\s+", "").split("+")
+
+    val real = realString.toDouble()
+    val imaginary = imaginaryString.filterNot { c -> c == 'i' }.toDouble()
+
+    return Complex(real, imaginary)
+}
+
 operator fun Double.plus(other: Complex) = other + this
 operator fun Double.minus(other: Complex) = Complex(this) - other
 operator fun Double.times(other: Complex) = other * this
