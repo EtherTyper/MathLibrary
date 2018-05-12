@@ -8,5 +8,11 @@
     <artifactId>MathLibrary</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>io.javalin</groupId>
+            <artifactId>javalin</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+    </dependencies>
 </project>
