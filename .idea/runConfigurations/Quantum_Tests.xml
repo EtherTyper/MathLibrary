@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="QuantumTests" type="JetRunConfigurationType" factoryName="Kotlin">
+  <configuration default="false" name="Quantum Tests" type="JetRunConfigurationType" factoryName="Kotlin">
     <module name="MathLibrary" />
     <option name="VM_PARAMETERS" value="" />
     <option name="PROGRAM_PARAMETERS" value="" />

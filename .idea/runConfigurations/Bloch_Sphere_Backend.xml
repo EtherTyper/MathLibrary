@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Bloch Sphere Model" type="JetRunConfigurationType" factoryName="Kotlin">
+  <configuration default="false" name="Bloch Sphere Backend" type="JetRunConfigurationType" factoryName="Kotlin">
     <module name="MathLibrary" />
     <option name="VM_PARAMETERS" value="" />
     <option name="PROGRAM_PARAMETERS" value="" />
