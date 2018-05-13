@@ -104,4 +104,9 @@ open class ComplexVector(open vararg val dimensions: Complex, mandatoryArity: In
     override fun toShort() = magnitude.toShort()
 }
 
-fun String.toComplexVector() = ComplexVector(*this.split(",").map(String::toComplex).toTypedArray())
+fun String.toComplexVector() = ComplexVector(*this
+        .replace(Regex("[<>]"), "")
+        .split(",")
+        .map(String::toComplex)
+        .toTypedArray()
+)

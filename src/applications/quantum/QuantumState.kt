@@ -55,6 +55,8 @@ open class QuantumState(val qubits: Int, vararg dimensions: Complex, private val
 
         return stringComponents.joinToString(" + ")
     }
+
+    val componentString get() = super.toString()
 }
 
 fun String.toQuantumState() = QuantumState(this.toComplexVector())
