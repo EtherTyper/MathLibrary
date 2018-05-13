@@ -3,6 +3,7 @@ package applications.quantum
 import io.javalin.Context
 import io.javalin.Javalin
 import java.util.*
+import org.slf4j.Logger
 
 val String.decoded get() = String(Base64.getDecoder().decode(this))
 val Context.state get() = this.queryParam("state")!!.decoded.toQuantumState()
