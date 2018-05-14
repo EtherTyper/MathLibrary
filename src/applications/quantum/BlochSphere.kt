@@ -7,16 +7,20 @@ import core.complex.ComplexVector
 import core.vector.DoubleVector
 import io.javalin.Context
 import io.javalin.Javalin
+import java.util.*
+
+val String.decoded get() = String(Base64.getDecoder().decode(this))
 
 @Suppress("UNCHECKED_CAST")
-val Context.state
-    get() = QuantumState.fromJSON(
-            JsonArray(
-                    Klaxon().parseJsonArray(
-                            Klaxon().toReader(this.body().byteInputStream())
-                    ).toMutableList() as MutableList<JsonObject>
-            )
-    )
+val Context.state: QuantumState
+    get() =
+        QuantumState.fromJSON(
+                JsonArray(
+                        Klaxon().parseJsonArray(
+                                Klaxon().toReader(this.queryParam("state")!!.decoded.byteInputStream())
+                        ).toMutableList() as MutableList<JsonObject>
+                )
+        )
 
 fun Context.result(state: ComplexVector) = this.result(state.toJSON.toJsonString())
 fun Context.result(vector: DoubleVector) = this.result(vector.toJSON.toJsonString())
@@ -33,19 +37,19 @@ fun main(args: Array<String>) {
             "Z" to QuantumGate.Z
     )
 
-    app.post("/bloch_vector") { ctx ->
+    app.get("/bloch_vector") { ctx ->
         ctx.result(BlochVector.from(ctx.state))
     }
 
-    app.post("/apply") { ctx ->
+    app.get("/apply") { ctx ->
         ctx.result(gates[ctx.queryParam("gate")]!! * ctx.state)
     }
 
-    app.post("/measure") { ctx ->
+    app.get("/measure") { ctx ->
         ctx.result(ctx.state.measure(QuantumBasis.eyeBasis(1)))
     }
 
-    app.post("/rotate") { ctx ->
+    app.get("/rotate") { ctx ->
         ctx.result(QuantumGate.R(ctx.queryParam("theta")!!.toDouble()) * ctx.state)
     }
 }

@@ -73,7 +73,7 @@ class Complex(public val real: Double, public val imaginary: Double = 0.0) : Num
         val i = Complex(0.0, 1.0)
 
         fun fromJSON(jsonObject: JsonObject): Complex {
-            return Complex(jsonObject.double("real")!!, jsonObject.double("imaginary")!!)
+            return Complex((jsonObject["real"] as Number).toDouble(), (jsonObject["imaginary"] as Number).toDouble())
         }
     }
 }
