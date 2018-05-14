@@ -8,6 +8,7 @@ import core.vector.DoubleVector
 import io.javalin.Context
 import io.javalin.Javalin
 
+@Suppress("UNCHECKED_CAST")
 val Context.state
     get() = QuantumState.fromJSON(
             JsonArray(
@@ -32,19 +33,19 @@ fun main(args: Array<String>) {
             "Z" to QuantumGate.Z
     )
 
-    app.get("/bloch_vector") { ctx ->
+    app.post("/bloch_vector") { ctx ->
         ctx.result(BlochVector.from(ctx.state))
     }
 
-    app.get("/apply") { ctx ->
+    app.post("/apply") { ctx ->
         ctx.result(gates[ctx.queryParam("gate")]!! * ctx.state)
     }
 
-    app.get("/measure") { ctx ->
+    app.post("/measure") { ctx ->
         ctx.result(ctx.state.measure(QuantumBasis.eyeBasis(1)))
     }
 
-    app.get("/rotate") { ctx ->
+    app.post("/rotate") { ctx ->
         ctx.result(QuantumGate.R(ctx.queryParam("theta")!!.toDouble()) * ctx.state)
     }
 }
