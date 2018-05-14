@@ -26,7 +26,10 @@ fun Context.result(state: ComplexVector) = this.result(state.toJSON.toJsonString
 fun Context.result(vector: DoubleVector) = this.result(vector.toJSON.toJsonString())
 
 fun main(args: Array<String>) {
-    val app = Javalin.start(7000)
+    val app = Javalin.create().apply {
+        enableCorsForOrigin("http://localhost:9000")
+        port(7000)
+    }.start()
 
     val gates = mapOf(
             "I" to QuantumGate.identity(1),
