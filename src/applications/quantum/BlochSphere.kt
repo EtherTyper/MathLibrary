@@ -27,7 +27,7 @@ fun Context.result(vector: DoubleVector) = this.result(vector.toJSON.toJsonStrin
 
 fun main(args: Array<String>) {
     val app = Javalin.create().apply {
-        enableCorsForOrigin("http://localhost:9000")
+        enableCorsForAllOrigins()
         port(7000)
     }.start()
 
