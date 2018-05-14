@@ -1,5 +1,9 @@
 package core.complex
 
+import com.beust.klaxon.JsonObject
+import com.beust.klaxon.Klaxon
+import com.beust.klaxon.json
+import java.nio.charset.StandardCharsets
 import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.sqrt
@@ -55,10 +59,22 @@ class Complex(public val real: Double, public val imaginary: Double = 0.0) : Num
         return "%.3f + %.3fi".format(real, imaginary)
     }
 
+    val toJSON
+        get() = json {
+            obj(
+                    "real" to real,
+                    "imaginary" to imaginary
+            )
+        }
+
     @Suppress("ObjectPropertyName")
     companion object {
         val `0` = Complex(0.0, 0.0)
         val i = Complex(0.0, 1.0)
+
+        fun fromJSON(jsonObject: JsonObject): Complex {
+            return Complex(jsonObject.double("real")!!, jsonObject.double("imaginary")!!)
+        }
     }
 }
 

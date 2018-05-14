@@ -8,6 +8,13 @@
         <kotlin.version>1.2.41</kotlin.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>jcenter</id>
+            <url>https://jcenter.bintray.com/</url>
+        </repository>
+    </repositories>
+
     <build>
         <sourceDirectory>src</sourceDirectory>
         <plugins>
@@ -145,7 +152,12 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.25</version>
-            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.beust</groupId>
+            <artifactId>klaxon</artifactId>
+            <version>3.0.1</version>
         </dependency>
     </dependencies>
 </project>

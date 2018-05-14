@@ -1,13 +1,24 @@
 package applications.quantum
 
+import com.beust.klaxon.JsonArray
+import com.beust.klaxon.JsonObject
+import com.beust.klaxon.Klaxon
+import core.complex.ComplexVector
+import core.vector.DoubleVector
 import io.javalin.Context
 import io.javalin.Javalin
-import java.util.*
-import org.slf4j.Logger
 
-val String.decoded get() = String(Base64.getDecoder().decode(this))
-val Context.state get() = this.queryParam("state")!!.decoded.toQuantumState()
-fun Context.result(state: QuantumState) = this.result(state.componentString)
+val Context.state
+    get() = QuantumState.fromJSON(
+            JsonArray(
+                    Klaxon().parseJsonArray(
+                            Klaxon().toReader(this.body().byteInputStream())
+                    ).toMutableList() as MutableList<JsonObject>
+            )
+    )
+
+fun Context.result(state: ComplexVector) = this.result(state.toJSON.toJsonString())
+fun Context.result(vector: DoubleVector) = this.result(vector.toJSON.toJsonString())
 
 fun main(args: Array<String>) {
     val app = Javalin.start(7000)
@@ -22,7 +33,7 @@ fun main(args: Array<String>) {
     )
 
     app.get("/bloch_vector") { ctx ->
-        ctx.result("${BlochVector.from(ctx.state)}")
+        ctx.result(BlochVector.from(ctx.state))
     }
 
     app.get("/apply") { ctx ->

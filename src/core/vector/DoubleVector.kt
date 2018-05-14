@@ -1,5 +1,7 @@
 package core.vector
 
+import com.beust.klaxon.JsonArray
+import com.beust.klaxon.json
 import core.ArityError
 import core.complex.Complex
 import core.complex.ComplexVector
@@ -41,6 +43,10 @@ open class DoubleVector(vararg val doubleDimensions: Double, mandatoryArity: Int
         @Suppress("ObjectPropertyName")
         val `0`
             get() = DoubleVector().extended(3).to3D
+
+        fun fromJSON(jsonArray: JsonArray<Double>): DoubleVector {
+            return DoubleVector(*jsonArray.toDoubleArray())
+        }
     }
 
     override fun toString(): String = "<${doubleDimensions.joinToString(separator = ", ") { dimension ->
@@ -53,6 +59,11 @@ open class DoubleVector(vararg val doubleDimensions: Double, mandatoryArity: Int
     infix fun angleFrom(other: DoubleVector) = super.angleFrom(other).collapseToReal
     infix fun projectionOnto(other: DoubleVector) = super.projectionOnto(other).collapseToReal
     infix fun rejectionFrom(other: DoubleVector) = super.rejectionFrom(other).collapseToReal
+
+    override val toJSON get() =
+        json {
+            array(doubleDimensions.toList())
+        }
 }
 
 val Number.v get() = DoubleVector(this.toDouble())

@@ -1,5 +1,7 @@
 package applications.quantum
 
+import com.beust.klaxon.JsonArray
+import com.beust.klaxon.JsonObject
 import core.UnitVectorError
 import core.complex.Complex
 import core.complex.ComplexVector
@@ -57,6 +59,12 @@ open class QuantumState(val qubits: Int, vararg dimensions: Complex, private val
     }
 
     val componentString get() = super.toString()
+
+    companion object {
+        fun fromJSON(jsonArray: JsonArray<JsonObject>): QuantumState {
+            return QuantumState(ComplexVector.fromJSON(jsonArray))
+        }
+    }
 }
 
 fun String.toQuantumState() = QuantumState(this.toComplexVector())
