@@ -23,7 +23,6 @@ val Context.state: QuantumState
         )
 
 fun Context.result(state: ComplexVector) = this.result(state.toJSON.toJsonString())
-fun Context.result(vector: DoubleVector) = this.result(vector.toJSON.toJsonString())
 
 fun main(args: Array<String>) {
     val app = Javalin.create().apply {
