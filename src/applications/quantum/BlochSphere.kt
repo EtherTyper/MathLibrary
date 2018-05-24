@@ -4,7 +4,6 @@ import com.beust.klaxon.JsonArray
 import com.beust.klaxon.JsonObject
 import com.beust.klaxon.Klaxon
 import core.complex.ComplexVector
-import core.vector.DoubleVector
 import io.javalin.Context
 import io.javalin.Javalin
 import java.util.*

@@ -2,7 +2,6 @@ package core.complex
 
 import com.beust.klaxon.JsonArray
 import com.beust.klaxon.JsonObject
-import com.beust.klaxon.Klaxon
 import com.beust.klaxon.json
 import core.ArityError
 import core.complex.Complex.Companion.fromJSON
@@ -10,7 +9,6 @@ import core.linear.Column
 import core.linear.Row
 import core.vector.DoubleVector
 import core.vector.Vector3D
-import java.nio.charset.StandardCharsets
 import kotlin.math.max
 import kotlin.math.pow
 
@@ -109,7 +107,8 @@ open class ComplexVector(open vararg val dimensions: Complex, mandatoryArity: In
     override fun toLong() = magnitude.toLong()
     override fun toShort() = magnitude.toShort()
 
-    open val toJSON get() =
+    open val toJSON
+        get() =
             json {
                 array(dimensions.map(Complex::toJSON))
             }

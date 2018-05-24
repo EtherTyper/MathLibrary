@@ -26,8 +26,6 @@ class QuantumTests : Tests() {
 
                     println("$initialState -> $resultingState")
                 }
-
-
             }
 
             section("Quantum Gates") {

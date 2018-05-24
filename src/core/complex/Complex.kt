@@ -1,9 +1,7 @@
 package core.complex
 
 import com.beust.klaxon.JsonObject
-import com.beust.klaxon.Klaxon
 import com.beust.klaxon.json
-import java.nio.charset.StandardCharsets
 import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.sqrt

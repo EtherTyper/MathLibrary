@@ -60,10 +60,11 @@ open class DoubleVector(vararg val doubleDimensions: Double, mandatoryArity: Int
     infix fun projectionOnto(other: DoubleVector) = super.projectionOnto(other).collapseToReal
     infix fun rejectionFrom(other: DoubleVector) = super.rejectionFrom(other).collapseToReal
 
-    override val toJSON get() =
-        json {
-            array(doubleDimensions.toList())
-        }
+    override val toJSON
+        get() =
+            json {
+                array(doubleDimensions.toList())
+            }
 }
 
 val Number.v get() = DoubleVector(this.toDouble())
