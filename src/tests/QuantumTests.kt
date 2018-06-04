@@ -2,6 +2,7 @@ package tests
 
 import applications.quantum.*
 import core.complex.Complex
+import kotlin.math.PI
 import kotlin.math.sqrt
 
 class QuantumTests : Tests() {
@@ -35,13 +36,16 @@ class QuantumTests : Tests() {
                 println("X = \n${QuantumGate.X}\n")
                 println("Y = \n${QuantumGate.Y}\n")
                 println("Z = \n${QuantumGate.Z}\n")
+                println("T = \n${QuantumGate.T}\n")
+                println("S (phase) = \n${QuantumGate.phase}\n")
                 println("√S = \n${QuantumGate.sqrtS}\n")
-                println("S = \n${QuantumGate.S}\n")
+                println("S (swap) = \n${QuantumGate.S}\n")
                 println("cX = \n${QuantumGate.cX}\n")
                 println("cY = \n${QuantumGate.cY}\n")
                 println("cZ = \n${QuantumGate.cZ}\n")
                 println("CCNOT = \n${QuantumGate.CCNOT}\n")
                 println("cS = \n${QuantumGate.cS}\n")
+                println("XX(PI/2) = \n${QuantumGate.XX(PI / 2)}\n")
             }
 
             section("Quantum Computer Simulator") {

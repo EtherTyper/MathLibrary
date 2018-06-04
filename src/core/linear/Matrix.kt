@@ -34,7 +34,7 @@ open class Matrix(val members: Array<Array<out Any>>) {
             return Row(*Array(matrix.members[index].size,
                     { i ->
                         val value = matrix.members[index][i]
-                        value as? Complex ?: Complex(value as Double)
+                        value as? Complex ?: Complex((value as Number).toDouble())
                     }))
         }
 

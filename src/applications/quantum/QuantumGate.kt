@@ -52,6 +52,9 @@ class QuantumGate(val qubits: Int, members: Array<Array<out Any>>) : UnitaryMatr
                 ))
         )
 
+        val T = R(PI / 4)
+        val phase = R(PI / 2)
+
         val sqrtS = QuantumGate(
                 UnitaryMatrix(
                         (Matrix.eye(1) directAdd sqrtNOT directAdd Matrix.eye(1)).members
@@ -81,5 +84,14 @@ class QuantumGate(val qubits: Int, members: Array<Array<out Any>>) : UnitaryMatr
                         arrayOf(Complex(sin(theta)), Complex(0.0, cos(theta)))
                 ))
         )))
+
+        fun XX(theta: Double) = QuantumGate(
+                UnitaryMatrix(arrayOf(
+                        arrayOf(1 / sqrt(2.0), Complex.`0`, Complex.`0`, Complex.i * exp(Complex.i * theta) / sqrt(2.0)),
+                        arrayOf(Complex.`0`, 1 / sqrt(2.0), -Complex.i / sqrt(2.0), Complex.`0`),
+                        arrayOf(Complex.`0`, -Complex.i / sqrt(2.0), 1 / sqrt(2.0), Complex.`0`),
+                        arrayOf(Complex.i * exp(-Complex.i * theta) / sqrt(2.0), Complex.`0`, Complex.`0`, 1 / sqrt(2.0))
+                ))
+        )
     }
 }
