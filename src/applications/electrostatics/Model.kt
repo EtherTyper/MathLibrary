@@ -22,6 +22,9 @@ fun main(args: Array<String>) {
     }
 }
 
+val positiveChargeStrength = 1.0
+val negativeChargeStrength = -1.0
+
 class Window() : JFrame() {
     val size get() = chargeCluster.upperBound.toGraphical(chargeCluster)
     val idealWidth get() = size[0].toInt()
@@ -40,8 +43,8 @@ class Window() : JFrame() {
                             PointCharge(
                                     DoubleVector(e.point.x.toDouble(), e.point.y.toDouble()).fromGraphical(chargeCluster),
                                     when {
-                                        SwingUtilities.isLeftMouseButton(e) -> 1.0
-                                        SwingUtilities.isRightMouseButton(e) -> -1.0
+                                        SwingUtilities.isLeftMouseButton(e) -> positiveChargeStrength
+                                        SwingUtilities.isRightMouseButton(e) -> negativeChargeStrength
                                         else -> 0.0
                                     },
                                     0.5
